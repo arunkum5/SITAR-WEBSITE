@@ -213,7 +213,6 @@
     color: var(--bg);
     background: var(--gold);
     border-color: var(--gold);
-    transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(201, 160, 74, 0.3);
   }
 
@@ -248,7 +247,6 @@
     color: var(--bg);
     background: var(--gold);
     border-color: var(--gold);
-    transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(201, 160, 74, 0.3);
   }
   .nav-dropdown-trigger .chevron {
@@ -356,7 +354,7 @@
   .btn{
     display:inline-flex; align-items:center; justify-content:center;
     padding:11px 22px;
-    font-size:13px; font-family:'IBM Plex Mono', monospace;
+    font-size:14px; font-family:'IBM Plex Mono', monospace;
     letter-spacing:0.04em;
     border-radius:8px;
     border:1px solid var(--line-strong);
@@ -380,7 +378,7 @@
     background:var(--gold);
     color:var(--ink);
     border-color:var(--gold);
-    font-weight:600;
+    font-weight:700;
   }
   .btn-gold:hover{
     background:#f0d190;
@@ -630,7 +628,8 @@
     margin-top: 20px;
     max-width: 580px;
     font-size: 18px;
-    color: var(--cream-dim);
+    font-weight: 500;
+    color: var(--cream);
     text-align: justify;
     line-height: 1.75;
   }
@@ -919,24 +918,25 @@
   }
   .hero-stats .stat {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 8px;
   }
   .hero-stats .stat .num {
-    font-size: clamp(17px, 2.8vw, 25px); /* 30% smaller */
+    font-size: clamp(14px, 2.2vw, 20px); /* Reduced by 20% */
     font-weight: 700;
     color: var(--gold);
     font-family: 'Fraunces', serif;
     font-style: italic;
   }
   .hero-stats .stat .label {
-    margin-top: 4px;
-    font-size: 14px; /* 20% bigger than 11.5px */
+    margin-top: 0;
+    font-size: 11px; /* Reduced by 20% */
     font-family: 'IBM Plex Mono', monospace;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: #fff; /* bold dark/white for visibility over photos */
+    color: #fff;
     text-shadow: 0 1px 6px rgba(0,0,0,0.8);
   }
   @media (max-width: 480px) {
@@ -1289,9 +1289,9 @@
 
 <section class="hero">
   <div class="hero-slider">
-    <!-- Slide 1: Main (Growth) -->
-    <div class="hero-slide active">
-      <div class="hero-slide-bg"></div>
+    <!-- Slide 1: Main (Growth / About Us) -->
+    <div class="hero-slide">
+      <div class="hero-slide-bg" style="background-image: url('roadmap.jpg'); opacity: 0.06; filter: grayscale(100%) brightness(0.6);"></div>
       <div class="wrap">
         <div class="hero-inner">
           <div class="hero-main-content">
@@ -1585,12 +1585,45 @@
 
     <div class="foot-bottom">
       <span>© 2026 SITAR. All rights reserved.</span>
-      <span class="mono">Bengaluru, India</span>
     </div>
   </div>
 </footer>
 
 <script>
+  // --- Word-by-Word Animation for Hero Subtitle ---
+  const heroSub = document.querySelector('.hero-sub');
+  if (heroSub) {
+    const childNodes = Array.from(heroSub.childNodes);
+    heroSub.innerHTML = '';
+    let wordDelay = 0;
+    
+    childNodes.forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const words = node.textContent.split(/(\s+)/);
+        words.forEach(word => {
+          if (word.trim().length > 0) {
+            const span = document.createElement('span');
+            span.className = 'word';
+            span.style.transitionDelay = `${wordDelay * 0.025}s`;
+            span.textContent = word;
+            heroSub.appendChild(span);
+            wordDelay++;
+          } else {
+            heroSub.appendChild(document.createTextNode(word));
+          }
+        });
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        // Handle inner elements like <span class="highlight-word">
+        const span = document.createElement('span');
+        // Keep its original classes but add 'word'
+        span.className = `word ${node.className}`;
+        span.style.transitionDelay = `${wordDelay * 0.025}s`;
+        span.innerHTML = node.innerHTML;
+        heroSub.appendChild(span);
+        wordDelay++;
+      }
+    });
+  }
   // Build the ticker from the sector + plan rates, duplicated for a seamless loop.
   const rates = [
     { sym: "VILLAS", rate: "12.0%", dot: "#C1694A" },
@@ -1914,9 +1947,11 @@
     }
   });
 
-  // Initialize
-  showSlide(0);
-  startAutoPlay();
+  // Initialize with a slight delay to trigger CSS transitions on page load
+  setTimeout(() => {
+    showSlide(0);
+    startAutoPlay();
+  }, 50);
 </script>
 
 </body>
