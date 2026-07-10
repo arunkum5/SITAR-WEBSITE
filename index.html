@@ -181,23 +181,40 @@
     font-size: 15px;
     gap: 10px;
   }
+  .nav-links { position: relative; }
+  .nav-active-pill {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 32px;
+    background: var(--gold);
+    border: 1px solid var(--gold);
+    border-radius: 6px;
+    z-index: 0;
+    transition: left 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+  }
   .nav-links a {
     padding: 6px 14px;
     border-radius: 6px;
-    background: rgba(255, 255, 255, 0.03); /* permanent button styling */
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(201, 160, 74, 0.12);
+    border: 1px solid rgba(201, 160, 74, 0.3);
+    transition: color 0.3s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     text-decoration: none;
-    color: var(--cream);
+    color: var(--gold);
+    position: relative;
+    z-index: 1;
   }
   header.scrolled .nav-links a {
     padding: 4px 10px;
   }
   .nav-links a:hover {
-    color: var(--gold);
-    background: rgba(230, 195, 124, 0.1); /* gold button highlight */
-    border-color: rgba(230, 195, 124, 0.3);
+    color: var(--bg);
+    background: var(--gold);
+    border-color: var(--gold);
     transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(201, 160, 74, 0.3);
   }
 
   /* Dropdown Styles */
@@ -206,9 +223,9 @@
     display: inline-block;
   }
   .nav-dropdown-trigger {
-    background: rgba(255, 255, 255, 0.03); /* permanent button styling */
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: var(--cream);
+    background: rgba(201, 160, 74, 0.12);
+    border: 1px solid rgba(201, 160, 74, 0.3);
+    color: var(--gold);
     font-family: inherit;
     font-size: 16px; /* reduced size to 16px */
     font-weight: 600;
@@ -218,7 +235,9 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: color 0.3s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    position: relative;
+    z-index: 1;
   }
   header.scrolled .nav-dropdown-trigger {
     font-size: 15px;
@@ -226,10 +245,11 @@
   }
   .nav-dropdown-trigger:hover,
   .nav-item-dropdown:hover .nav-dropdown-trigger {
-    color: var(--gold);
-    background: rgba(230, 195, 124, 0.1); /* gold button highlight */
-    border-color: rgba(230, 195, 124, 0.3);
+    color: var(--bg);
+    background: var(--gold);
+    border-color: var(--gold);
     transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(201, 160, 74, 0.3);
   }
   .nav-dropdown-trigger .chevron {
     font-size: 10px;
@@ -264,16 +284,16 @@
   .nav-dropdown-menu a {
     display: block;
     padding: 10px 20px;
-    color: var(--cream-dim);
-    font-size: 13.5px;
-    font-weight: 400;
+    color: #ff6b9d; /* Pink from 400+ stat */
+    font-size: 14px;
+    font-weight: 600;
     white-space: nowrap;
     transition: background 0.2s ease, color 0.2s ease;
     text-align: left;
   }
   .nav-dropdown-menu a:hover {
     background: var(--bg-panel-2);
-    color: var(--gold);
+    color: #fff; /* White on hover for contrast */
   }
   .dropdown-divider {
     height: 1px;
@@ -373,9 +393,11 @@
   /* Active Nav Highlight */
   .nav-links a.active,
   .nav-item-dropdown.active .nav-dropdown-trigger {
-    color: var(--gold) !important;
-    background: rgba(230, 195, 124, 0.08);
-    border-color: rgba(230, 195, 124, 0.25);
+    color: var(--bg);
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    transition: color 0.3s ease 0.05s, background 0.3s ease, border-color 0.3s ease; /* slight delay on text color */
   }
 
   /* ---------- HERO ---------- */
@@ -1008,45 +1030,37 @@
     margin-top: 24px; 
   }
   .why-item {
-    background: linear-gradient(135deg, rgba(35, 33, 29, 0.9), rgba(18, 16, 13, 1));
-    border: 1px solid rgba(201, 160, 74, 0.15);
-    padding: 30px 26px;
-    border-radius: 6px;
+    background: #181613;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 34px 28px;
+    border-radius: 12px;
     position: relative;
     overflow: hidden;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+    transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
     cursor: default;
   }
-  .why-item::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: radial-gradient(circle at 100% 0%, rgba(201, 160, 74, 0.2) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    pointer-events: none;
-  }
   .why-item:hover {
-    transform: translateY(-6px);
+    transform: translateY(-4px);
     border-color: rgba(201, 160, 74, 0.4);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-  }
-  .why-item:hover::before {
-    opacity: 1;
+    background: #1c1a17;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   }
   .why-item .idx {
     font-family: 'IBM Plex Mono', monospace;
-    color: var(--gold);
-    font-size: 13px;
+    color: rgba(201, 160, 74, 0.7);
+    font-size: 16px;
     font-weight: 500;
+    margin-bottom: 6px;
+    display: inline-block;
     position: relative;
     z-index: 1;
   }
   .why-item p {
-    margin-top: 14px;
-    font-size: 16px;
-    color: var(--cream);
-    line-height: 1.5;
+    margin-top: 10px;
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    color: #fff;
+    line-height: 1.4;
     position: relative;
     z-index: 1;
   }
@@ -1231,6 +1245,7 @@
       <img class="logo-text" src="new-header-text.svg" alt="SITAR">
     </a>
     <div class="nav-links">
+      <div class="nav-active-pill" id="navActivePill"></div>
       <a href="#about" id="navLinkAbout" class="active">About Us</a>
       
       <div class="nav-item-dropdown" id="navDropdownServices">
@@ -1274,7 +1289,7 @@
 
 <section class="hero">
   <div class="hero-slider">
-    <!-- Slide 1: About -->
+    <!-- Slide 1: Main (Growth) -->
     <div class="hero-slide active">
       <div class="hero-slide-bg"></div>
       <div class="wrap">
@@ -1812,7 +1827,39 @@
         }
       }
     }
+    
+    // Update the sliding nav pill position
+    setTimeout(updateNavPill, 10);
   }
+
+  function updateNavPill() {
+    const pill = document.getElementById('navActivePill');
+    if (!pill) return;
+    
+    // Find the currently active link or dropdown trigger
+    let activeEl = document.querySelector('.nav-links a.active');
+    if (!activeEl) {
+      const activeDropdown = document.querySelector('.nav-item-dropdown.active');
+      if (activeDropdown) {
+        activeEl = activeDropdown.querySelector('.nav-dropdown-trigger');
+      }
+    }
+    
+    if (activeEl) {
+      const navLinks = document.querySelector('.nav-links');
+      const navLinksRect = navLinks.getBoundingClientRect();
+      const activeRect = activeEl.getBoundingClientRect();
+      
+      // Adjust width and left position based on absolute client rects
+      pill.style.width = activeRect.width + 'px';
+      pill.style.left = (activeRect.left - navLinksRect.left) + 'px';
+      pill.style.opacity = '1';
+    } else {
+      pill.style.opacity = '0';
+    }
+  }
+
+  window.addEventListener('resize', updateNavPill);
 
   // Hover graph to restart animation from 2016 to 2021+
   const heroGraphEl = document.getElementById('heroGraph');
