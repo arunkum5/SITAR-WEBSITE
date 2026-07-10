@@ -148,7 +148,7 @@
     filter: brightness(1.35) contrast(1.15); /* make logo brighter */
   }
   .logo-text{
-    height: 48px; /* increased by 100% from 24px */
+    height: 99px;
     width: auto;
     object-fit: contain;
     opacity: 0;
@@ -162,7 +162,7 @@
     object-fit: contain;
   }
   .foot-logo-text{
-    height: 20px;
+    height: 41px;
     width: auto;
     object-fit: contain;
   }
@@ -310,16 +310,35 @@
     padding:11px 22px;
     font-size:13px; font-family:'IBM Plex Mono', monospace;
     letter-spacing:0.04em;
-    border-radius:var(--radius);
+    border-radius:8px;
     border:1px solid var(--line-strong);
     cursor:pointer;
-    transition: all .2s ease;
+    transition: all .25s cubic-bezier(0.4, 0, 0.2, 1);
     white-space:nowrap;
   }
-  .btn-ghost{ color:var(--cream); background:transparent; }
-  .btn-ghost:hover{ border-color:var(--gold); color:var(--gold); }
-  .btn-gold{ background:var(--gold); color:var(--ink); border-color:var(--gold); font-weight:500; }
-  .btn-gold:hover{ background:#f0d190; }
+  .btn-ghost{
+    color:var(--gold);
+    background:rgba(230, 195, 124, 0.08);
+    border-color:rgba(230, 195, 124, 0.25);
+    font-weight:500;
+  }
+  .btn-ghost:hover{
+    background:rgba(230, 195, 124, 0.18);
+    border-color:var(--gold);
+    color:#f0d190;
+    transform:translateY(-1px);
+  }
+  .btn-gold{
+    background:var(--gold);
+    color:var(--ink);
+    border-color:var(--gold);
+    font-weight:600;
+  }
+  .btn-gold:hover{
+    background:#f0d190;
+    border-color:#f0d190;
+    transform:translateY(-1px);
+  }
 
   .menu-toggle{ display:none; background:none; border:none; color:var(--cream); font-size:22px; cursor:pointer; }
 
@@ -590,7 +609,7 @@
       filter: brightness(1.35) contrast(1.15);
     }
     .logo-text{
-      height: 32px; /* increased slightly on mobile */
+      height: 67px; /* increased slightly on mobile */
       filter: brightness(1.35) contrast(1.15);
       margin-top: -1px;
     }
@@ -599,7 +618,7 @@
       width: 32px;
     }
     .foot-logo-text{
-      height: 16px;
+      height: 33px;
     }
   }
 
@@ -619,7 +638,7 @@
   <nav class="nav">
     <a href="index.html" class="logo">
       <img class="wipe-logo" id="wipeLogo" src="logo.svg" alt="SITAR Emblem">
-      <img class="logo-text" src="sitar-text.svg" alt="SITAR">
+      <img class="logo-text" src="new-header-text.svg" alt="SITAR">
     </a>
     <div class="nav-links">
       <a href="index.html#about">About Us</a>
@@ -793,7 +812,7 @@
       <div class="foot-brand">
         <a href="index.html" class="logo">
           <img class="foot-logo" src="logo.svg" alt="SITAR Emblem">
-          <img class="foot-logo-text" src="sitar-text.svg" alt="SITAR">
+          <img class="foot-logo-text" src="new-header-text.svg" alt="SITAR">
         </a>
         <p>Your trusted investment partner. Guaranteed monthly returns on real assets.</p>
       </div>
