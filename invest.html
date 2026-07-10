@@ -140,18 +140,21 @@
     gap: 12px;
   }
   .wipe-logo{
-    height: 58px; /* increased by 20% from 48px */
-    width: 58px;  /* increased by 20% from 48px */
+    height: 58px;
+    width: 58px;
     object-fit: contain;
     clip-path: circle(0% at 50% 50%);
     animation: wipeReveal 1.6s ease-out forwards;
+    filter: brightness(1.35) contrast(1.15); /* make logo brighter */
   }
   .logo-text{
-    height: 36px; /* increased by 50% from 24px */
+    height: 48px; /* increased by 100% from 24px */
     width: auto;
     object-fit: contain;
     opacity: 0;
     animation: fadeInText 1s ease-out 0.8s forwards;
+    filter: brightness(1.35) contrast(1.15); /* make text brighter */
+    margin-top: -2px; /* adjust vertical alignment baseline */
   }
   .foot-logo{
     height: 40px;
@@ -582,11 +585,14 @@
     table.plans th, table.plans td{ padding:14px 8px; }
     .foot-links{ gap:32px; }
     .wipe-logo{
-      height: 38px; /* increased by 20% from 32px */
-      width: 38px;
+      height: 42px; /* increased slightly on mobile */
+      width: 42px;
+      filter: brightness(1.35) contrast(1.15);
     }
     .logo-text{
-      height: 24px; /* increased by 50% from 16px */
+      height: 32px; /* increased slightly on mobile */
+      filter: brightness(1.35) contrast(1.15);
+      margin-top: -1px;
     }
     .foot-logo{
       height: 32px;
