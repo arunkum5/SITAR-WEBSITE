@@ -1127,7 +1127,37 @@
   }
 
   /* ---------- HOW IT WORKS ---------- */
-  .steps{ display:grid; grid-template-columns:repeat(4,1fr); gap:28px; margin-top:8px;}
+  .how-split { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; margin-top: 40px; }
+  .how-half {
+    padding: 40px;
+    border-radius: var(--radius);
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .how-half.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .stagger-fade {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .stagger-fade.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .how-half h3.half-title {
+    font-family: 'Fraunces', serif; font-size: 22px; color: var(--cream);
+    margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--line);
+    text-shadow: 0 0 8px rgba(243, 236, 221, 0.3);
+  }
+  .steps{ display:grid; grid-template-columns:repeat(2,1fr); gap:32px 24px;}
   .step{ border-top:1px solid var(--line-strong); padding-top:20px; }
   .step .step-no{ font-family:'IBM Plex Mono', monospace; color:var(--gold); font-size:22px; }
   .step h3{ font-family:'Fraunces',serif; font-style:italic; font-weight:500; font-size:19px; margin-top:14px; color:var(--cream); }
@@ -1223,6 +1253,7 @@
   @media (max-width: 900px){
     .about-grid{ grid-template-columns:1fr; gap:48px; }
     .why-list{ grid-template-columns:1fr 1fr; }
+    .how-split{ grid-template-columns:1fr; gap:48px; }
     .steps{ grid-template-columns:1fr 1fr; }
     .sector-grid{ grid-template-columns:1fr 1fr; }
     .loan-grid{ grid-template-columns:1fr 1fr; }
@@ -1561,29 +1592,65 @@
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">How it works</span>
-      <h2>From choice to <em>credited</em>, in four steps.</h2>
+      <h2>Simple, transparent, and <em>tailored to you.</em></h2>
     </div>
-    <div class="steps">
-      <div class="step">
-        <div class="step-no">01</div>
-        <h3>Choose a sector</h3>
-        <p>Pick from villa projects, apartment projects, hotels &amp; resorts, commercial complexes, or layout development.</p>
+
+    <div class="how-split">
+      
+      <!-- Left Half: Loans -->
+      <div class="how-half" id="how-loans">
+        <h3 class="half-title">For Loans</h3>
+        <div class="steps">
+          <div class="step">
+            <div class="step-no">01</div>
+            <h3>Apply &amp; Verify</h3>
+            <p>Submit your details and basic documentation for a quick eligibility check.</p>
+          </div>
+          <div class="step">
+            <div class="step-no">02</div>
+            <h3>Asset Valuation</h3>
+            <p>Our experts quickly evaluate your property or gold to unlock maximum value.</p>
+          </div>
+          <div class="step">
+            <div class="step-no">03</div>
+            <h3>Fast Approval</h3>
+            <p>Get clear terms with transparent interest rates and flexible repayment options.</p>
+          </div>
+          <div class="step">
+            <div class="step-no">04</div>
+            <h3>Funds Disbursed</h3>
+            <p>Capital transferred directly to your account to meet your immediate needs.</p>
+          </div>
+        </div>
       </div>
-      <div class="step">
-        <div class="step-no">02</div>
-        <h3>Pick your lock-in</h3>
-        <p>1, 2, 3, or 5 year plans, starting from ₹25,000.</p>
+
+      <!-- Right Half: Investments -->
+      <div class="how-half" id="how-investments">
+        <h3 class="half-title">For Investments</h3>
+        <div class="steps">
+          <div class="step">
+            <div class="step-no">01</div>
+            <h3>Choose a sector</h3>
+            <p>Pick from villa projects, apartment projects, hotels, commercial, or layouts.</p>
+          </div>
+          <div class="step">
+            <div class="step-no">02</div>
+            <h3>Pick your lock-in</h3>
+            <p>1, 2, 3, or 5 year plans, starting from ₹25,000.</p>
+          </div>
+          <div class="step">
+            <div class="step-no">03</div>
+            <h3>Invest via UPI</h3>
+            <p>Instant payment through Google Pay, PhonePe, or any UPI app.</p>
+          </div>
+          <div class="step">
+            <div class="step-no">04</div>
+            <h3>Earn monthly</h3>
+            <p>Returns credited straight to your bank account, every month.</p>
+          </div>
+        </div>
       </div>
-      <div class="step">
-        <div class="step-no">03</div>
-        <h3>Invest via UPI</h3>
-        <p>Instant payment through Google Pay, PhonePe, or any UPI app.</p>
-      </div>
-      <div class="step">
-        <div class="step-no">04</div>
-        <h3>Earn monthly</h3>
-        <p>Returns credited straight to your bank account, every month.</p>
-      </div>
+
     </div>
   </div>
 </section>
@@ -2041,6 +2108,42 @@
     showSlide(0);
     startAutoPlay();
   }, 50);
+
+  // Scroll animation for How it Works cards and content
+  const scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      } else {
+        entry.target.classList.remove('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  // 1. Observe the How it Works half-cards
+  document.querySelectorAll('.how-half').forEach((el, index) => {
+    el.style.transitionDelay = `${index * 0.15}s`;
+    scrollObserver.observe(el);
+    
+    // 2. Observe the inner step items
+    const steps = el.querySelectorAll('.step');
+    steps.forEach((step, stepIndex) => {
+      step.classList.add('stagger-fade');
+      // Delay factors in which half it's in, plus the step's order
+      step.style.transitionDelay = `${(index * 0.2) + (stepIndex * 0.15) + 0.2}s`;
+      scrollObserver.observe(step);
+    });
+  });
+
+  // 3. Observe the Why Choose Us items
+  document.querySelectorAll('.why-item').forEach((el, index) => {
+    el.classList.add('stagger-fade');
+    // For a 3-column grid, we can delay by row and column
+    const row = Math.floor(index / 3);
+    const col = index % 3;
+    el.style.transitionDelay = `${(row * 0.1) + (col * 0.15)}s`;
+    scrollObserver.observe(el);
+  });
 </script>
 
 </body>
