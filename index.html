@@ -1024,7 +1024,7 @@
   
   /* Text Color Overrides for Dark Boxes */
   #about h2 { 
-    color: var(--cream) !important; 
+    color: #000000 !important; 
     transition: transform 0.4s ease, text-shadow 0.4s ease;
     cursor: default;
   }
@@ -1032,12 +1032,12 @@
     transform: scale(1.02);
     text-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
   }
-  #about h2 em { color: var(--gold) !important; transition: color 0.4s ease; }
-  #about h2:hover em { color: #f0d190 !important; }
+  #about h2 em { color: #ff1493 !important; transition: color 0.4s ease; }
+  #about h2:hover em { color: #ff69b4 !important; }
   
-  #about .eyebrow { color: var(--gold) !important; }
+  #about .eyebrow { color: #ff1493 !important; }
   #about .about-lead p { 
-    color: var(--cream-dim) !important; 
+    color: #334155 !important; 
     font-size: 18px !important; 
     font-weight: 400 !important; 
     font-family: 'Outfit', sans-serif !important; 
@@ -1061,9 +1061,9 @@
   }
 
   #about .about-lead p:hover {
-    color: var(--cream) !important; 
+    color: #000000 !important; 
   }
-  #about .about-lead strong { color: #ffffff !important; }
+  #about .about-lead strong { color: #000000 !important; }
   
   /* Why Choose Us Section */
   #why-choose {
@@ -1110,16 +1110,33 @@
   #how h2 em { color: #0077b6 !important; }
   #how .eyebrow { color: #0077b6 !important; }
   
-  /* Dark glass background for stats to make bright colors visible */
+  /* 4 Grid Cards for stats */
   #about .hero-stats {
-    background: rgba(15, 15, 15, 0.75);
-    padding: 24px 32px;
-    border-radius: 16px;
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    background: transparent;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
   }
-  #about .stat .label { color: #f0f0f0 !important; font-weight: 500; }
+  #about .stat {
+    background: #12100d; /* Dark background */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 24px 16px;
+    text-align: center;
+    width: 100%;
+    max-width: 440px;
+    height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  #about .stat .label { color: #94a3b8 !important; font-weight: 500; font-size: 14px; margin-top: 8px; }
+  #about .stat .num { font-size: 28px; font-weight: 800; min-width: 120px; /* prevents resizing when numbers change */ }
   
   #about .timeline { border-left: 1px solid rgba(0, 0, 0, 0.15) !important; }
   #about .tl-item:nth-child(1) { --block-color: #0077b6; }
@@ -1378,11 +1395,29 @@
   /* ---------- CTA BAND ---------- */
   .cta-band{
     text-align:center;
-    background: linear-gradient(180deg, var(--bg-panel), var(--bg));
+    background: linear-gradient(rgba(18,16,13,0.7), rgba(18,16,13,0.7)), url('8.svg') no-repeat center center;
+    background-size: cover;
   }
-  .cta-band h2{ font-size:clamp(28px,4vw,46px); }
-  .cta-band p{ margin-top:16px; color:var(--cream-dim); max-width:640px; margin-left:auto; margin-right:auto; }
+  .cta-band .eyebrow { color: #4B8EE5; font-weight: 700; }
+  .cta-band h2 {
+    font-size:clamp(28px,4vw,46px);
+    font-weight: 800;
+    background: linear-gradient(90deg, #E6C37C, #C1694A, #A370A1, #6E86A6, #3E8E85, #E6C37C);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: ctaGlow 4s linear infinite;
+  }
+  @keyframes ctaGlow {
+    to { background-position: 200% center; }
+  }
+  .cta-band h2 .display { color: inherit; -webkit-text-fill-color: transparent; }
+  .cta-band p{ margin-top:16px; color:#FFFFFF; font-weight: 500; max-width:640px; margin-left:auto; margin-right:auto; }
   .cta-band .hero-cta{ justify-content:center; margin-top:34px; }
+  .cta-band .btn-gold { background: #4B8EE5; color: #FFFFFF; border-color: #4B8EE5; }
+  .cta-band .btn-gold:hover { background: #3B82F6; border-color: #3B82F6; color: #FFFFFF; }
+  .cta-band .btn-ghost { background: #4B8EE5; color: #4a154b; border-color: #4B8EE5; font-weight: 700; }
+  .cta-band .btn-ghost:hover { background: #3B82F6; color: #4a154b; border-color: #3B82F6; }
 
   .foot-top{ display:flex; flex-direction: row; justify-content: space-between; align-items: center; gap:48px; flex-wrap:wrap; }
   .foot-brand .logo{ display: inline-flex; justify-content: flex-start; }
@@ -1782,16 +1817,19 @@
 </section>
 
 <section id="about">
-<div class="wrap about-grid">
-    <div>
+  <div class="wrap">
+    <div style="text-align: left; margin-bottom: 40px;">
       <span class="eyebrow">About us</span>
-      <h2 style="margin-top:14px; font-size:clamp(28px,3.6vw,38px);">A decade of <em style="font-style:italic;color:var(--gold);font-family:'Fraunces',serif;">vision, growth</em> &amp; trust</h2>
-      <div class="about-lead" style="margin-top:24px;">
+      <h2 style="margin-top:14px; font-size:clamp(28px,3.6vw,38px); color: #000000;">A decade of <em style="font-style:italic;color:#ff1493;font-family:'Fraunces',serif;">vision, growth</em> &amp; trust</h2>
+    </div>
+    <div class="about-grid">
+      <div>
+        <div class="about-lead">
         <p>Founded in 2016, our journey began with a simple vision—to build a company driven by quality, innovation, and long-term relationships. What started as a small design firm has grown into a diversified business with a strong presence in the construction industry.</p>
         <p>Our success has been built on the trust and confidence of our clients, partners, and investors, whom we proudly call our <strong style="color:var(--cream);">believers</strong>.</p>
       </div>
       <div class="hero-stats" style="margin-top: 40px;">
-        <div class="stat" data-target="2016">
+        <div class="stat" data-target="1590">
           <div class="num" style="color:#4ecdc4;">0</div>
           <div class="label">Founded</div>
         </div>
@@ -1831,6 +1869,7 @@
         <div class="tl-title">A new chapter</div>
         <div class="tl-text">We achieved significant growth and doubled our revenue — and today, more than 400 believers continue to place their trust in us.</div>
       </div>
+    </div>
     </div>
   </div>
 </section>
@@ -2049,8 +2088,8 @@
     return rates.map(r => `
       <div class="ticker-item">
         <span class="ticker-dot" style="background:${r.dot}"></span>
-        <span class="sym">${r.sym}</span>
-        <span class="rate">▲ ${r.rate}</span>
+        <span class="sym" style="color:${r.dot}">${r.sym}</span>
+        <span class="rate" style="color:${r.dot}">▲ ${r.rate}</span>
       </div>
     `).join('');
   }

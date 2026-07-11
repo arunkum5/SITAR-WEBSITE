@@ -656,11 +656,29 @@
   /* ---------- CTA BAND ---------- */
   .cta-band{
     text-align:center;
-    background: linear-gradient(180deg, var(--bg-panel), var(--bg));
+    background: linear-gradient(rgba(18,16,13,0.7), rgba(18,16,13,0.7)), url('8.svg') no-repeat center center;
+    background-size: cover;
   }
-  .cta-band h2{ font-size:clamp(28px,4vw,46px); }
-  .cta-band p{ margin-top:16px; color:var(--cream-dim); max-width:640px; margin-left:auto; margin-right:auto; }
+  .cta-band .eyebrow { color: #4B8EE5; font-weight: 700; }
+  .cta-band h2 {
+    font-size:clamp(28px,4vw,46px);
+    font-weight: 800;
+    background: linear-gradient(90deg, #E6C37C, #C1694A, #A370A1, #6E86A6, #3E8E85, #E6C37C);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: ctaGlow 4s linear infinite;
+  }
+  @keyframes ctaGlow {
+    to { background-position: 200% center; }
+  }
+  .cta-band h2 .display { color: inherit; -webkit-text-fill-color: transparent; }
+  .cta-band p{ margin-top:16px; color:#FFFFFF; font-weight: 500; max-width:640px; margin-left:auto; margin-right:auto; }
   .cta-band .hero-cta{ justify-content:center; margin-top:34px; }
+  .cta-band .btn-gold { background: #4B8EE5; color: #FFFFFF; border-color: #4B8EE5; }
+  .cta-band .btn-gold:hover { background: #3B82F6; border-color: #3B82F6; color: #FFFFFF; }
+  .cta-band .btn-ghost { background: #4B8EE5; color: #4a154b; border-color: #4B8EE5; font-weight: 700; }
+  .cta-band .btn-ghost:hover { background: #3B82F6; color: #4a154b; border-color: #3B82F6; }
 
   .foot-top{ display:flex; flex-direction: row; justify-content: space-between; align-items: center; gap:48px; flex-wrap:wrap; }
   .foot-brand .logo{ display: inline-flex; justify-content: flex-start; }
