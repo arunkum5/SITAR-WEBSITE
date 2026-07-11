@@ -872,8 +872,13 @@
 
   .timeline{ position:relative; padding-left:32px; }
   .timeline::before{
-    content:""; position:absolute; left:5px; top:6px; bottom:6px; width:1px;
-    background: linear-gradient(var(--gold-dim), transparent 96%);
+    content:""; position:absolute; left:5px; top:6px; bottom:6px; width:2px;
+    background: linear-gradient(to bottom, #4ecdc4, #f5a623, #ff6b9d, #a78bfa);
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 1.8s ease-in-out;
+  }
+  .timeline.visible::before {
+    clip-path: inset(0 0 0 0);
   }
   .tl-item{
     position:relative;
@@ -1014,12 +1019,18 @@
   
   /* Make the left and right sides of About Us into distinct dark boxes */
   #about .about-grid > div {
-    background: rgba(15, 15, 20, 0.35); /* Light transparent dark glass */
+    background: rgba(15, 15, 20, 0.35); /* Fallback */
     padding: 48px;
     border-radius: 20px;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(12px);
+  }
+  #about .about-grid > div:nth-child(1) {
+    background: linear-gradient(rgba(15, 15, 20, 0.35), rgba(15, 15, 20, 0.35)), url('a1.svg') no-repeat center center / cover;
+  }
+  #about .about-grid > div:nth-child(2) {
+    background: linear-gradient(rgba(15, 15, 20, 0.35), rgba(15, 15, 20, 0.35)), url('a2.svg') no-repeat center center / cover;
   }
   
   /* Text Color Overrides for Dark Boxes */
@@ -1037,33 +1048,32 @@
   
   #about .eyebrow { color: #ff1493 !important; }
   #about .about-lead p { 
-    color: #334155 !important; 
+    color: #ffffff !important; 
     font-size: 18px !important; 
     font-weight: 400 !important; 
     font-family: 'Outfit', sans-serif !important; 
     text-align: justify;
-    transition: color 0.3s ease;
     cursor: default;
     
-    /* Reveal animation */
+    /* Reveal animation on scroll */
     opacity: 0;
     transform: translateY(20px);
-    animation: fadeUpLine 0.8s forwards;
+    transition: opacity 0.8s ease, transform 0.8s ease, color 0.3s ease;
   }
-  #about .about-lead p:nth-child(1) { animation-delay: 0.2s; }
-  #about .about-lead p:nth-child(2) { animation-delay: 0.6s; }
+  #about .about-lead p.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  #about .about-lead p:nth-child(1) { transition-delay: 0.2s; }
+  #about .about-lead p:nth-child(2) { transition-delay: 0.5s; }
+  #about .about-lead p:nth-child(3) { transition-delay: 0.8s; }
 
-  @keyframes fadeUpLine {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+
 
   #about .about-lead p:hover {
-    color: #000000 !important; 
+    color: #e2e8f0 !important; 
   }
-  #about .about-lead strong { color: #000000 !important; }
+  #about .about-lead strong { color: #f8fafc !important; }
   
   /* Why Choose Us Section */
   #why-choose {
@@ -1139,20 +1149,21 @@
   #about .stat .num { font-size: 28px; font-weight: 800; min-width: 120px; /* prevents resizing when numbers change */ }
   
   #about .timeline { border-left: 1px solid rgba(0, 0, 0, 0.15) !important; }
-  #about .tl-item:nth-child(1) { --block-color: #0077b6; }
-  #about .tl-item:nth-child(2) { --block-color: #2a9d8f; }
-  #about .tl-item:nth-child(3) { --block-color: #e76f51; }
-  #about .tl-item:nth-child(4) { --block-color: #9d4edd; }
+  #about .tl-item:nth-child(1) { --block-color: #4ecdc4; }
+  #about .tl-item:nth-child(2) { --block-color: #f5a623; }
+  #about .tl-item:nth-child(3) { --block-color: #ff6b9d; }
+  #about .tl-item:nth-child(4) { --block-color: #a78bfa; }
+  #about .tl-item::before { border-color: var(--block-color) !important; background: #12100d; }
 
   #about .tl-year { color: var(--block-color) !important; font-weight: 800; font-size: 18px; transition: transform 0.3s ease; }
-  #about .tl-title { 
-    color: var(--block-color) !important; 
+  #about .tl-title { color: #ffffff !important;
     font-weight: 700 !important; 
     font-size: 24px !important; 
-    transition: transform 0.3s ease, filter 0.3s ease;
+    margin-bottom: 6px;
+    transition: transform 0.3s ease;
     cursor: default;
   }
-  #about .tl-text { color: var(--block-color) !important; font-weight: 600 !important; font-size: 17px !important; line-height: 1.6; }
+  #about .tl-text { color: #ffffff !important; font-weight: 400 !important; font-size: 16px !important; line-height: 1.6; }
   
   /* Hover effects for timeline titles */
   #about .tl-item:hover .tl-title {
@@ -1251,6 +1262,12 @@
     transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
     cursor: default;
   }
+  #why-choose .why-item:nth-child(1) { background: linear-gradient(rgba(15,15,20,0.5), rgba(15,15,20,0.5)), url('choose_bg.webp') no-repeat center center / cover; }
+  #why-choose .why-item:nth-child(2) { background: linear-gradient(rgba(15,15,20,0.5), rgba(15,15,20,0.5)), url('choose_bg_bright.webp') no-repeat center center / cover; }
+  #why-choose .why-item:nth-child(3) { background: linear-gradient(rgba(15,15,20,0.5), rgba(15,15,20,0.5)), url('choose_bg_dark.webp') no-repeat center center / cover; }
+  #why-choose .why-item:nth-child(4) { background: linear-gradient(rgba(15,15,20,0.5), rgba(15,15,20,0.5)), url('choose_bg.webp') no-repeat center center / cover; }
+  #why-choose .why-item:nth-child(5) { background: linear-gradient(rgba(15,15,20,0.5), rgba(15,15,20,0.5)), url('choose_bg_bright.webp') no-repeat center center / cover; }
+  #why-choose .why-item:nth-child(6) { background: linear-gradient(rgba(15,15,20,0.5), rgba(15,15,20,0.5)), url('choose_bg_dark.webp') no-repeat center center / cover; }
   .why-item:hover {
     transform: translateY(-4px);
     border-color: rgba(201, 160, 74, 0.4);
@@ -1825,23 +1842,24 @@
     <div class="about-grid">
       <div>
         <div class="about-lead">
-        <p>Founded in 2016, our journey began with a simple vision—to build a company driven by quality, innovation, and long-term relationships. What started as a small design firm has grown into a diversified business with a strong presence in the construction industry.</p>
-        <p>Our success has been built on the trust and confidence of our clients, partners, and investors, whom we proudly call our <strong style="color:var(--cream);">believers</strong>.</p>
-      </div>
+          <p>Founded in 2016, our journey began with a simple vision—to build a company driven by quality, innovation, and long-term relationships. What started as a small design firm has grown into a diversified business with a strong presence in the construction industry.</p>
+          <p>Our success has been built on the trust and confidence of our clients, partners, and investors, whom we proudly call our <strong style="color:var(--cream);">believers</strong>.</p>
+          <p style="margin-top: 32px;"><a href="#contact" class="btn btn-gold">Let's connect</a></p>
+        </div>
       <div class="hero-stats" style="margin-top: 40px;">
-        <div class="stat" data-target="1590">
+        <div class="stat stagger-fade" data-target="1484">
           <div class="num" style="color:#4ecdc4;">0</div>
           <div class="label">Founded</div>
         </div>
-        <div class="stat" data-target="10" data-prefix="₹" data-suffix="L">
+        <div class="stat stagger-fade" data-target="10" data-prefix="₹" data-suffix="L">
           <div class="num" style="color:#f5a623;">₹0L</div>
           <div class="label">Starting capital</div>
         </div>
-        <div class="stat" data-target="400" data-suffix="+">
+        <div class="stat stagger-fade" data-target="400" data-suffix="+">
           <div class="num" style="color:#ff6b9d;">0+</div>
           <div class="label">Believers</div>
         </div>
-        <div class="stat" data-target="2" data-suffix="×">
+        <div class="stat stagger-fade" data-target="2" data-suffix="×">
           <div class="num" style="color:#a78bfa;">0×</div>
           <div class="label">Revenue growth</div>
         </div>
@@ -2165,6 +2183,7 @@
     entries.forEach(entry => {
       const items = entry.target.querySelectorAll('.tl-item');
       if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
         items.forEach((item, idx) => {
           setTimeout(() => {
             if (entry.isIntersecting) {
@@ -2173,6 +2192,7 @@
           }, idx * 350);
         });
       } else {
+        entry.target.classList.remove('visible');
         items.forEach(item => {
           item.classList.remove('visible');
         });
@@ -2432,6 +2452,8 @@
     startAutoPlay();
   }, 50);
 
+
+
   // Scroll animation for How it Works cards and content
   const scrollObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -2442,6 +2464,13 @@
       }
     });
   }, { threshold: 0.1 });
+
+  // 0. Observe About lead paragraphs and stats
+  document.querySelectorAll('#about .about-lead p').forEach(el => scrollObserver.observe(el));
+  document.querySelectorAll('#about .stat').forEach((el, index) => {
+    el.style.transitionDelay = `${index * 0.15 + 0.3}s`;
+    scrollObserver.observe(el);
+  });
 
   // 1. Observe the How it Works half-cards
   document.querySelectorAll('.how-half').forEach((el, index) => {
