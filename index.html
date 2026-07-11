@@ -992,13 +992,13 @@
     background-repeat: no-repeat;
     background-size: cover;
   }
-  /* Removed dark overlay so the white background is fully bright, but reduced brightness by 10% */
+  /* Re-adjusted overlay to balance background visibility and text readability */
   #about::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(255, 255, 255, 0.5); /* Reduced from 0.85 to make image more visible */
-    backdrop-filter: brightness(0.85);
+    background: rgba(255, 255, 255, 0.75); 
+    backdrop-filter: brightness(0.9);
   }
   #about .wrap {
     position: relative;
@@ -1049,10 +1049,21 @@
   #about .about-lead strong { color: #1a1a1a !important; }
   
   /* Why Choose Us Section */
-  /* Why Choose Us Section */
   #why-choose {
     position: relative;
     padding: 120px 0;
+    background-image: url('choose_bg_dark.png');
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  #why-choose::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 20, 25, 0.75); /* Deep dark overlay for readability */
+    z-index: 0;
   }
   #why-choose .wrap { position: relative; z-index: 1; }
   #why-choose .eyebrow { color: var(--gold); }
@@ -1073,8 +1084,8 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(255, 255, 255, 0.5); /* Reduced from 0.85 to make image more visible */
-    backdrop-filter: brightness(0.85);
+    background: rgba(255, 255, 255, 0.75); 
+    backdrop-filter: brightness(0.9);
     z-index: 0;
   }
   #how > .wrap { position: relative; z-index: 1; }
@@ -1249,14 +1260,14 @@
     transform: translateY(0);
   }
   #how-loans {
-    background: rgba(15, 15, 15, 0.75);
-    backdrop-filter: blur(12px);
+    background: linear-gradient(rgba(27, 23, 18, 0.55), rgba(27, 23, 18, 0.75)), url('new-for-loan.webp') no-repeat center center;
+    background-size: 100% 100%;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
   }
   #how-investments {
-    background: rgba(15, 15, 15, 0.75);
-    backdrop-filter: blur(12px);
+    background: linear-gradient(rgba(27, 23, 18, 0.55), rgba(27, 23, 18, 0.75)), url('new-for-investment.webp') no-repeat center center;
+    background-size: 100% 100%;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
   }
@@ -1275,10 +1286,18 @@
     text-shadow: 0 0 8px rgba(243, 236, 221, 0.3);
   }
   .steps{ display:grid; grid-template-columns:repeat(2,1fr); gap:32px 24px;}
-  .step{ border-top:1px solid var(--line-strong); padding-top:20px; }
-  .step .step-no{ font-family:'IBM Plex Mono', monospace; color:var(--gold); font-size:22px; font-weight: 600; }
-  .step h3{ font-family:'Fraunces',serif; font-style:italic; font-weight:700; font-size:19px; margin-top:14px; color:var(--cream); }
-  .step p{ margin-top:10px; font-size:14.5px; color:var(--cream-dim); font-weight: 500; }
+  .step:nth-child(1) { --step-color: #4ecdc4; } /* Teal */
+  .step:nth-child(2) { --step-color: #f5a623; } /* Orange */
+  .step:nth-child(3) { --step-color: #ff6b9d; } /* Pink */
+  .step:nth-child(4) { --step-color: #a78bfa; } /* Purple */
+
+  .step{ border-top:1px solid var(--line-strong); padding-top:20px; transition: transform 0.3s ease; cursor: default; }
+  .step:hover { transform: translateY(-4px); }
+  
+  .step .step-no{ font-family:'IBM Plex Mono', monospace; color:var(--step-color); font-size:22px; font-weight: 700; opacity: 0.9; }
+  .step h3{ font-family:'Fraunces',serif; font-style:italic; font-weight:700; font-size:21px; margin-top:14px; color:var(--step-color); transition: filter 0.3s ease, text-shadow 0.3s ease; }
+  .step:hover h3 { filter: brightness(1.2); text-shadow: 0 4px 12px rgba(255, 255, 255, 0.2); }
+  .step p{ margin-top:10px; font-size:16px; color:#ffffff; font-weight: 600; line-height: 1.5; }
 
   /* ---------- SECTORS ---------- */
   .sector-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:8px; }
