@@ -982,10 +982,105 @@
     }
   }
 
-  /* About Background Graph */
+  /* About Background Parallax */
   #about {
     position: relative;
     overflow: hidden;
+    background-image: url('about_bg.png');
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  /* Removed dark overlay so the white background is fully bright */
+  #about::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.85); /* Light overlay to ensure text is readable if bg is too complex, but user said 'white background' so maybe just 0.4 */
+  }
+  #about .wrap {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Light Theme Overrides for About Us Section */
+  #about h2 { 
+    color: #003366 !important; 
+    transition: transform 0.4s ease, text-shadow 0.4s ease;
+    cursor: default;
+  }
+  #about h2:hover {
+    transform: scale(1.02);
+    text-shadow: 0 4px 12px rgba(0, 119, 182, 0.2);
+  }
+  #about h2 em { color: #0077b6 !important; transition: color 0.4s ease; }
+  #about h2:hover em { color: #023e8a !important; }
+  
+  #about .eyebrow { color: #0077b6 !important; } /* Sky Blue */
+  #about .about-lead p { 
+    color: #4a4a4a !important; 
+    font-size: 18px !important; 
+    font-weight: 400 !important; 
+    font-family: 'Outfit', sans-serif !important; 
+    text-align: justify; /* Justify text as requested */
+    transition: color 0.3s ease;
+    cursor: default;
+    
+    /* Reveal animation */
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUpLine 0.8s forwards;
+  }
+  #about .about-lead p:nth-child(1) { animation-delay: 0.2s; }
+  #about .about-lead p:nth-child(2) { animation-delay: 0.6s; }
+
+  @keyframes fadeUpLine {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #about .about-lead p:hover {
+    color: #0077b6 !important; /* Sky blue hover effect */
+  }
+  #about .about-lead strong { color: #1a1a1a !important; }
+  
+  /* Dark glass background for stats to make bright colors visible */
+  #about .hero-stats {
+    background: rgba(15, 15, 15, 0.75);
+    padding: 24px 32px;
+    border-radius: 16px;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  }
+  #about .stat .label { color: #f0f0f0 !important; font-weight: 500; }
+  
+  #about .timeline { border-left: 1px solid rgba(0, 0, 0, 0.15) !important; }
+  #about .tl-item:nth-child(1) { --block-color: #0077b6; }
+  #about .tl-item:nth-child(2) { --block-color: #2a9d8f; }
+  #about .tl-item:nth-child(3) { --block-color: #e76f51; }
+  #about .tl-item:nth-child(4) { --block-color: #9d4edd; }
+
+  #about .tl-year { color: var(--block-color) !important; font-weight: 800; font-size: 18px; transition: transform 0.3s ease; }
+  #about .tl-title { 
+    color: var(--block-color) !important; 
+    font-weight: 700 !important; 
+    font-size: 24px !important; 
+    transition: transform 0.3s ease, filter 0.3s ease;
+    cursor: default;
+  }
+  #about .tl-text { color: var(--block-color) !important; font-weight: 600 !important; font-size: 17px !important; line-height: 1.6; }
+  
+  /* Hover effects for timeline titles */
+  #about .tl-item:hover .tl-title {
+    transform: translateX(8px);
+    filter: brightness(1.2);
+  }
+  #about .tl-item:hover .tl-year {
+    transform: translateX(4px);
   }
   .about-bg-graph {
     position: absolute;
@@ -1558,21 +1653,21 @@
         <p>Founded in 2016, our journey began with a simple vision—to build a company driven by quality, innovation, and long-term relationships. What started as a small design firm has grown into a diversified business with a strong presence in the construction industry.</p>
         <p>Our success has been built on the trust and confidence of our clients, partners, and investors, whom we proudly call our <strong style="color:var(--cream);">believers</strong>.</p>
       </div>
-      <div class="stat-row">
+      <div class="hero-stats" style="margin-top: 40px;">
+        <div class="stat" data-target="2016">
+          <div class="num" style="color:#4ecdc4;">0</div>
+          <div class="label">Founded</div>
+        </div>
         <div class="stat" data-target="10" data-prefix="₹" data-suffix="L">
-          <div class="num">₹0L</div>
+          <div class="num" style="color:#f5a623;">₹0L</div>
           <div class="label">Starting capital</div>
         </div>
         <div class="stat" data-target="400" data-suffix="+">
-          <div class="num">0+</div>
+          <div class="num" style="color:#ff6b9d;">0+</div>
           <div class="label">Believers</div>
         </div>
-        <div class="stat" data-target="2016">
-          <div class="num">0</div>
-          <div class="label">Founded</div>
-        </div>
         <div class="stat" data-target="2" data-suffix="×">
-          <div class="num">0×</div>
+          <div class="num" style="color:#a78bfa;">0×</div>
           <div class="label">Revenue growth</div>
         </div>
       </div>
