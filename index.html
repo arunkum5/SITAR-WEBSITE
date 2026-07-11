@@ -6,7 +6,7 @@
 <title>SITAR — Invest in Real Assets. Earn Every Month.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500;1,9..144,600&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500;1,9..144,600&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#0B0906;
@@ -18,8 +18,8 @@
     --cream:#F3ECDD;
     --cream-dim: rgba(243,236,221,0.62);
     --cream-faint: rgba(243,236,221,0.38);
-    --gold:#E6C37C;
-    --gold-dim:#A98A54;
+    --gold:#B8860B;
+    --gold-dim:#8A6508;
 
     --villas:#C1694A;
     --apartments:#6E86A6;
@@ -66,11 +66,12 @@
   }
 
   .eyebrow{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12px;
+    font-family:'Outfit', sans-serif;
+    font-size:16px;
+    font-weight:700;
     letter-spacing:0.16em;
     text-transform:uppercase;
-    color:var(--gold-dim);
+    color:var(--gold);
   }
 
   .wrap{
@@ -206,11 +207,11 @@
     height: 38px;
     padding: 0 14px;
     border-radius: 6px;
-    background: rgba(201, 160, 74, 0.12);
-    border: 1px solid rgba(201, 160, 74, 0.3);
+    background: var(--nav-bg, rgba(184, 134, 11, 0.12));
+    border: 1px solid var(--nav-border, rgba(184, 134, 11, 0.3));
     transition: color 0.3s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, height 0.3s ease, padding 0.3s ease;
     text-decoration: none;
-    color: var(--gold);
+    color: var(--nav-c, var(--gold));
     position: relative;
     z-index: 1;
     box-sizing: border-box;
@@ -221,9 +222,9 @@
   }
   .nav-links a:hover {
     color: var(--bg);
-    background: var(--gold);
-    border-color: var(--gold);
-    box-shadow: 0 4px 12px rgba(201, 160, 74, 0.3);
+    background: var(--nav-c, var(--gold));
+    border-color: var(--nav-c, var(--gold));
+    box-shadow: 0 4px 12px var(--nav-border, rgba(184, 134, 11, 0.3));
   }
 
   /* Dropdown Styles */
@@ -232,9 +233,9 @@
     display: inline-block;
   }
   .nav-dropdown-trigger {
-    background: rgba(201, 160, 74, 0.12);
-    border: 1px solid rgba(201, 160, 74, 0.3);
-    color: var(--gold);
+    background: var(--nav-bg, rgba(184, 134, 11, 0.12));
+    border: 1px solid var(--nav-border, rgba(184, 134, 11, 0.3));
+    color: var(--nav-c, var(--gold));
     font-family: inherit;
     font-size: 16px; /* reduced size to 16px */
     font-weight: 600;
@@ -259,9 +260,9 @@
   .nav-dropdown-trigger:hover,
   .nav-item-dropdown:hover .nav-dropdown-trigger {
     color: var(--bg);
-    background: var(--gold);
-    border-color: var(--gold);
-    box-shadow: 0 4px 12px rgba(201, 160, 74, 0.3);
+    background: var(--nav-c, var(--gold));
+    border-color: var(--nav-c, var(--gold));
+    box-shadow: 0 4px 12px var(--nav-border, rgba(184, 134, 11, 0.3));
   }
   .nav-dropdown-trigger .chevron {
     font-size: 10px;
@@ -296,16 +297,17 @@
   .nav-dropdown-menu a {
     display: block;
     padding: 10px 20px;
-    color: #ff6b9d; /* Pink from 400+ stat */
+    color: var(--sub-c, var(--cream-dim));
     font-size: 14px;
     font-weight: 600;
     white-space: nowrap;
-    transition: background 0.2s ease, color 0.2s ease;
+    transition: background 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
     text-align: left;
   }
   .nav-dropdown-menu a:hover {
-    background: var(--bg-panel-2);
-    color: #fff; /* White on hover for contrast */
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--sub-c, var(--gold));
+    padding-left: 24px;
   }
   .dropdown-divider {
     height: 1px;
@@ -313,12 +315,11 @@
     margin: 6px 0;
   }
   .nav-dropdown-menu a.highlight-link {
-    color: var(--gold);
-    font-weight: 500;
+    color: var(--sub-c, var(--gold));
+    font-weight: 600;
   }
   .nav-dropdown-menu a.highlight-link:hover {
-    background: var(--bg-panel-2);
-    color: #f0d190;
+    background: rgba(255, 255, 255, 0.05);
   }
 
   /* Responsive styles for Dropdowns */
@@ -1324,9 +1325,99 @@
     transform: translateY(0);
     transition-delay: 0.1s;
   }
+  /* ---------- PRELOADER ---------- */
+  body.loading { overflow: hidden; }
+  .preloader {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  .preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+  }
+  .preloader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 32px;
+    width: 100%;
+  }
+  .preloader-logo-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: preloaderFadeUp 0.8s ease forwards 0.4s;
+    /* Adjust margin to visually center if the logo image has whitespace */
+    margin-right: 15px;
+  }
+  .preloader-emblem {
+    height: 112px;
+    filter: brightness(1.35) contrast(1.15);
+    animation: emblemBlink 1.5s infinite ease-in-out;
+  }
+  @keyframes emblemBlink {
+    0%, 100% {
+      opacity: 1;
+      filter: brightness(1.5) contrast(1.2) drop-shadow(0 0 15px rgba(201, 160, 74, 0.6));
+    }
+    50% {
+      opacity: 0.4;
+      filter: brightness(1) contrast(1) drop-shadow(0 0 2px rgba(201, 160, 74, 0.1));
+    }
+  }
+  .preloader-text-img {
+    height: 120px;
+    filter: brightness(1.35) contrast(1.15);
+  }
+  .preloader-tagline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 24px;
+    color: var(--gold);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: preloaderFadeUp 0.8s ease forwards 1.2s;
+  }
+  .preloader-counter {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 16px;
+    letter-spacing: 0.1em;
+    color: var(--cream-dim);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: preloaderFadeUp 0.8s ease forwards 1.2s;
+  }
+  @keyframes preloaderFadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 </style>
 </head>
-<body>
+<body class="loading">
+
+<div class="preloader" id="sitePreloader">
+  <div class="preloader-content">
+    <div class="preloader-logo-wrapper">
+      <img src="logo.svg" alt="SITAR Emblem" class="preloader-emblem">
+      <img src="new-header-text.svg" alt="SITAR" class="preloader-text-img">
+    </div>
+    <div class="preloader-tagline">We believe success is best achieved together.</div>
+    <div class="preloader-counter" id="preloaderCounter">Trust... 0%</div>
+  </div>
+</div>
 
 
 
@@ -1338,38 +1429,38 @@
     </a>
     <div class="nav-links">
       <div class="nav-active-pill" id="navActivePill"></div>
-      <a href="#about" id="navLinkAbout" class="active">About Us</a>
+      <a href="#about" id="navLinkAbout" class="active" style="--nav-c: var(--gold); --nav-bg: rgba(184, 134, 11, 0.12); --nav-border: rgba(184, 134, 11, 0.3);">About Us</a>
       
       <div class="nav-item-dropdown" id="navDropdownServices">
-        <button class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false">
+        <button class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" style="--nav-c: var(--apartments); --nav-bg: rgba(110, 134, 166, 0.12); --nav-border: rgba(110, 134, 166, 0.3);">
           Services Offered <span class="chevron">▼</span>
         </button>
         <div class="nav-dropdown-menu">
-          <a href="services.html#loan-property">Property Loan</a>
-          <a href="services.html#loan-construction">Construction Loan</a>
-          <a href="services.html#loan-gold">Gold Loan</a>
-          <a href="services.html#loan-personal">Personal Loan</a>
-          <a href="services.html#loan-business">Business Loan</a>
+          <a href="services.html#loan-property" style="--sub-c: var(--apartments);">Property Loan</a>
+          <a href="services.html#loan-construction" style="--sub-c: var(--layouts);">Construction Loan</a>
+          <a href="services.html#loan-gold" style="--sub-c: var(--gold);">Gold Loan</a>
+          <a href="services.html#loan-personal" style="--sub-c: var(--resorts);">Personal Loan</a>
+          <a href="services.html#loan-business" style="--sub-c: var(--commercial);">Business Loan</a>
         </div>
       </div>
       
       <div class="nav-item-dropdown" id="navDropdownInvest">
-        <button class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false">
+        <button class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" style="--nav-c: var(--layouts); --nav-bg: rgba(201, 162, 39, 0.12); --nav-border: rgba(201, 162, 39, 0.3);">
           Invest <span class="chevron">▼</span>
         </button>
         <div class="nav-dropdown-menu">
-          <a href="invest.html#sector-villas">Villa Project</a>
-          <a href="invest.html#sector-apartments">Apartment Project</a>
-          <a href="invest.html#sector-resorts">Hotels &amp; Resorts</a>
-          <a href="invest.html#sector-commercial">Commercial Complex</a>
-          <a href="invest.html#sector-layouts">Layout Development</a>
+          <a href="invest.html#sector-villas" style="--sub-c: var(--villas);">Villa Project</a>
+          <a href="invest.html#sector-apartments" style="--sub-c: var(--apartments);">Apartment Project</a>
+          <a href="invest.html#sector-resorts" style="--sub-c: var(--resorts);">Hotels &amp; Resorts</a>
+          <a href="invest.html#sector-commercial" style="--sub-c: var(--commercial);">Commercial Complex</a>
+          <a href="invest.html#sector-layouts" style="--sub-c: var(--layouts);">Layout Development</a>
           <div class="dropdown-divider"></div>
-          <a href="invest.html#plans" class="highlight-link">Investment Plans</a>
+          <a href="invest.html#plans" class="highlight-link" style="--sub-c: var(--gold);">Investment Plans</a>
         </div>
       </div>
       
-      <a href="#how">How it works</a>
-      <a href="#contact">Contact</a>
+      <a href="#how" style="--nav-c: var(--commercial); --nav-bg: rgba(163, 112, 161, 0.12); --nav-border: rgba(163, 112, 161, 0.3);">How it works</a>
+      <a href="#contact" style="--nav-c: var(--resorts); --nav-bg: rgba(62, 142, 133, 0.12); --nav-border: rgba(62, 142, 133, 0.3);">Contact</a>
     </div>
     <div class="nav-cta">
       <button class="btn btn-login">Login</button>
@@ -2011,6 +2102,11 @@
       const navLinksRect = navLinks.getBoundingClientRect();
       const activeRect = activeEl.getBoundingClientRect();
       
+      // Set color to match active element
+      const activeColor = activeEl.style.getPropertyValue('--nav-c') || 'var(--gold)';
+      pill.style.background = activeColor;
+      pill.style.borderColor = activeColor;
+      
       // Adjust size and position based on absolute client rects
       pill.style.width = activeRect.width + 'px';
       pill.style.height = activeRect.height + 'px';
@@ -2144,6 +2240,30 @@
     el.style.transitionDelay = `${(row * 0.1) + (col * 0.15)}s`;
     scrollObserver.observe(el);
   });
+  // Preloader Logic (5 seconds with trust counter)
+  const preloader = document.getElementById('sitePreloader');
+  const counterEl = document.getElementById('preloaderCounter');
+  if (preloader) {
+    let count = 0;
+    // The counter fades in at 1.2s, so we wait 1.2s then count to 100 over ~3.5s
+    setTimeout(() => {
+      const interval = setInterval(() => {
+        count += Math.floor(Math.random() * 2) + 1; // random increment for realism
+        if (count > 100) count = 100;
+        if (counterEl) {
+          counterEl.innerText = `Trust... ${count}%`;
+        }
+        if (count >= 100) {
+          clearInterval(interval);
+        }
+      }, 35); // 35ms tick
+    }, 1200);
+
+    setTimeout(() => {
+      preloader.classList.add('fade-out');
+      document.body.classList.remove('loading');
+    }, 5000);
+  }
 </script>
 
 </body>
