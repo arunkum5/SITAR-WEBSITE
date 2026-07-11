@@ -340,6 +340,53 @@
     border-color:#f0d190;
     transform:translateY(-1px);
   }
+  .btn-login {
+    background: var(--cream);
+    color: #7d5412;
+    border-color: var(--cream);
+    font-weight: 700;
+    box-shadow: 0 4px 14px rgba(243, 236, 221, 0.12);
+    transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                box-shadow 0.25s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                background 0.25s ease, height 0.25s ease, padding 0.25s ease, font-size 0.25s ease;
+    height: 32px;
+    padding: 0 12px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+  .btn-login:hover {
+    color: #7d5412;
+    background: #ffffff !important;
+    border-color: #ffffff !important;
+    transform: translateY(-1.5px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(243, 236, 221, 0.25);
+  }
+  .btn-signup {
+    background: var(--cream);
+    color: var(--ink);
+    border-color: var(--cream);
+    font-weight: 700;
+    box-shadow: 0 4px 14px rgba(243, 236, 221, 0.12);
+    transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                box-shadow 0.25s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                background 0.25s ease, height 0.25s ease, padding 0.25s ease, font-size 0.25s ease;
+    height: 32px;
+    padding: 0 12px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+  .btn-signup:hover {
+    transform: translateY(-1.5px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(243, 236, 221, 0.25);
+    background: #ffffff;
+    border-color: #ffffff;
+  }
+  header.scrolled .btn-login,
+  header.scrolled .btn-signup {
+    height: 26px;
+    padding: 0 8px;
+    font-size: 12px;
+  }
 
   .menu-toggle{ display:none; background:none; border:none; color:var(--cream); font-size:22px; cursor:pointer; }
 
@@ -584,7 +631,7 @@
       <img class="logo-text" src="new-header-text.svg" alt="SITAR">
     </a>
     <div class="nav-links">
-      <a href="index.html#about">About Us</a>
+      <a href="index.html">Home</a>
       
       <div class="nav-item-dropdown active">
         <button class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false">
@@ -618,8 +665,8 @@
       <a href="index.html#contact">Contact</a>
     </div>
     <div class="nav-cta">
-      <button class="btn btn-ghost">Log in</button>
-      <button class="btn btn-gold">Sign up</button>
+      <button class="btn btn-login">Login</button>
+      <button class="btn btn-signup">Signup</button>
       <button class="menu-toggle" aria-label="Menu">☰</button>
     </div>
   </nav>
