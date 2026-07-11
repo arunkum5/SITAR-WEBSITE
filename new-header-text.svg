@@ -26,8 +26,8 @@
         50% { opacity: 1; }
       }
       @keyframes wealthPulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.35); }
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.2; }
       }
       .dot {
         animation: wealthPulse 4s infinite ease-in-out;

@@ -928,32 +928,6 @@
     font-weight: 700 !important;
     text-shadow: 0 1.5px 5px rgba(0, 0, 0, 0.95), 0 0px 2px rgba(0, 0, 0, 0.7);
   }
-  .hero-graph svg text.desc-val {
-    fill: #ffffff !important; /* make description values pure white */
-    font-size: 11px !important;
-  }
-
-  /* Drawing Path Animation (Slowed Down to 3.5s) */
-  .hero-graph .hgraph-path {
-    stroke-dasharray: 600;
-    stroke-dashoffset: 600;
-    transition: stroke-dashoffset 3.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-  }
-  .hero-graph.animate-in .hgraph-path {
-    stroke-dashoffset: 0;
-  }
-
-  /* Area Fill Animation */
-  .hero-graph .hgraph-fill {
-    opacity: 0;
-    transition: opacity 2s ease 1s;
-  }
-  .hero-graph.animate-in .hgraph-fill {
-    opacity: 1;
-  }
-
-  /* Milestone Nodes Animation */
-  .hero-graph .hgraph-node {
     opacity: 0;
     transform: scale(0);
     transform-origin: var(--tx) var(--ty);
@@ -1516,53 +1490,7 @@
       </div>
 
       <!-- Growth Graph: right panel -->
-      <div class="hero-graph" id="heroGraph">
-        <svg viewBox="0 0 500 320" preserveAspectRatio="xMidYMid meet" class="hero-graph-svg">
-          <defs>
-            <filter id="hglow" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="5" result="blur" />
-              <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-            </filter>
-            <linearGradient id="hlineGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-              <stop offset="0%"   stop-color="#4ecdc4" stop-opacity="0.7" />
-              <stop offset="40%"  stop-color="#f5a623" stop-opacity="0.9" />
-              <stop offset="100%" stop-color="#a78bfa" stop-opacity="1" />
-            </linearGradient>
-            <linearGradient id="hfillGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%"   stop-color="#a78bfa" stop-opacity="0.18" />
-              <stop offset="100%" stop-color="#4ecdc4" stop-opacity="0" />
-            </linearGradient>
-          </defs>
 
-          <path class="hgraph-fill" d="M 40 275 L 175 185 L 300 200 L 455 45 L 455 320 L 40 320 Z" fill="url(#hfillGrad)" />
-          <path class="hgraph-path" d="M 40 275 L 175 185 L 300 200 L 455 45"
-            fill="none" stroke="url(#hlineGrad)" stroke-width="3.5"
-            stroke-linecap="round" stroke-linejoin="round" filter="url(#hglow)" />
-          
-          <!-- Animated Nodes -->
-          <g class="hgraph-node" style="--tx: 40px; --ty: 275px;">
-            <circle cx="40"  cy="275" r="6" fill="#12100D" stroke="#4ecdc4" stroke-width="3" />
-            <text x="40"  y="298" text-anchor="middle" font-size="12" fill="#4ecdc4" font-family="IBM Plex Mono,monospace" font-weight="700">2016</text>
-            <text x="40"  y="260" text-anchor="middle" class="desc-val" font-family="IBM Plex Mono,monospace">&#8377;10L</text>
-          </g>
-          <g class="hgraph-node" style="--tx: 175px; --ty: 185px;">
-            <circle cx="175" cy="185" r="6" fill="#12100D" stroke="#f5a623" stroke-width="3" />
-            <text x="175" y="208" text-anchor="middle" font-size="12" fill="#f5a623" font-family="IBM Plex Mono,monospace" font-weight="700">2017&#8211;19</text>
-            <text x="175" y="170" text-anchor="middle" class="desc-val" font-family="IBM Plex Mono,monospace">CONSTRUCTION</text>
-          </g>
-          <g class="hgraph-node" style="--tx: 300px; --ty: 200px;">
-            <circle cx="300" cy="200" r="6" fill="#12100D" stroke="#ff6b9d" stroke-width="3" />
-            <text x="300" y="223" text-anchor="middle" font-size="12" fill="#ff6b9d" font-family="IBM Plex Mono,monospace" font-weight="700">2020</text>
-            <text x="300" y="185" text-anchor="middle" class="desc-val" font-family="IBM Plex Mono,monospace">ADAPTED</text>
-          </g>
-          <g class="hgraph-node" style="--tx: 455px; --ty: 45px;">
-            <circle cx="455" cy="45" r="9" fill="#a78bfa" stroke="#12100D" stroke-width="2" filter="url(#hglow)" />
-            <text x="455" y="72"  text-anchor="middle" font-size="12" fill="#a78bfa" font-family="IBM Plex Mono,monospace" font-weight="700">2021+</text>
-            <text x="455" y="30"  text-anchor="middle" class="desc-val" font-family="IBM Plex Mono,monospace">2&#xD7; REVENUE</text>
-          </g>
-        </svg>
-        <p class="hero-graph-caption">Growth Journey &#xB7; 2016 &#x2192; Today</p>
-      </div>
 
     </div>
     
