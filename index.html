@@ -81,6 +81,7 @@
   }
 
   section{ padding:96px 0; border-bottom:1px solid var(--line); }
+  footer{ padding:20px 0 34px; background: #1a120c; border-top:1px solid var(--line); }
   section:last-of-type{ border-bottom:none; }
 
   h1,h2,h3{ margin:0; }
@@ -143,7 +144,13 @@
     height: 52px;
     width: 52px;
     object-fit: contain;
+    clip-path: circle(0% at 50% 50%);
+    animation: logoPulseWipe 8s ease-in-out infinite;
+    filter: brightness(1.35) contrast(1.15);
+    transition: transform 0.4s ease;
+    transform-origin: center;
   }
+  .logo:hover .foot-logo { transform: rotate(180deg) scale(1.1); }
   .foot-logo-text{
     height: 45px;
     width: auto;
@@ -1004,27 +1011,37 @@
     position: relative;
     z-index: 1;
   }
-
-  /* Light Theme Overrides for About Us Section */
+  
+  /* Make the left and right sides of About Us into distinct dark boxes */
+  #about .about-grid > div {
+    background: rgba(15, 15, 20, 0.35); /* Light transparent dark glass */
+    padding: 48px;
+    border-radius: 20px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+  }
+  
+  /* Text Color Overrides for Dark Boxes */
   #about h2 { 
-    color: #003366 !important; 
+    color: var(--cream) !important; 
     transition: transform 0.4s ease, text-shadow 0.4s ease;
     cursor: default;
   }
   #about h2:hover {
     transform: scale(1.02);
-    text-shadow: 0 4px 12px rgba(0, 119, 182, 0.2);
+    text-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
   }
-  #about h2 em { color: #0077b6 !important; transition: color 0.4s ease; }
-  #about h2:hover em { color: #023e8a !important; }
+  #about h2 em { color: var(--gold) !important; transition: color 0.4s ease; }
+  #about h2:hover em { color: #f0d190 !important; }
   
-  #about .eyebrow { color: #0077b6 !important; } /* Sky Blue */
+  #about .eyebrow { color: var(--gold) !important; }
   #about .about-lead p { 
-    color: #4a4a4a !important; 
+    color: var(--cream-dim) !important; 
     font-size: 18px !important; 
     font-weight: 400 !important; 
     font-family: 'Outfit', sans-serif !important; 
-    text-align: justify; /* Justify text as requested */
+    text-align: justify;
     transition: color 0.3s ease;
     cursor: default;
     
@@ -1044,9 +1061,9 @@
   }
 
   #about .about-lead p:hover {
-    color: #0077b6 !important; /* Sky blue hover effect */
+    color: var(--cream) !important; 
   }
-  #about .about-lead strong { color: #1a1a1a !important; }
+  #about .about-lead strong { color: #ffffff !important; }
   
   /* Why Choose Us Section */
   #why-choose {
@@ -1207,8 +1224,9 @@
     margin-top: 24px; 
   }
   .why-item {
-    background: #181613;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
     padding: 34px 28px;
     border-radius: 12px;
     position: relative;
@@ -1219,8 +1237,8 @@
   .why-item:hover {
     transform: translateY(-4px);
     border-color: rgba(201, 160, 74, 0.4);
-    background: #1c1a17;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   }
   .why-item .idx {
     font-family: 'IBM Plex Mono', monospace;
@@ -1363,27 +1381,53 @@
     background: linear-gradient(180deg, var(--bg-panel), var(--bg));
   }
   .cta-band h2{ font-size:clamp(28px,4vw,46px); }
-  .cta-band p{ margin-top:16px; color:var(--cream-dim); max-width:480px; margin-left:auto; margin-right:auto; }
+  .cta-band p{ margin-top:16px; color:var(--cream-dim); max-width:640px; margin-left:auto; margin-right:auto; }
   .cta-band .hero-cta{ justify-content:center; margin-top:34px; }
 
-  /* ---------- FOOTER ---------- */
-  footer{ padding:56px 0 34px; }
-  .foot-top{ display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap; }
-  .foot-brand .logo{ display: inline-flex; }
-  .foot-brand p{ margin-top:14px; color:var(--cream-faint); font-size:13.5px; max-width:280px; }
+  .foot-top{ display:flex; flex-direction: row; justify-content: space-between; align-items: center; gap:48px; flex-wrap:wrap; }
+  .foot-brand .logo{ display: inline-flex; justify-content: flex-start; }
+  .foot-brand p{ margin-top:14px; color:var(--apartments); font-size:13.5px; max-width:320px; }
   .foot-links{ display:flex; gap:64px; flex-wrap:wrap; }
   .foot-col h4{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--cream-faint); margin-bottom:16px; }
   .foot-col a{ display:block; font-size:14px; color:var(--cream-dim); margin-bottom:11px; }
   .foot-col a:hover{ color:var(--gold); }
   .foot-bottom{
-    margin-top:56px; padding-top:24px; border-top:1px solid var(--line);
-    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
-    font-size:12.5px; color:var(--cream-faint);
+    padding-top:12px; border-top:1px solid var(--line);
+    display:flex; flex-direction: row; flex-wrap: wrap; justify-content:center; align-items:center; gap:24px;
+    font-size:12.5px; color:var(--commercial);
   }
+  .foot-bottom a { color: var(--resorts) !important; text-decoration: none; }
   .risk-note{
-    margin-top:22px; padding-top:22px; border-top:1px solid var(--line);
-    font-size:12px; color:var(--cream-faint); line-height:1.7; max-width:900px;
+    margin-top: 8px; margin-bottom: 8px;
+    font-size:12px; color:var(--villas); line-height:1.7; max-width:100%; text-align: center;
   }
+  .foot-contact{ display:flex; flex-direction: column; gap:10px; align-items: flex-end; }
+  .contact-item{ display:flex; align-items: center; gap:8px; color:var(--gold); font-size:13px; flex-wrap: wrap; justify-content: flex-end; }
+  .contact-item span{ color: #4B8EE5; }
+  .contact-link { color: #4B8EE5; text-decoration:none; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 6px; margin-left: 8px; transform-origin: right center; }
+  .contact-link:hover { color: #FFFFFF; font-weight: 600; transform: scale(1.04); }
+  .contact-item svg { flex-shrink: 0; }
+  .foot-contact > .contact-item:first-child svg { color: #EA4335; }
+
+  /* Scroll Indicator */
+  .scroll-progress-container {
+    position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: transparent; z-index: 1000;
+  }
+  .scroll-progress-bar {
+    height: 100%; background: var(--apartments); width: 0%; transition: width 0.1s;
+  }
+  
+  /* Scroll To Top */
+  .scroll-to-top {
+    position: fixed; bottom: 32px; right: 32px; width: 36px; height: 36px; border-radius: 50%;
+    background: var(--bg-panel-2); border: 1px solid var(--line-strong); color: var(--apartments);
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s ease;
+    z-index: 99; box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+  .scroll-to-top svg { width: 16px; height: 16px; }
+  .scroll-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+  .scroll-to-top:hover { background: var(--apartments); color: var(--bg); border-color: var(--apartments); }
 
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 900px){
@@ -1519,20 +1563,45 @@
     font-family: 'Fraunces', serif;
     font-style: italic;
     font-size: 24px;
-    color: var(--gold);
+    opacity: 0;
+    transform: translateY(20px);
+    background: linear-gradient(90deg, #E6C37C, #C1694A, #A370A1, #6E86A6, #3E8E85, #E6C37C);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 16px rgba(230, 195, 124, 0.4);
+    animation: preloaderFadeUp 0.8s ease forwards 1.2s, preloaderGlow 3s linear infinite 1.2s;
+  }
+  @keyframes preloaderGlow {
+    to { background-position: 200% center; }
+  }
+  .preloader-progress-container {
+    width: 200px;
+    margin: 20px auto 0;
     opacity: 0;
     transform: translateY(20px);
     animation: preloaderFadeUp 0.8s ease forwards 1.2s;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  .preloader-bar-bg {
+    width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;
+  }
+  .preloader-bar-fill {
+    width: 0%; height: 100%;
+    background: linear-gradient(90deg, #E6C37C, #C1694A, #A370A1, #6E86A6, #3E8E85, #E6C37C);
+    background-size: 200% auto;
+    animation: preloaderGlow 3s linear infinite;
+    transition: width 0.1s ease;
   }
   .preloader-counter {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 16px;
-    letter-spacing: 0.1em;
-    color: var(--cream-dim);
-    opacity: 0;
-    transform: translateY(20px);
-    animation: preloaderFadeUp 0.8s ease forwards 1.2s;
+    font-family: 'IBM Plex Mono', monospace; font-size: 14px; letter-spacing: 0.1em;
+    background: linear-gradient(90deg, #E6C37C, #C1694A, #A370A1, #6E86A6, #3E8E85, #E6C37C);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: preloaderGlow 3s linear infinite;
   }
+  .wipe-logo {  }
   @keyframes preloaderFadeUp {
     to {
       opacity: 1;
@@ -1543,6 +1612,11 @@
 </head>
 <body class="loading">
 
+<div class="scroll-progress-container"><div class="scroll-progress-bar" id="scrollBar"></div></div>
+<button class="scroll-to-top" id="scrollTopBtn" aria-label="Scroll to top">
+  <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+
 <div class="preloader" id="sitePreloader">
   <div class="preloader-content">
     <div class="preloader-logo-wrapper">
@@ -1550,7 +1624,12 @@
       <img src="new-header-text.svg" alt="SITAR" class="preloader-text-img">
     </div>
     <div class="preloader-tagline">We believe success is best achieved together.</div>
-    <div class="preloader-counter" id="preloaderCounter">Trust... 0%</div>
+    <div class="preloader-progress-container">
+      <div class="preloader-bar-bg">
+        <div class="preloader-bar-fill" id="preloaderBar"></div>
+      </div>
+      <div class="preloader-counter" id="preloaderCounter">0%</div>
+    </div>
   </div>
 </div>
 
@@ -1859,32 +1938,22 @@
           <img class="foot-logo" src="nlogo.svg" alt="SITAR Emblem">
           <img class="foot-logo-text" src="new-header-text.svg" alt="SITAR">
         </a>
-        <p>Your trusted investment partner. Guaranteed monthly returns on real assets.</p>
+        <p>Your trusted investment partner.<br>Guaranteed monthly returns on real assets.</p>
       </div>
-      <div class="foot-links">
-        <div class="foot-col">
-          <h4>Invest</h4>
-          <a href="invest.html#sector-villas">Villa Project</a>
-          <a href="invest.html#sector-apartments">Apartment Project</a>
-          <a href="invest.html#sector-resorts">Hotels &amp; Resorts</a>
-          <a href="invest.html#sector-commercial">Commercial Complex</a>
-          <a href="invest.html#sector-layouts">Layout Development</a>
-          <a href="invest.html#plans">Plans</a>
-        </div>
-        <div class="foot-col">
-          <h4>Borrow</h4>
-          <a href="services.html#loan-property">Property Loan</a>
-          <a href="services.html#loan-construction">Construction Loan</a>
-          <a href="services.html#loan-gold">Gold Loan</a>
-          <a href="services.html#loan-personal">Personal Loan</a>
-          <a href="services.html#loan-business">Business Loan</a>
-        </div>
-        <div class="foot-col">
-          <h4>Company</h4>
-          <a href="#about">About us</a>
-          <a href="#contact">Contact</a>
-          <a href="#">Privacy policy</a>
-          <a href="#">Terms &amp; conditions</a>
+      <div class="foot-contact">
+          <div class="contact-item">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span>Sitar Wealth, Bangalore - 56001</span>
+          </div>
+          <div class="contact-item">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            <a href="tel:+918660108612" class="contact-link" style="margin-left: 0;">+91 8660108612</a>
+          </div>
+          <div class="contact-item">
+            <a href="mailto:support@sitarwealth.in" class="contact-link"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg> support@sitarwealth.in</a>
+            <a href="mailto:invest@sitarwealth.in" class="contact-link"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg> invest@sitarwealth.in</a>
+            <a href="mailto:loan@sitarwealth.in" class="contact-link"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg> loan@sitarwealth.in</a>
+          </div>
         </div>
       </div>
     </div>
@@ -1895,11 +1964,39 @@
 
     <div class="foot-bottom">
       <span>© 2026 SITAR. All rights reserved.</span>
+      <div style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;">
+        <a href="policies.html#privacy-policy" style="color: var(--cream-dim); text-decoration: none;">Privacy Policy</a>
+        <a href="policies.html#terms-conditions" style="color: var(--cream-dim); text-decoration: none;">Terms &amp; Conditions</a>
+        <a href="policies.html#refund-policy" style="color: var(--cream-dim); text-decoration: none;">Refund Policy</a>
+        <a href="policies.html#lock-in-withdrawal" style="color: var(--cream-dim); text-decoration: none;">Lock-in &amp; Withdrawal Policy</a>
+        <a href="policies.html#risk-disclosure" style="color: var(--cream-dim); text-decoration: none;">Risk Disclosure</a>
+      </div>
     </div>
   </div>
 </footer>
 
 <script>
+  // Scroll Indicator & Scroll To Top
+  const scrollBar = document.getElementById('scrollBar');
+  const scrollTopBtn = document.getElementById('scrollTopBtn');
+  
+  window.addEventListener('scroll', () => {
+    const scrollPx = document.documentElement.scrollTop;
+    const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrollLen = (scrollPx / winHeightPx) * 100;
+    if (scrollBar) scrollBar.style.width = scrollLen + '%';
+    
+    if (scrollPx > 300) {
+      scrollTopBtn.classList.add('visible');
+    } else {
+      scrollTopBtn.classList.remove('visible');
+    }
+  });
+
+  scrollTopBtn?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
   // --- Word-by-Word Animation for Hero Subtitle ---
   const heroSub = document.querySelector('.hero-sub');
   if (heroSub) {
@@ -2334,6 +2431,7 @@
   // Preloader Logic (5 seconds with trust counter)
   const preloader = document.getElementById('sitePreloader');
   const counterEl = document.getElementById('preloaderCounter');
+  const barEl = document.getElementById('preloaderBar');
   if (preloader) {
     let count = 0;
     // The counter fades in at 1.2s, so we wait 1.2s then count to 100 over ~3.5s
@@ -2342,7 +2440,10 @@
         count += Math.floor(Math.random() * 2) + 1; // random increment for realism
         if (count > 100) count = 100;
         if (counterEl) {
-          counterEl.innerText = `Trust... ${count}%`;
+          counterEl.innerText = `${count}%`;
+        }
+        if (barEl) {
+          barEl.style.width = `${count}%`;
         }
         if (count >= 100) {
           clearInterval(interval);
