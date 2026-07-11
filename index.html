@@ -992,12 +992,13 @@
     background-repeat: no-repeat;
     background-size: cover;
   }
-  /* Removed dark overlay so the white background is fully bright */
+  /* Removed dark overlay so the white background is fully bright, but reduced brightness by 10% */
   #about::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(255, 255, 255, 0.85); /* Light overlay to ensure text is readable if bg is too complex, but user said 'white background' so maybe just 0.4 */
+    background: rgba(255, 255, 255, 0.85); 
+    backdrop-filter: brightness(0.9);
   }
   #about .wrap {
     position: relative;
@@ -1046,6 +1047,40 @@
     color: #0077b6 !important; /* Sky blue hover effect */
   }
   #about .about-lead strong { color: #1a1a1a !important; }
+  
+  /* Why Choose Us Section */
+  /* Why Choose Us Section */
+  #why-choose {
+    position: relative;
+    padding: 120px 0;
+  }
+  #why-choose .wrap { position: relative; z-index: 1; }
+  #why-choose .eyebrow { color: var(--gold); }
+  #why-choose .why-item p { color: var(--cream); font-weight: 400; }
+  #why-choose .why-item .idx { color: var(--gold-dim); font-weight: 400; opacity: 0.7; }
+  
+  /* How It Works Section */
+  #how {
+    position: relative;
+    padding: 120px 0 60px 0;
+    background-image: url('about_bg.png');
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  #how::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.85); 
+    backdrop-filter: brightness(0.9);
+    z-index: 0;
+  }
+  #how > .wrap { position: relative; z-index: 1; }
+  #how h2 { color: #003366 !important; }
+  #how h2 em { color: #0077b6 !important; }
+  #how .eyebrow { color: #0077b6 !important; }
   
   /* Dark glass background for stats to make bright colors visible */
   #about .hero-stats {
@@ -1214,12 +1249,16 @@
     transform: translateY(0);
   }
   #how-loans {
-    background: linear-gradient(rgba(27, 23, 18, 0.55), rgba(27, 23, 18, 0.75)), url('new-for-loan.webp') no-repeat center center;
-    background-size: 100% 100%;
+    background: rgba(15, 15, 15, 0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
   }
   #how-investments {
-    background: linear-gradient(rgba(27, 23, 18, 0.55), rgba(27, 23, 18, 0.75)), url('new-for-investment.webp') no-repeat center center;
-    background-size: 100% 100%;
+    background: rgba(15, 15, 15, 0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
   }
   .stagger-fade {
     opacity: 0;
@@ -1696,8 +1735,10 @@
       </div>
     </div>
   </div>
+</section>
 
-  <div class="wrap" style="margin-top:88px;">
+<section id="why-choose">
+  <div class="wrap">
     <span class="eyebrow">Why choose us</span>
     <div class="why-list">
       <div class="why-item"><div class="idx">01</div><p>Nearly a decade of business experience</p></div>
