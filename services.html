@@ -467,10 +467,9 @@
     inset: 0;
     z-index: 0;
     background-size: cover;
-    background-position: center;
+    background-position: center 73%;
     background-repeat: no-repeat;
-    background-image: url('good-background-image.svg');
-    animation: heroActiveZoom 20s infinite linear alternate;
+    background-image: url('np.webp');
     filter: brightness(0.65) contrast(1.05);
   }
   .hero-bg::after {
@@ -596,7 +595,7 @@
 
   /* ---------- LOANS ---------- */
   #loans {
-    background: linear-gradient(rgba(17, 19, 21, 0.9), rgba(17, 19, 21, 0.9)), url('loan.png') top center / 115% auto no-repeat fixed;
+    background: linear-gradient(rgba(17, 19, 21, 0.9), rgba(17, 19, 21, 0.9)), url('loan.webp') top center / 115% auto no-repeat fixed;
     background-color: #111315; /* Fallback color for empty spaces */
     color: var(--cream);
     padding-bottom: 80px;
@@ -691,16 +690,16 @@
 
   /* ---------- GALLERY ---------- */
   .image-gallery {
-    padding: 60px 0;
-    background: #ffffff;
+    padding: 50px 0;
+    background: linear-gradient(180deg, #111315 0%, #181a1d 100%);
     overflow: hidden;
     position: relative;
-    border-top: 1px solid #eaeaea;
-    border-bottom: 1px solid #eaeaea;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
   .gallery-track {
     display: flex;
-    gap: 30px;
+    gap: 24px;
     width: max-content;
     animation: gallery-scroll 30s linear infinite;
   }
@@ -708,12 +707,17 @@
     animation-play-state: paused;
   }
   .gallery-item {
-    height: 300px;
-    width: 450px;
+    height: 200px;
+    width: 300px;
     object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
+  }
+  .gallery-item:hover {
+    transform: scale(1.05) translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
   }
   @keyframes gallery-scroll {
     from { transform: translateX(0); }
@@ -722,7 +726,7 @@
 
   /* ---------- CONTACT FORM ---------- */
   .contact-section {
-    background: linear-gradient(rgba(17, 19, 21, 0.9), rgba(17, 19, 21, 0.9)), url('loan.png') bottom center / 115% auto no-repeat fixed;
+    background: linear-gradient(rgba(17, 19, 21, 0.9), rgba(17, 19, 21, 0.9)), url('loan.webp') bottom center / 115% auto no-repeat fixed;
     background-color: #111315;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
@@ -1100,18 +1104,18 @@
 
 <section id="gallery" class="image-gallery">
   <div class="gallery-track">
-    <img src="gallery_loan_1.jpg" alt="Gallery Image 1" class="gallery-item">
-    <img src="gallery_loan_2.jpg" alt="Gallery Image 2" class="gallery-item">
-    <img src="gallery_loan_3.jpg" alt="Gallery Image 3" class="gallery-item">
-    <img src="gallery_loan_1.jpg" alt="Gallery Image 1" class="gallery-item">
-    <img src="gallery_loan_2.jpg" alt="Gallery Image 2" class="gallery-item">
-    <img src="gallery_loan_3.jpg" alt="Gallery Image 3" class="gallery-item">
-    <img src="gallery_loan_1.jpg" alt="Gallery Image 1" class="gallery-item">
-    <img src="gallery_loan_2.jpg" alt="Gallery Image 2" class="gallery-item">
-    <img src="gallery_loan_3.jpg" alt="Gallery Image 3" class="gallery-item">
-    <img src="gallery_loan_1.jpg" alt="Gallery Image 1" class="gallery-item">
-    <img src="gallery_loan_2.jpg" alt="Gallery Image 2" class="gallery-item">
-    <img src="gallery_loan_3.jpg" alt="Gallery Image 3" class="gallery-item">
+    <img src="gallery_loan_1.webp" alt="Gallery Image 1" class="gallery-item">
+    <img src="gallery_loan_2.webp" alt="Gallery Image 2" class="gallery-item">
+    <img src="gallery_loan_3.webp" alt="Gallery Image 3" class="gallery-item">
+    <img src="gallery_loan_1.webp" alt="Gallery Image 1" class="gallery-item">
+    <img src="gallery_loan_2.webp" alt="Gallery Image 2" class="gallery-item">
+    <img src="gallery_loan_3.webp" alt="Gallery Image 3" class="gallery-item">
+    <img src="gallery_loan_1.webp" alt="Gallery Image 1" class="gallery-item">
+    <img src="gallery_loan_2.webp" alt="Gallery Image 2" class="gallery-item">
+    <img src="gallery_loan_3.webp" alt="Gallery Image 3" class="gallery-item">
+    <img src="gallery_loan_1.webp" alt="Gallery Image 1" class="gallery-item">
+    <img src="gallery_loan_2.webp" alt="Gallery Image 2" class="gallery-item">
+    <img src="gallery_loan_3.webp" alt="Gallery Image 3" class="gallery-item">
   </div>
 </section>
 

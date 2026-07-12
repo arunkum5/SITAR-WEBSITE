@@ -621,8 +621,12 @@
   .section-head h2 em{ font-style:italic; color:var(--gold); font-family:'Fraunces', serif; }
   .section-head p{ margin-top:18px; color:var(--cream-dim); font-size:16px; max-width:520px; }
 
-  /* ---------- SECTORS ---------- */
-  #sectors { background: #ffffff; color: #111111; padding-top: 80px; padding-bottom: 80px; }
+  #sectors {
+    background: #ffffff url('i.png') right top / cover no-repeat fixed;
+    color: #111111;
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
   #sectors .section-head h2 { color: #111111; }
   #sectors .section-head .eyebrow {
     font-size: 16px;
@@ -699,7 +703,7 @@
   .sector-card p{ font-family: 'Outfit', sans-serif; margin-top:14px; font-size:18px; font-weight:700; line-height:1.45; color:#ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
 
   #plans {
-    background: linear-gradient(rgba(17, 19, 21, 0.85), rgba(17, 19, 21, 0.85)), url('plans.png') center 55% / cover no-repeat fixed;
+    background: linear-gradient(rgba(17, 19, 21, 0.85), rgba(17, 19, 21, 0.85)), url('plans.webp') center 55% / cover no-repeat fixed;
   }
 
   /* ---------- PLANS TABLE ---------- */
@@ -811,16 +815,16 @@
 
   /* ---------- GALLERY ---------- */
   .image-gallery {
-    padding: 60px 0;
-    background: #ffffff;
+    padding: 50px 0;
+    background: linear-gradient(180deg, #111315 0%, #181a1d 100%);
     overflow: hidden;
     position: relative;
-    border-top: 1px solid #eaeaea;
-    border-bottom: 1px solid #eaeaea;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
   .gallery-track {
     display: flex;
-    gap: 30px;
+    gap: 24px;
     width: max-content;
     animation: gallery-scroll 30s linear infinite;
   }
@@ -828,12 +832,17 @@
     animation-play-state: paused;
   }
   .gallery-item {
-    height: 300px;
-    width: 450px;
+    height: 200px;
+    width: 300px;
     object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
+  }
+  .gallery-item:hover {
+    transform: scale(1.05) translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
   }
   @keyframes gallery-scroll {
     from { transform: translateX(0); }
@@ -1182,18 +1191,22 @@
 
 <section id="gallery" class="image-gallery">
   <div class="gallery-track">
-    <img src="gallery_invest_1.jpg" alt="Gallery Image 1" class="gallery-item">
-    <img src="gallery_invest_2.jpg" alt="Gallery Image 2" class="gallery-item">
-    <img src="gallery_invest_1.jpg" alt="Gallery Image 1" class="gallery-item">
-    <img src="gallery_invest_2.jpg" alt="Gallery Image 2" class="gallery-item">
-    <img src="gallery_invest_1.jpg" alt="Gallery Image 1" class="gallery-item">
-    <img src="gallery_invest_2.jpg" alt="Gallery Image 2" class="gallery-item">
-    <img src="gallery_invest_1.jpg" alt="Gallery Image 1" class="gallery-item">
-    <img src="gallery_invest_2.jpg" alt="Gallery Image 2" class="gallery-item">
-    <img src="gallery_invest_1.jpg" alt="Gallery Image 1" class="gallery-item">
-    <img src="gallery_invest_2.jpg" alt="Gallery Image 2" class="gallery-item">
-    <img src="gallery_invest_1.jpg" alt="Gallery Image 1" class="gallery-item">
-    <img src="gallery_invest_2.jpg" alt="Gallery Image 2" class="gallery-item">
+    <img src="gallery_invest_1.webp" alt="Gallery Image 1" class="gallery-item">
+    <img src="gallery_invest_2.webp" alt="Gallery Image 2" class="gallery-item">
+    <img src="gallery_resort.webp" alt="Resort" class="gallery-item">
+    <img src="gallery_layout.webp" alt="Layout" class="gallery-item">
+    <img src="gallery_invest_1.webp" alt="Gallery Image 1" class="gallery-item">
+    <img src="gallery_invest_2.webp" alt="Gallery Image 2" class="gallery-item">
+    <img src="gallery_resort.webp" alt="Resort" class="gallery-item">
+    <img src="gallery_layout.webp" alt="Layout" class="gallery-item">
+    <img src="gallery_invest_1.webp" alt="Gallery Image 1" class="gallery-item">
+    <img src="gallery_invest_2.webp" alt="Gallery Image 2" class="gallery-item">
+    <img src="gallery_resort.webp" alt="Resort" class="gallery-item">
+    <img src="gallery_layout.webp" alt="Layout" class="gallery-item">
+    <img src="gallery_invest_1.webp" alt="Gallery Image 1" class="gallery-item">
+    <img src="gallery_invest_2.webp" alt="Gallery Image 2" class="gallery-item">
+    <img src="gallery_resort.webp" alt="Resort" class="gallery-item">
+    <img src="gallery_layout.webp" alt="Layout" class="gallery-item">
   </div>
 </section>
 
