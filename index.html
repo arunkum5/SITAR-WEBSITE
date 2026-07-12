@@ -1638,6 +1638,24 @@
   @keyframes preloaderGlow {
     to { background-position: 200% center; }
   }
+
+  /* ---------- CTA BAR ANIMATIONS ---------- */
+  @keyframes glowTeal {
+    0%, 100% { box-shadow: 0 4px 15px rgba(62,142,133,0.4); }
+    50%       { box-shadow: 0 4px 28px rgba(62,142,133,0.85), 0 0 12px rgba(62,142,133,0.5); }
+  }
+  @keyframes glowGold {
+    0%, 100% { box-shadow: 0 4px 15px rgba(201,162,39,0.4); }
+    50%       { box-shadow: 0 4px 28px rgba(201,162,39,0.85), 0 0 12px rgba(201,162,39,0.5); }
+  }
+  @keyframes ctaPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.88; transform: scale(1.02); }
+  }
+  @keyframes smoothGlow {
+    0%, 100% { filter: drop-shadow(0 0 4px rgba(255,255,255,0.4)); transform: scale(1); }
+    50%      { filter: drop-shadow(0 0 16px rgba(245,200,66,0.8)); transform: scale(1.05); }
+  }
   .preloader-progress-container {
     width: 200px;
     margin: 20px auto 0;
@@ -1710,14 +1728,14 @@
       
       <div class="nav-item-dropdown" id="navDropdownServices">
         <button class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" style="--nav-c: var(--apartments); --nav-bg: rgba(110, 134, 166, 0.12); --nav-border: rgba(110, 134, 166, 0.3);">
-          Services Offered <span class="chevron">▼</span>
+          Loans <span class="chevron">▼</span>
         </button>
         <div class="nav-dropdown-menu">
-          <a href="services.html#loan-property" style="--sub-c: var(--apartments);">Property Loan</a>
-          <a href="services.html#loan-construction" style="--sub-c: var(--layouts);">Construction Loan</a>
-          <a href="services.html#loan-gold" style="--sub-c: var(--gold);">Gold Loan</a>
-          <a href="services.html#loan-personal" style="--sub-c: var(--resorts);">Personal Loan</a>
-          <a href="services.html#loan-business" style="--sub-c: var(--commercial);">Business Loan</a>
+          <a href="services.html" style="--sub-c: var(--apartments);">Property Loan</a>
+          <a href="services.html" style="--sub-c: var(--layouts);">Construction Loan</a>
+          <a href="services.html" style="--sub-c: var(--gold);">Gold Loan</a>
+          <a href="services.html" style="--sub-c: var(--resorts);">Personal Loan</a>
+          <a href="services.html" style="--sub-c: var(--commercial);">Business Loan</a>
         </div>
       </div>
       
@@ -1726,13 +1744,13 @@
           Invest <span class="chevron">▼</span>
         </button>
         <div class="nav-dropdown-menu">
-          <a href="invest.html#sector-villas" style="--sub-c: var(--villas);">Villa Project</a>
-          <a href="invest.html#sector-apartments" style="--sub-c: var(--apartments);">Apartment Project</a>
-          <a href="invest.html#sector-resorts" style="--sub-c: var(--resorts);">Hotels &amp; Resorts</a>
-          <a href="invest.html#sector-commercial" style="--sub-c: var(--commercial);">Commercial Complex</a>
-          <a href="invest.html#sector-layouts" style="--sub-c: var(--layouts);">Layout Development</a>
+          <a href="invest.html" style="--sub-c: var(--villas);">Villa Project</a>
+          <a href="invest.html" style="--sub-c: var(--apartments);">Apartment Project</a>
+          <a href="invest.html" style="--sub-c: var(--resorts);">Hotels &amp; Resorts</a>
+          <a href="invest.html" style="--sub-c: var(--commercial);">Commercial Complex</a>
+          <a href="invest.html" style="--sub-c: var(--layouts);">Layout Development</a>
           <div class="dropdown-divider"></div>
-          <a href="invest.html#plans" class="highlight-link" style="--sub-c: var(--gold);">Investment Plans</a>
+          <a href="invest.html" class="highlight-link" style="--sub-c: var(--gold);">Investment Plans</a>
         </div>
       </div>
       
@@ -1800,7 +1818,7 @@
   <!-- CTA Bar: pinned above ticker inside hero -->
   <div style="position:relative; z-index:10; padding:10px 20px; display:flex; justify-content:center; margin-top:auto;">
     <div style="display:flex; align-items:center; gap:28px; flex-wrap:wrap; justify-content:space-between; width:100%; max-width:900px; padding:16px 32px; background:linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 70%, #533483 100%); border-radius:16px; box-shadow:0 8px 40px rgba(83,52,131,0.4), 0 2px 8px rgba(0,0,0,0.25); border:1px solid rgba(255,255,255,0.1);">
-      <p style="margin:0; font-size:14.5px; color:rgba(255,255,255,0.88); font-weight:500; white-space:nowrap; letter-spacing:0.02em; animation:ctaPulse 2s ease-in-out infinite; display:inline-block;">Explore what SITAR can do for you &nbsp;<span style="color:#f5c842; font-weight:800; font-size:18px; display:inline-block; animation:arrowBounce 1s ease-in-out infinite;">→</span></p>
+      <p style="margin:0; font-size:14.5px; color:rgba(255,255,255,0.88); font-weight:500; white-space:nowrap; letter-spacing:0.02em; animation:ctaPulse 2s ease-in-out infinite; display:inline-flex; align-items:center; gap:10px;">Explore what SITAR can do for you &nbsp;<span style="display:inline-block; animation:smoothGlow 2s ease-in-out infinite;"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="arrowGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff1493" /><stop offset="50%" stop-color="#B8860B" /><stop offset="100%" stop-color="#3E8E85" /></linearGradient></defs><!-- Shadow layer for 3D depth --><polygon points="6,13 6,23 22,23 22,30 31,18 22,6 22,13" fill="rgba(0,0,0,0.35)" transform="translate(3,3)"/><!-- Main arrow body --><polygon points="6,13 6,23 22,23 22,30 31,18 22,6 22,13" fill="url(#arrowGrad)"/><!-- Highlight for 3D top edge --><polygon points="6,13 22,13 22,6 31,18 22,6 22,13 6,13" fill="#ffffff" opacity="0.3"/></svg></span></p>
       <div style="display:flex; gap:14px; flex-wrap:wrap;">
         <a href="services.html" style="display:inline-flex; align-items:center; gap:7px; padding:11px 24px; background:linear-gradient(135deg,#3E8E85,#1a6b62); color:#fff; border-radius:8px; font-weight:700; font-size:13.5px; text-decoration:none; border:1px solid rgba(255,255,255,0.15); animation:glowTeal 2.5s ease-in-out infinite;" onmouseover="this.style.animation='none';this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(62,142,133,0.7)'" onmouseout="this.style.animation='glowTeal 2.5s ease-in-out infinite';this.style.transform='';this.style.boxShadow=''">
           <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
@@ -2494,28 +2512,35 @@
   const counterEl = document.getElementById('preloaderCounter');
   const barEl = document.getElementById('preloaderBar');
   if (preloader) {
-    let count = 0;
-    // The counter fades in at 1.2s, so we wait 1.2s then count to 100 over ~3.5s
-    setTimeout(() => {
-      const interval = setInterval(() => {
-        count += Math.floor(Math.random() * 2) + 1; // random increment for realism
-        if (count > 100) count = 100;
-        if (counterEl) {
-          counterEl.innerText = `${count}%`;
-        }
-        if (barEl) {
-          barEl.style.width = `${count}%`;
-        }
-        if (count >= 100) {
-          clearInterval(interval);
-        }
-      }, 35); // 35ms tick
-    }, 1200);
+    if (!sessionStorage.getItem('sitarLoaded')) {
+      sessionStorage.setItem('sitarLoaded', 'true');
+      let count = 0;
+      // The counter fades in at 1.2s, so we wait 1.2s then count to 100 over ~3.5s
+      setTimeout(() => {
+        const interval = setInterval(() => {
+          count += Math.floor(Math.random() * 2) + 1; // random increment for realism
+          if (count > 100) count = 100;
+          if (counterEl) {
+            counterEl.innerText = `${count}%`;
+          }
+          if (barEl) {
+            barEl.style.width = `${count}%`;
+          }
+          if (count >= 100) {
+            clearInterval(interval);
+          }
+        }, 35); // 35ms tick
+      }, 1200);
 
-    setTimeout(() => {
-      preloader.classList.add('fade-out');
+      setTimeout(() => {
+        preloader.classList.add('fade-out');
+        document.body.classList.remove('loading');
+      }, 5000);
+    } else {
+      // Immediately hide preloader if already loaded in this session
+      preloader.style.display = 'none';
       document.body.classList.remove('loading');
-    }, 5000);
+    }
   }
 </script>
 

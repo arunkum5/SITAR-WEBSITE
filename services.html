@@ -131,9 +131,14 @@
     border-bottom:1px solid var(--line);
   }
   .nav{
-    display:flex; align-items:center; justify-content:space-between;
+    display:flex; align-items:center; justify-content:flex-start; gap: 40px;
     padding:8px 32px;
     max-width:1180px; margin:0 auto;
+  }
+  .nav-cta{
+    display: flex;
+    gap: 12px;
+    margin-left: auto;
   }
   .logo{
     display: inline-flex;
@@ -197,25 +202,33 @@
     text-shadow: 0 0 8px rgba(243, 236, 221, 0.5), 0 0 16px rgba(243, 236, 221, 0.3);
   }
   .nav-links{
-    display:flex; gap:36px; align-items:center;
+    display:flex; align-items:center;
     font-size:14px; font-weight:600; color:var(--cream-dim);
+  }
+  .nav-links a + a {
+    margin-left: 32px;
+  }
+  .nav-links a[aria-label="Home"] + a {
+    margin-left: 10px;
   }
   .nav-links a{
     transition: all .2s ease;
     text-align: center;
-    padding: 3px 5px;
+    padding: 8px 16px;
     border-radius: 6px;
     background: rgba(243, 236, 221, 0.04);
     border: 1px solid rgba(243, 236, 221, 0.08);
   }
-  .nav-links a:hover{
-    filter: brightness(1.3) contrast(1.1);
-    background: rgba(243, 236, 221, 0.08);
-    border-color: rgba(243, 236, 221, 0.15);
-    transform: translateY(-1px);
+  .nav-links a[aria-label="Home"] {
+    background: rgba(243, 236, 221, 0.15);
+    border-color: rgba(243, 236, 221, 0.3);
   }
-  .nav-links a[aria-label="Home"]:hover {
-    color: var(--gold);
+  .nav-links a:hover{
+    color: #ffffff !important;
+    background: rgba(243, 236, 221, 0.12);
+    border-color: rgba(243, 236, 221, 0.25);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   }
   .nav-links a.link-property { color: var(--apartments); }
   .nav-links a.link-construction { color: var(--layouts); }
@@ -435,11 +448,11 @@
   /* ---------- HERO ---------- */
   .hero{
     padding: 0;
-    min-height: 80vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding-top: 85px;
+    padding-top: 20px;
     border-bottom:none;
     position:relative;
     overflow:hidden;
@@ -527,6 +540,48 @@
   .hero-cta{ display:flex; gap:14px; margin-top:20px; flex-wrap:wrap; }
   .hero-cta .btn{ padding:14px 28px; font-size:14px; }
 
+  /* ---------- TICKER ---------- */
+  .ticker-band{
+    position:absolute;
+    bottom:0; left:0; right:0;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    background:var(--bg-panel);
+    overflow:hidden;
+    z-index:10;
+  }
+  .ticker-band::before, .ticker-band::after{
+    content:""; position:absolute; top:0; bottom:0; width:80px; z-index:2;
+  }
+  .ticker-band::before{ left:0; background:linear-gradient(90deg, var(--bg-panel), transparent); }
+  .ticker-band::after{ right:0; background:linear-gradient(-90deg, var(--bg-panel), transparent); }
+
+  .ticker-track{
+    display:flex;
+    width:max-content;
+    animation: scroll-left 38s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ticker-track{ animation:none; overflow-x:auto; }
+  }
+  .ticker-item{
+    display:flex; align-items:center; gap:10px;
+    padding:16px 34px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13.5px;
+    white-space:nowrap;
+    border-right:1px solid var(--line);
+    color:var(--cream-dim);
+  }
+  .ticker-item .sym{ color:var(--cream); font-weight:500;}
+  .ticker-item .rate{ color:var(--gold); }
+  .ticker-dot{ width:6px; height:6px; border-radius:50%; background:var(--resorts); }
+
+  @keyframes scroll-left{
+    from{ transform:translateX(0); }
+    to{ transform:translateX(-50%); }
+  }
+
   /* ---------- SECTION HEAD ---------- */
   .section-head{ max-width:640px; margin-bottom:56px; }
   .section-head h2{
@@ -539,30 +594,57 @@
   .section-head p{ margin-top:18px; color:var(--cream-dim); font-size:16px; max-width:520px; }
 
   /* ---------- LOANS ---------- */
+  #loans {
+    background: #ffffff;
+    color: #111111;
+    padding-bottom: 80px; /* Add some padding if needed, or rely on wrap */
+  }
+  #loans .section-head { max-width: 100%; }
+  #loans .section-head h2 { color: #111111; white-space: nowrap; }
+  #loans .section-head p { color: #555555; max-width: 100%; white-space: nowrap; }
+  
   .loan-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:8px; }
   .loan-card{
     position: relative;
     overflow: hidden;
-    background:var(--bg-panel); border:1px solid var(--line); padding:28px 24px;
+    background:#fdfdfd; border:1px solid #eaeaea; padding:28px 24px;
     border-radius:var(--radius);
-    transition: transform .25s ease, border-color .25s ease;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.03);
+    
+    /* Animation start state */
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.25s ease;
   }
-  .loan-card:hover{ transform:translateY(-4px); border-color: var(--accent); cursor: pointer; }
+  
+  .loan-card.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .loan-card.revealed:hover {
+    transform:translateY(-6px); 
+    border-color: var(--accent); 
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    cursor: pointer; 
+    /* Faster transform on hover, keep opacity slow */
+    transition: opacity 0.7s ease, transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  
   .loan-card::before{
-    content:""; position:absolute; left:0; top:0; right:0; height:3px;
+    content:""; position:absolute; left:0; top:0; right:0; height:4px;
     background: var(--accent);
   }
-  .loan-card h3{ font-family:'Fraunces',serif; font-style:italic; font-weight:500; font-size:20px; color:var(--cream); }
-  .loan-card p{ margin-top:12px; font-size:14.5px; color:var(--cream-dim); }
-  .loan-card .link{ display:inline-block; margin-top:16px; font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--gold); border-bottom:1px solid var(--gold-dim); padding-bottom:2px; }
+  .loan-card h3{ font-family:'Fraunces',serif; font-style:italic; font-weight:600; font-size:22px; color:#222222; }
+  .loan-card p{ margin-top:12px; font-size:14.5px; color:#555555; line-height: 1.6; }
+  .loan-card .link{ display:inline-block; margin-top:18px; font-family:'IBM Plex Mono', monospace; font-size:13px; font-weight: 500; color:var(--gold); border-bottom:1px solid rgba(184,134,11,0.3); padding-bottom:2px; }
   .loan-card .link:hover{ border-color:var(--gold); }
 
-  .lc-property { --accent: var(--apartments); }
-  .lc-construction { --accent: var(--layouts); }
-  .lc-gold { --accent: var(--gold); }
-  .lc-personal { --accent: var(--resorts); }
-  .lc-business { --accent: var(--commercial); }
-  .lc-talk { --accent: var(--cream-dim); }
+  .lc-property { --accent: #3E8E85; }
+  .lc-construction { --accent: #C9A227; }
+  .lc-gold { --accent: #B8860B; }
+  .lc-personal { --accent: #C1694A; }
+  .lc-business { --accent: #6E86A6; }
+  .lc-talk { --accent: #777777; }
 
   /* ---------- CONTACT FORM ---------- */
   .contact-section {
@@ -717,11 +799,11 @@
       <div class="nav-heading">Loan Options</div>
       <div class="nav-links">
         <a href="index.html" aria-label="Home" style="display: inline-flex; align-items: center;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="home-icon"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
-        <a href="#loan-property" class="link-property">Property Loan</a>
-        <a href="#loan-construction" class="link-construction">Construction Loan</a>
-        <a href="#loan-gold" class="link-gold">Gold Loan</a>
-        <a href="#loan-personal" class="link-personal">Personal Loan</a>
-        <a href="#loan-business" class="link-business">Business Loan</a>
+        <a href="#loan-property" class="link-property">Property</a>
+        <a href="#loan-construction" class="link-construction">Construction</a>
+        <a href="#loan-gold" class="link-gold">Gold</a>
+        <a href="#loan-personal" class="link-personal">Personal</a>
+        <a href="#loan-business" class="link-business">Business</a>
       </div>
     </div>
     <div class="nav-cta">
@@ -734,8 +816,9 @@
 
 <section class="hero">
   <div class="hero-bg"></div>
-  <div class="wrap hero-eyebrow-wrap">
+  <div class="wrap hero-eyebrow-wrap" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
     <span class="eyebrow">SITAR · Services Offered</span>
+    <a href="invest.html" class="btn" style="padding: 8px 16px; font-size: 13px; height: auto; text-transform: none; letter-spacing: 0; background: linear-gradient(135deg, #3E8E85, #1a6b62); color: #fff; border: none; font-weight: 700; box-shadow: 0 4px 14px rgba(62,142,133,0.4); transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(62,142,133,0.6)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 14px rgba(62,142,133,0.4)'">Explore Investment Options →</a>
   </div>
   <div class="wrap">
     <div class="hero-inner">
@@ -748,6 +831,12 @@
           <a href="#contact" class="btn btn-ghost">Request pricing</a>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="ticker-band">
+    <div class="ticker-track" id="tickerTrack">
+      <!-- populated twice via JS for seamless loop -->
     </div>
   </div>
 </section>
@@ -799,10 +888,7 @@
     <div class="contact-info">
       <h3>Let's talk.</h3>
       <p>Fill out the form to request interest rates or schedule a doorstep gold valuation. An advisor will get back to you within 24 hours.</p>
-      <p style="margin-top: 32px; color: var(--gold-dim); font-family: 'IBM Plex Mono', monospace; font-size: 13px;">
-        OFFICE HOURS<br>
-        Mon – Sat: 9:00 AM – 6:00 PM
-      </p>
+
     </div>
     <div class="contact-form">
       <form onsubmit="event.preventDefault(); alert('Thank you! Your request has been submitted.'); this.reset();">
@@ -963,6 +1049,52 @@
     });
   });
 
+
+  // Staggered reveal for loan cards
+  const cardObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        cardObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.loan-card').forEach((card, index) => {
+    // stagger the transition delay based on grid order
+    card.style.transitionDelay = `${(index % 3) * 0.15}s`;
+    cardObserver.observe(card);
+    
+    // Once hover happens, we want to clear the transitionDelay so the hover is instant
+    card.addEventListener('mouseenter', () => {
+      card.style.transitionDelay = '0s';
+    });
+  });
+
+  // --- Ticker Population ---
+  const rates = [
+    { sym: "PROPERTY", rate: "▼ 8.5%", dot: "#3E8E85" },
+    { sym: "CONSTRUCTION", rate: "▼ 9.8%", dot: "#C9A227" },
+    { sym: "GOLD", rate: "▼ 7.9%", dot: "#B8860B" },
+    { sym: "PERSONAL", rate: "▼ 10.5%", dot: "#C1694A" },
+    { sym: "BUSINESS", rate: "▲ 12.0%", dot: "#6E86A6" },
+    { sym: "HOME", rate: "▼ 8.2%", dot: "#3E8E85" },
+    { sym: "CAR", rate: "▼ 9.0%", dot: "#A370A1" }
+  ];
+
+  const track = document.getElementById('tickerTrack');
+  if (track) {
+    function buildItems(){
+      return rates.map(r => `
+        <div class="ticker-item">
+          <span class="ticker-dot" style="background:${r.dot}"></span>
+          <span class="sym" style="color:${r.dot}">${r.sym}</span>
+          <span class="rate" style="color:${r.dot}">${r.rate}</span>
+        </div>
+      `).join('');
+    }
+    track.innerHTML = buildItems() + buildItems();
+  }
 
 </script>
 </body>
