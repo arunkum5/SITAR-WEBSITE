@@ -1507,6 +1507,11 @@
   .explore-bar-container.floating > div {
     pointer-events: auto;
   }
+  .explore-bar-container.floating.hidden-near-footer {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translate(-50%, 20px) !important;
+  }
 
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 900px){
@@ -2078,6 +2083,16 @@
         exploreBar.classList.add('floating');
       } else {
         exploreBar.classList.remove('floating');
+      }
+      
+      const footer = document.querySelector('footer');
+      if (footer) {
+        const footerTop = footer.getBoundingClientRect().top;
+        if (footerTop < window.innerHeight) {
+          exploreBar.classList.add('hidden-near-footer');
+        } else {
+          exploreBar.classList.remove('hidden-near-footer');
+        }
       }
     }
   });

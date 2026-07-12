@@ -855,20 +855,6 @@
 
 
 
-  /* Floating Button */
-  .explore-btn-container { transition: all 0.3s ease; z-index: 900; }
-  .explore-btn-container.floating {
-    position: fixed !important;
-    bottom: 24px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-  }
-  .explore-btn-container.floating a {
-    box-shadow: 0 8px 30px rgba(0,0,0,0.4) !important;
-    padding: 12px 24px !important;
-    font-size: 15px !important;
-  }
-
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 900px){
     .loan-grid{ grid-template-columns:1fr 1fr; }
@@ -942,13 +928,16 @@
   </nav>
 </header>
 
+<div style="position: fixed; top: 110px; left: 0; right: 0; pointer-events: none; z-index: 90;">
+  <div class="wrap" style="display: flex; justify-content: flex-end;">
+    <a href="invest.html" class="btn" style="pointer-events: auto; padding: 8px 16px; font-size: 13px; height: auto; text-transform: none; letter-spacing: 0; background: linear-gradient(135deg, #3E8E85, #1a6b62); color: #fff; border: none; font-weight: 700; box-shadow: 0 4px 14px rgba(62,142,133,0.4); transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(62,142,133,0.6)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 14px rgba(62,142,133,0.4)'">Explore Investment Options →</a>
+  </div>
+</div>
+
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="wrap hero-eyebrow-wrap" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
     <span class="eyebrow">SITAR · Services Offered</span>
-    <div id="exploreBtnWrap" class="explore-btn-container">
-      <a href="invest.html" class="btn" style="padding: 8px 16px; font-size: 13px; height: auto; text-transform: none; letter-spacing: 0; background: linear-gradient(135deg, #3E8E85, #1a6b62); color: #fff; border: none; font-weight: 700; box-shadow: 0 4px 14px rgba(62,142,133,0.4); transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(62,142,133,0.6)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 14px rgba(62,142,133,0.4)'">Explore Investment Options →</a>
-    </div>
   </div>
   <div class="wrap">
     <div class="hero-inner">
@@ -1020,7 +1009,7 @@
     <p>If you're looking to be part of a company focused on long-term growth and value creation, we'd love to connect with you.</p>
     <div class="hero-cta">
       <button class="btn btn-gold">Create an account</button>
-      <a href="index.html#contact" class="btn btn-ghost">Talk to an advisor</a>
+      <a href="#contact" class="btn btn-ghost">Talk to an advisor</a>
     </div>
   </div>
 </section>
@@ -1138,15 +1127,6 @@
       scrollTopBtn.classList.add('visible');
     } else {
       scrollTopBtn.classList.remove('visible');
-    }
-
-    const exploreBtnWrap = document.getElementById('exploreBtnWrap');
-    if (exploreBtnWrap) {
-      if (scrollPx > 400) {
-        exploreBtnWrap.classList.add('floating');
-      } else {
-        exploreBtnWrap.classList.remove('floating');
-      }
     }
   });
 
