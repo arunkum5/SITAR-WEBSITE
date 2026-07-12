@@ -695,6 +695,37 @@
   .lc-business { --accent: #6E86A6; }
   .lc-talk { --accent: #777777; }
 
+  /* ---------- GALLERY ---------- */
+  .image-gallery {
+    padding: 60px 0;
+    background: #ffffff;
+    overflow: hidden;
+    position: relative;
+    border-top: 1px solid #eaeaea;
+    border-bottom: 1px solid #eaeaea;
+  }
+  .gallery-track {
+    display: flex;
+    gap: 30px;
+    width: max-content;
+    animation: gallery-scroll 30s linear infinite;
+  }
+  .gallery-track:hover {
+    animation-play-state: paused;
+  }
+  .gallery-item {
+    height: 300px;
+    width: 450px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    border: 1px solid #eaeaea;
+  }
+  @keyframes gallery-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
   /* ---------- CONTACT FORM ---------- */
   .contact-section {
     background: var(--bg-panel);
@@ -749,6 +780,33 @@
     outline: none;
     border-color: var(--gold);
   }
+
+  /* ---------- CTA BAND ---------- */
+  .cta-band{
+    text-align:center;
+    background: linear-gradient(rgba(18,16,13,0.7), rgba(18,16,13,0.7)), url('8.svg') no-repeat center center;
+    background-size: cover;
+  }
+  .cta-band .eyebrow { color: #4B8EE5; font-weight: 700; }
+  .cta-band h2 {
+    font-size:clamp(28px,4vw,46px);
+    font-weight: 800;
+    background: linear-gradient(90deg, #E6C37C, #C1694A, #A370A1, #6E86A6, #3E8E85, #E6C37C);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: ctaGlow 4s linear infinite;
+  }
+  @keyframes ctaGlow {
+    to { background-position: 200% center; }
+  }
+  .cta-band h2 .display { color: inherit; -webkit-text-fill-color: transparent; }
+  .cta-band p{ margin-top:16px; color:#FFFFFF; font-weight: 500; max-width:640px; margin-left:auto; margin-right:auto; }
+  .cta-band .hero-cta{ justify-content:center; margin-top:34px; }
+  .cta-band .btn-gold { background: #4B8EE5; color: #FFFFFF; border-color: #4B8EE5; }
+  .cta-band .btn-gold:hover { background: #3B82F6; border-color: #3B82F6; color: #FFFFFF; }
+  .cta-band .btn-ghost { background: #4B8EE5; color: #4a154b; border-color: #4B8EE5; font-weight: 700; }
+  .cta-band .btn-ghost:hover { background: #3B82F6; color: #4a154b; border-color: #3B82F6; }
   
   .foot-top{ display:flex; flex-direction: row; justify-content: space-between; align-items: center; gap:48px; flex-wrap:wrap; }
   .foot-brand .logo{ display: inline-flex; justify-content: flex-start; }
@@ -795,6 +853,22 @@
   .scroll-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
   .scroll-to-top:hover { background: var(--apartments); color: var(--bg); border-color: var(--apartments); }
 
+
+
+  /* Floating Button */
+  .explore-btn-container { transition: all 0.3s ease; z-index: 900; }
+  .explore-btn-container.floating {
+    position: fixed !important;
+    bottom: 24px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+  .explore-btn-container.floating a {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4) !important;
+    padding: 12px 24px !important;
+    font-size: 15px !important;
+  }
+
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 900px){
     .loan-grid{ grid-template-columns:1fr 1fr; }
@@ -836,6 +910,11 @@
 </head>
 <body>
 
+<div class="scroll-progress-container"><div class="scroll-progress-bar" id="scrollBar"></div></div>
+<button class="scroll-to-top" id="scrollTopBtn" aria-label="Scroll to top">
+  <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+
 
 
 <header>
@@ -867,7 +946,9 @@
   <div class="hero-bg"></div>
   <div class="wrap hero-eyebrow-wrap" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
     <span class="eyebrow">SITAR · Services Offered</span>
-    <a href="invest.html" class="btn" style="padding: 8px 16px; font-size: 13px; height: auto; text-transform: none; letter-spacing: 0; background: linear-gradient(135deg, #3E8E85, #1a6b62); color: #fff; border: none; font-weight: 700; box-shadow: 0 4px 14px rgba(62,142,133,0.4); transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(62,142,133,0.6)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 14px rgba(62,142,133,0.4)'">Explore Investment Options →</a>
+    <div id="exploreBtnWrap" class="explore-btn-container">
+      <a href="invest.html" class="btn" style="padding: 8px 16px; font-size: 13px; height: auto; text-transform: none; letter-spacing: 0; background: linear-gradient(135deg, #3E8E85, #1a6b62); color: #fff; border: none; font-weight: 700; box-shadow: 0 4px 14px rgba(62,142,133,0.4); transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(62,142,133,0.6)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 14px rgba(62,142,133,0.4)'">Explore Investment Options →</a>
+    </div>
   </div>
   <div class="wrap">
     <div class="hero-inner">
@@ -932,12 +1013,23 @@
   </div>
 </section>
 
+<section class="cta-band">
+  <div class="wrap" style="padding: 80px 20px;">
+    <span class="eyebrow">Join our growth story</span>
+    <h2 style="margin-top:16px;">We believe success is best <span class="display">achieved together.</span></h2>
+    <p>If you're looking to be part of a company focused on long-term growth and value creation, we'd love to connect with you.</p>
+    <div class="hero-cta">
+      <button class="btn btn-gold">Create an account</button>
+      <a href="index.html#contact" class="btn btn-ghost">Talk to an advisor</a>
+    </div>
+  </div>
+</section>
+
 <section class="contact-section" id="contact">
-  <div class="wrap contact-grid">
+  <div class="wrap contact-grid" style="padding: 80px 20px;">
     <div class="contact-info">
       <h3>Let's talk.</h3>
       <p>Fill out the form to request interest rates or schedule a doorstep gold valuation. An advisor will get back to you within 24 hours.</p>
-
     </div>
     <div class="contact-form">
       <form onsubmit="event.preventDefault(); alert('Thank you! Your request has been submitted.'); this.reset();">
@@ -967,6 +1059,23 @@
         <button class="btn btn-gold" type="submit" style="margin-top: 8px;">Submit Request</button>
       </form>
     </div>
+  </div>
+</section>
+
+<section id="gallery" class="image-gallery">
+  <div class="gallery-track">
+    <img src="gallery_loan_1.jpg" alt="Gallery Image 1" class="gallery-item">
+    <img src="gallery_loan_2.jpg" alt="Gallery Image 2" class="gallery-item">
+    <img src="gallery_loan_3.jpg" alt="Gallery Image 3" class="gallery-item">
+    <img src="gallery_loan_1.jpg" alt="Gallery Image 1" class="gallery-item">
+    <img src="gallery_loan_2.jpg" alt="Gallery Image 2" class="gallery-item">
+    <img src="gallery_loan_3.jpg" alt="Gallery Image 3" class="gallery-item">
+    <img src="gallery_loan_1.jpg" alt="Gallery Image 1" class="gallery-item">
+    <img src="gallery_loan_2.jpg" alt="Gallery Image 2" class="gallery-item">
+    <img src="gallery_loan_3.jpg" alt="Gallery Image 3" class="gallery-item">
+    <img src="gallery_loan_1.jpg" alt="Gallery Image 1" class="gallery-item">
+    <img src="gallery_loan_2.jpg" alt="Gallery Image 2" class="gallery-item">
+    <img src="gallery_loan_3.jpg" alt="Gallery Image 3" class="gallery-item">
   </div>
 </section>
 
@@ -1029,6 +1138,15 @@
       scrollTopBtn.classList.add('visible');
     } else {
       scrollTopBtn.classList.remove('visible');
+    }
+
+    const exploreBtnWrap = document.getElementById('exploreBtnWrap');
+    if (exploreBtnWrap) {
+      if (scrollPx > 400) {
+        exploreBtnWrap.classList.add('floating');
+      } else {
+        exploreBtnWrap.classList.remove('floating');
+      }
     }
   });
 

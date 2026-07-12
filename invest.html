@@ -740,6 +740,93 @@
   .cta-band .btn-ghost { background: #4B8EE5; color: #4a154b; border-color: #4B8EE5; font-weight: 700; }
   .cta-band .btn-ghost:hover { background: #3B82F6; color: #4a154b; border-color: #3B82F6; }
 
+  /* ---------- CONTACT FORM ---------- */
+  .contact-section {
+    background: var(--bg-panel);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 64px;
+  }
+  .contact-info h3 {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(24px, 3.6vw, 36px);
+    color: var(--gold);
+  }
+  .contact-info p {
+    color: var(--cream-dim);
+    margin-top: 16px;
+    font-size: 16px;
+  }
+  .contact-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .form-group label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    letter-spacing: 0.08em;
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    background: var(--bg-panel-2);
+    border: 1px solid var(--line-strong);
+    color: var(--cream);
+    padding: 14px 16px;
+    font-family: inherit;
+    font-size: 14.5px;
+    border-radius: var(--radius);
+    transition: border-color 0.2s ease;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+
+  /* ---------- GALLERY ---------- */
+  .image-gallery {
+    padding: 60px 0;
+    background: #ffffff;
+    overflow: hidden;
+    position: relative;
+    border-top: 1px solid #eaeaea;
+    border-bottom: 1px solid #eaeaea;
+  }
+  .gallery-track {
+    display: flex;
+    gap: 30px;
+    width: max-content;
+    animation: gallery-scroll 30s linear infinite;
+  }
+  .gallery-track:hover {
+    animation-play-state: paused;
+  }
+  .gallery-item {
+    height: 300px;
+    width: 450px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    border: 1px solid #eaeaea;
+  }
+  @keyframes gallery-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .cta-band .btn-ghost:hover { background: #3B82F6; color: #4a154b; border-color: #3B82F6; }
+
   .foot-top{ display:flex; flex-direction: row; justify-content: space-between; align-items: center; gap:48px; flex-wrap:wrap; }
   .foot-brand .logo{ display: inline-flex; justify-content: flex-start; }
   .foot-brand p{ margin-top:14px; color:var(--apartments); font-size:13.5px; max-width:320px; }
@@ -785,6 +872,20 @@
   .scroll-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
   .scroll-to-top:hover { background: var(--apartments); color: var(--bg); border-color: var(--apartments); }
 
+  /* Floating Button */
+  .explore-btn-container { transition: all 0.3s ease; z-index: 900; }
+  .explore-btn-container.floating {
+    position: fixed !important;
+    bottom: 24px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+  .explore-btn-container.floating a {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4) !important;
+    padding: 12px 24px !important;
+    font-size: 15px !important;
+  }
+
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 900px){
     .sector-grid{ grid-template-columns:1fr 1fr; }
@@ -827,6 +928,11 @@
 </head>
 <body>
 
+<div class="scroll-progress-container"><div class="scroll-progress-bar" id="scrollBar"></div></div>
+<button class="scroll-to-top" id="scrollTopBtn" aria-label="Scroll to top">
+  <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+
 
 
 <header>
@@ -862,7 +968,9 @@
   </div>
   <div class="wrap hero-eyebrow-wrap" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
     <span class="eyebrow">SITAR · Real Asset Investing</span>
-    <a href="services.html" class="btn" style="padding: 8px 16px; font-size: 13px; height: auto; text-transform: none; letter-spacing: 0; background: linear-gradient(135deg, #c9a227, #8a6d0c); color: #fff; border: none; font-weight: 700; box-shadow: 0 4px 14px rgba(201,162,39,0.4); transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(201,162,39,0.6)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 14px rgba(201,162,39,0.4)'">Explore Loan Options →</a>
+    <div id="exploreBtnWrap" class="explore-btn-container">
+      <a href="services.html" class="btn" style="padding: 8px 16px; font-size: 13px; height: auto; text-transform: none; letter-spacing: 0; background: linear-gradient(135deg, #c9a227, #8a6d0c); color: #fff; border: none; font-weight: 700; box-shadow: 0 4px 14px rgba(201,162,39,0.4); transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(201,162,39,0.6)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 14px rgba(201,162,39,0.4)'">Explore Loan Options →</a>
+    </div>
   </div>
   <div class="wrap">
     <div class="hero-inner">
@@ -968,14 +1076,69 @@
 </section>
 
 <section class="cta-band">
-  <div class="wrap">
+  <div class="wrap" style="padding: 80px 20px;">
     <span class="eyebrow">Join our growth story</span>
     <h2 style="margin-top:16px;">We believe success is best <span class="display">achieved together.</span></h2>
     <p>If you're looking to be part of a company focused on long-term growth and value creation, we'd love to connect with you.</p>
-    <div class="hero-cta" style="justify-content:center; margin-top:34px;">
+    <div class="hero-cta">
       <button class="btn btn-gold">Create an account</button>
       <a href="index.html#contact" class="btn btn-ghost">Talk to an advisor</a>
     </div>
+  </div>
+</section>
+
+<section class="contact-section" id="contact">
+  <div class="wrap contact-grid" style="padding: 80px 20px;">
+    <div class="contact-info">
+      <h3>Let's talk.</h3>
+      <p>Fill out the form to request interest rates or schedule an investment consultation. An advisor will get back to you within 24 hours.</p>
+
+    </div>
+    <div class="contact-form">
+      <form onsubmit="event.preventDefault(); alert('Thank you! Your request has been submitted.'); this.reset();">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" required placeholder="Enter your name">
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" required placeholder="Enter your mobile number">
+        </div>
+        <div class="form-group">
+          <label for="service">Required Investment Plan</label>
+          <select id="service" required>
+            <option value="" disabled selected>Select an investment plan</option>
+            <option value="1year">1 Year Plan (9.5% p.a.)</option>
+            <option value="2year">2 Years Plan (10.5% p.a.)</option>
+            <option value="3year">3 Years Plan (11.5% p.a.)</option>
+            <option value="5year">5 Years Plan (12% p.a.)</option>
+            <option value="other">Other Inquiry</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" rows="4" placeholder="How can we help you?"></textarea>
+        </div>
+        <button class="btn btn-gold" type="submit" style="margin-top: 8px;">Submit Request</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="gallery" class="image-gallery">
+  <div class="gallery-track">
+    <img src="gallery_invest_1.jpg" alt="Gallery Image 1" class="gallery-item">
+    <img src="gallery_invest_2.jpg" alt="Gallery Image 2" class="gallery-item">
+    <img src="gallery_invest_1.jpg" alt="Gallery Image 1" class="gallery-item">
+    <img src="gallery_invest_2.jpg" alt="Gallery Image 2" class="gallery-item">
+    <img src="gallery_invest_1.jpg" alt="Gallery Image 1" class="gallery-item">
+    <img src="gallery_invest_2.jpg" alt="Gallery Image 2" class="gallery-item">
+    <img src="gallery_invest_1.jpg" alt="Gallery Image 1" class="gallery-item">
+    <img src="gallery_invest_2.jpg" alt="Gallery Image 2" class="gallery-item">
+    <img src="gallery_invest_1.jpg" alt="Gallery Image 1" class="gallery-item">
+    <img src="gallery_invest_2.jpg" alt="Gallery Image 2" class="gallery-item">
+    <img src="gallery_invest_1.jpg" alt="Gallery Image 1" class="gallery-item">
+    <img src="gallery_invest_2.jpg" alt="Gallery Image 2" class="gallery-item">
   </div>
 </section>
 
@@ -1038,6 +1201,15 @@
       scrollTopBtn.classList.add('visible');
     } else {
       scrollTopBtn.classList.remove('visible');
+    }
+
+    const exploreBtnWrap = document.getElementById('exploreBtnWrap');
+    if (exploreBtnWrap) {
+      if (scrollPx > 400) {
+        exploreBtnWrap.classList.add('floating');
+      } else {
+        exploreBtnWrap.classList.remove('floating');
+      }
     }
   });
 
