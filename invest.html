@@ -1147,7 +1147,7 @@
         </div>
         <div class="form-group">
           <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" required placeholder="Enter your mobile number">
+          <input type="tel" id="phone" required placeholder="Enter your mobile number" pattern="[0-9]{10}" maxlength="10" title="Please enter a valid 10-digit mobile number" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
         </div>
         <div class="form-group">
           <label for="service">Required Investment Plan</label>

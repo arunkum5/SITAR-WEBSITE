@@ -596,12 +596,13 @@
 
   /* ---------- LOANS ---------- */
   #loans {
-    background: #ffffff;
-    color: #111111;
-    padding-bottom: 80px; /* Add some padding if needed, or rely on wrap */
+    background: linear-gradient(rgba(17, 19, 21, 0.9), rgba(17, 19, 21, 0.9)), url('loan.png') top center / 115% auto no-repeat fixed;
+    background-color: #111315; /* Fallback color for empty spaces */
+    color: var(--cream);
+    padding-bottom: 80px;
   }
   #loans .section-head { max-width: 100%; }
-  #loans .section-head h2 { color: #111111; white-space: nowrap; }
+  #loans .section-head h2 { color: var(--cream); white-space: nowrap; }
   #loans .section-head .eyebrow {
     font-size: 16px;
     font-weight: 800;
@@ -728,7 +729,8 @@
 
   /* ---------- CONTACT FORM ---------- */
   .contact-section {
-    background: var(--bg-panel);
+    background: linear-gradient(rgba(17, 19, 21, 0.9), rgba(17, 19, 21, 0.9)), url('loan.png') bottom center / 115% auto no-repeat fixed;
+    background-color: #111315;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
   }
@@ -1080,7 +1082,7 @@
         </div>
         <div class="form-group">
           <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" required placeholder="Enter your mobile number">
+          <input type="tel" id="phone" required placeholder="Enter your mobile number" pattern="[0-9]{10}" maxlength="10" title="Please enter a valid 10-digit mobile number" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
         </div>
         <div class="form-group">
           <label for="service">Required Loan Service</label>
