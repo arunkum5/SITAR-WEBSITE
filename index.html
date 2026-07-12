@@ -1800,9 +1800,35 @@
   .call-btn {
     background-color: #007bff;
   }
+  /* ---------- MOBILE SIMPLIFIED MENU ---------- */
+  .mobile-nav-links {
+    display: none;
+  }
   @media (max-width: 680px) {
-    .floating-contact {
+    .mobile-nav-links.open {
       display: flex;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      background: #12100d;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--line);
+      gap: 16px;
+      z-index: 1001;
+    }
+    .mobile-nav-links.open a {
+      font-family: 'Outfit', sans-serif;
+      color: var(--cream);
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .mobile-nav-links.open a:last-child {
+      border-bottom: none;
     }
   }
 </style>
@@ -1872,6 +1898,12 @@
       
       <a href="#how" style="--nav-c: var(--commercial); --nav-bg: rgba(163, 112, 161, 0.12); --nav-border: rgba(163, 112, 161, 0.3);">How it works</a>
       <a href="#contact" style="--nav-c: var(--resorts); --nav-bg: rgba(62, 142, 133, 0.12); --nav-border: rgba(62, 142, 133, 0.3);">Contact</a>
+    </div>
+    <div class="mobile-nav-links">
+      <a href="services.html">Loans</a>
+      <a href="invest.html">Invest</a>
+      <a href="#how">How it works</a>
+      <a href="#contact">Contact</a>
     </div>
     <div class="nav-cta">
       <button class="btn btn-login">Login</button>
@@ -2342,67 +2374,17 @@
   // duplicate the set so the -50% translateX loop is seamless
   track.innerHTML = buildItems() + buildItems();
 
-  // mobile menu (simple toggle of a dropdown)
+  // mobile menu (toggle of a simplified flat dropdown)
   const toggle = document.querySelector('.menu-toggle');
+  const mobileLinks = document.querySelector('.mobile-nav-links');
   toggle.addEventListener('click', () => {
-    const links = document.querySelector('.nav-links');
-    const open = links.style.display === 'flex';
-    links.style.display = open ? 'none' : 'flex';
-    links.style.cssText += open ? '' : 'position:absolute; top:100%; left:0; right:0; flex-direction:column; background:#12100D; padding:24px 32px; border-bottom:1px solid var(--line); gap:20px;';
+    mobileLinks.classList.toggle('open');
   });
 
-  // Handle dropdown toggle on mobile viewports
-  document.querySelectorAll('.nav-dropdown-trigger').forEach(trigger => {
-    trigger.addEventListener('click', (e) => {
-      if (window.innerWidth <= 680) {
-        e.preventDefault();
-        e.stopPropagation();
-        const parent = trigger.parentElement;
-        const menu = parent.querySelector('.nav-dropdown-menu');
-        const chevron = trigger.querySelector('.chevron');
-        
-        const isOpen = menu.style.display === 'block';
-        
-        // Close other mobile dropdowns first
-        document.querySelectorAll('.nav-item-dropdown').forEach(item => {
-          if (item !== parent) {
-            item.classList.remove('active');
-            const otherMenu = item.querySelector('.nav-dropdown-menu');
-            if (otherMenu) otherMenu.style.display = 'none';
-            const otherChevron = item.querySelector('.chevron');
-            if (otherChevron) otherChevron.style.transform = 'rotate(0deg)';
-          }
-        });
-
-        if (isOpen) {
-          parent.classList.remove('active');
-          menu.style.display = 'none';
-          if (chevron) chevron.style.transform = 'rotate(0deg)';
-        } else {
-          parent.classList.add('active');
-          menu.style.display = 'block';
-          if (chevron) chevron.style.transform = 'rotate(180deg)';
-        }
-      }
-    });
-  });
-
-  // Close mobile menu when clicking a link
-  document.querySelectorAll('.nav-links a').forEach(link => {
+  // Close mobile menu when a link is clicked
+  document.querySelectorAll('.mobile-nav-links a').forEach(link => {
     link.addEventListener('click', () => {
-      if (window.innerWidth <= 680) {
-        const links = document.querySelector('.nav-links');
-        links.style.display = 'none';
-        
-        // Reset dropdown states
-        document.querySelectorAll('.nav-item-dropdown').forEach(item => {
-          item.classList.remove('active');
-          const menu = item.querySelector('.nav-dropdown-menu');
-          if (menu) menu.style.display = 'none';
-          const chevron = item.querySelector('.chevron');
-          if (chevron) chevron.style.transform = 'rotate(0deg)';
-        });
-      }
+      mobileLinks.classList.remove('open');
     });
   });
 
