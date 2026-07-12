@@ -912,9 +912,26 @@
     .foot-contact { display: none !important; }
     section{ padding:64px 0; }
     .wrap{ padding:0 20px; }
-    .sector-grid{ grid-template-columns:1fr; }
-    table.plans{ font-size:13px; }
-    table.plans th, table.plans td{ padding:14px 8px; }
+    .sector-grid { grid-template-columns: 1fr !important; }
+    .plans-table-wrapper {
+      overflow-x: hidden !important;
+    }
+    table.plans {
+      font-size: 11px !important;
+      width: 100% !important;
+    }
+    table.plans th, table.plans td {
+      padding: 8px 6px !important;
+    }
+    table.plans td.lockin {
+      font-size: 16px !important;
+    }
+    table.plans td.rate-val {
+      font-size: 15px !important;
+    }
+    table.plans td.amount-val {
+      font-size: 14px !important;
+    }
     .foot-links{ gap:32px; }
     .wipe-logo{
       height: 55px; /* increased slightly on mobile */
@@ -988,6 +1005,40 @@
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
     }
+  /* ---------- MOBILE SIMPLIFIED MENU ---------- */
+  .mobile-nav-links {
+    display: none;
+  }
+  @media (max-width: 680px) {
+    .mobile-nav-links.open {
+      display: flex;
+      position: absolute;
+      top: 100%;
+      right: 24px;
+      left: auto;
+      width: 180px;
+      flex-direction: column;
+      background: #12100d;
+      padding: 16px 20px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.55);
+      gap: 12px;
+      z-index: 1001;
+      margin-top: 8px;
+    }
+    .mobile-nav-links.open a {
+      font-family: 'Outfit', sans-serif;
+      color: var(--cream);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .mobile-nav-links.open a:last-child {
+      border-bottom: none;
+    }
   }
 </style>
 </head>
@@ -1016,6 +1067,12 @@
         <a href="#sector-commercial" class="link-commercial">Commercial</a>
         <a href="#sector-layouts" class="link-layouts">Layouts</a>
       </div>
+    </div>
+    <div class="mobile-nav-links">
+      <a href="services.html">Loans</a>
+      <a href="invest.html">Invest</a>
+      <a href="index.html#how">How it works</a>
+      <a href="index.html#contact">Contact</a>
     </div>
     <div class="nav-cta">
       <button class="btn btn-login">Login</button>
@@ -1358,65 +1415,17 @@
   }
   track.innerHTML = buildItems() + buildItems();
 
-  // mobile menu (simple toggle of a dropdown)
+  // mobile menu (toggle of a simplified flat dropdown)
   const toggle = document.querySelector('.menu-toggle');
+  const mobileLinks = document.querySelector('.mobile-nav-links');
   toggle.addEventListener('click', () => {
-    const links = document.querySelector('.nav-links');
-    const open = links.style.display === 'flex';
-    links.style.display = open ? 'none' : 'flex';
-    links.style.cssText += open ? '' : 'position:absolute; top:100%; left:0; right:0; flex-direction:column; background:#12100D; padding:24px 32px; border-bottom:1px solid var(--line); gap:20px;';
+    mobileLinks.classList.toggle('open');
   });
 
-  // Handle dropdown toggle on mobile viewports
-  document.querySelectorAll('.nav-dropdown-trigger').forEach(trigger => {
-    trigger.addEventListener('click', (e) => {
-      if (window.innerWidth <= 680) {
-        e.preventDefault();
-        e.stopPropagation();
-        const parent = trigger.parentElement;
-        const menu = parent.querySelector('.nav-dropdown-menu');
-        const chevron = trigger.querySelector('.chevron');
-        
-        const isOpen = menu.style.display === 'block';
-        
-        document.querySelectorAll('.nav-item-dropdown').forEach(item => {
-          if (item !== parent) {
-            item.classList.remove('active');
-            const otherMenu = item.querySelector('.nav-dropdown-menu');
-            if (otherMenu) otherMenu.style.display = 'none';
-            const otherChevron = item.querySelector('.chevron');
-            if (otherChevron) otherChevron.style.transform = 'rotate(0deg)';
-          }
-        });
-
-        if (isOpen) {
-          parent.classList.remove('active');
-          menu.style.display = 'none';
-          if (chevron) chevron.style.transform = 'rotate(0deg)';
-        } else {
-          parent.classList.add('active');
-          menu.style.display = 'block';
-          if (chevron) chevron.style.transform = 'rotate(180deg)';
-        }
-      }
-    });
-  });
-
-  // Close mobile menu when clicking a link
-  document.querySelectorAll('.nav-links a').forEach(link => {
+  // Close mobile menu when a link is clicked
+  document.querySelectorAll('.mobile-nav-links a').forEach(link => {
     link.addEventListener('click', () => {
-      if (window.innerWidth <= 680) {
-        const links = document.querySelector('.nav-links');
-        links.style.display = 'none';
-        
-        document.querySelectorAll('.nav-item-dropdown').forEach(item => {
-          item.classList.remove('active');
-          const menu = item.querySelector('.nav-dropdown-menu');
-          if (menu) menu.style.display = 'none';
-          const chevron = item.querySelector('.chevron');
-          if (chevron) chevron.style.transform = 'rotate(0deg)';
-        });
-      }
+      mobileLinks.classList.remove('open');
     });
   });
 
