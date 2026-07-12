@@ -698,20 +698,24 @@
   }
   .sector-card p{ font-family: 'Outfit', sans-serif; margin-top:14px; font-size:16.5px; font-weight:600; line-height:1.45; color:#333333; }
 
+  #plans {
+    background: linear-gradient(rgba(17, 19, 21, 0.85), rgba(17, 19, 21, 0.85)), url('plans.png') center 55% / cover no-repeat fixed;
+  }
+
   /* ---------- PLANS TABLE ---------- */
-  table.plans{ width:100%; border-collapse:collapse; margin-top:8px; }
+  table.plans{ width:100%; border-collapse:collapse; margin-top:16px; }
   table.plans th, table.plans td{
-    text-align:left; padding:20px 18px; border-bottom:1px solid var(--line);
+    text-align:left; padding:24px 20px; border-bottom:1px solid var(--line);
   }
   table.plans th{
-    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.08em;
-    text-transform:uppercase; color:var(--cream-faint); font-weight:400;
+    font-family:'IBM Plex Mono', monospace; font-size:15px; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--cream); font-weight:600;
   }
-  table.plans td{ font-size:15.5px; }
-  table.plans td.lockin{ font-family:'Fraunces', serif; font-style:italic; color:var(--gold); font-size:19px; }
-  table.plans td.rate{ font-family:'IBM Plex Mono', monospace; color:var(--gold); }
+  table.plans td{ font-size:18px; color:var(--cream); font-weight: 500; }
+  table.plans td.lockin{ font-family:'Fraunces', serif; font-style:italic; color:var(--gold); font-size:24px; font-weight:600; }
+  table.plans td.rate{ font-family:'IBM Plex Mono', monospace; color: #4B8EE5; font-size: 22px; font-weight:600; }
   table.plans tr:last-child td{ border-bottom:none; }
-  table.plans tr:hover td{ background: var(--bg-panel); }
+  table.plans tr:hover td{ background: rgba(255,255,255,0.05); }
 
   /* ---------- CTA BAND ---------- */
   .cta-band{
