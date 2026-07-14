@@ -1027,7 +1027,14 @@
     background: linear-gradient(135deg, rgba(255,252,245,1) 0%, rgba(240,235,225,1) 100%);
   }
   #about::before {
-    display: none;
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url('images/plant_growth_wide.png') center center / cover no-repeat;
+    opacity: 0.05; /* Made duller as requested */
+    z-index: 0;
+    pointer-events: none;
+    mix-blend-mode: multiply;
   }
   #about .wrap {
     position: relative;
@@ -1098,7 +1105,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(255, 255, 255, 0.85); /* Light overlay for readability */
+    background: rgba(235, 230, 220, 0.96); /* Dimmed back a bit for contrast */
     z-index: 0;
   }
   #why-choose .wrap { position: relative; z-index: 1; }
@@ -1358,48 +1365,99 @@
   .about-bg-graph.animate text:nth-of-type(8) { transition-delay: 2.3s; }
 
   /* ---------- WHY CHOOSE ---------- */
+  #why-choose .why-choose-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    #why-choose .why-choose-split { grid-template-columns: 1fr; }
+  }
   .why-list { 
     display: flex;
     flex-direction: column;
-    gap: 32px; 
-    margin-top: 48px; 
+    gap: 16px; 
   }
   .why-item {
     position: relative;
-    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 6px;
+    padding: 16px 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    border-left: 3px solid var(--gold);
+    width: 100%;
     cursor: default;
     opacity: 0;
+    transform: translateX(30px);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
   }
   .why-item.visible {
-    animation: vibrateSettle 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation: commentSlide 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
   }
-  @keyframes vibrateSettle {
-    0% { opacity: 0; transform: translateX(-40px) skewX(5deg); }
-    30% { opacity: 1; transform: translateX(15px) skewX(-3deg); }
-    50% { transform: translateX(-8px) skewX(2deg); }
-    70% { transform: translateX(4px) skewX(-1deg); }
-    85% { transform: translateX(-2px) skewX(0); }
-    100% { opacity: 1; transform: translateX(0) skewX(0); }
+  .why-item.visible:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+    z-index: 2;
+  }
+  
+  /* Stagger the entrance animation for each comment box */
+  .why-item:nth-child(1) { animation-delay: 0.0s; }
+  .why-item:nth-child(2) { animation-delay: 0.15s; }
+  .why-item:nth-child(3) { animation-delay: 0.30s; }
+  .why-item:nth-child(4) { animation-delay: 0.45s; }
+  .why-item:nth-child(5) { animation-delay: 0.60s; }
+  .why-item:nth-child(6) { animation-delay: 0.75s; }
+
+  @keyframes commentSlide {
+    0% { opacity: 0; transform: translateX(30px) scale(0.95); }
+    100% { opacity: 1; transform: translateX(0) scale(1); }
   }
   .why-item .idx {
-    font-family: 'IBM Plex Mono', monospace;
-    color: var(--gold);
-    font-size: 18px;
-    font-weight: 500;
-    display: inline-block;
-    margin-right: 24px;
-    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  /* Colorful Icons */
+  .why-item:nth-child(1) .idx { background: #e8f4fd; color: #1565c0; }
+  .why-item:nth-child(2) .idx { background: #fdf3e8; color: #e65100; }
+  .why-item:nth-child(3) .idx { background: #eaf5e8; color: #2e7d32; }
+  .why-item:nth-child(4) .idx { background: #f5e8f5; color: #6a1b9a; }
+  .why-item:nth-child(5) .idx { background: #fdf5e6; color: #ef6c00; }
+  .why-item:nth-child(6) .idx { background: #e6f6f8; color: #00838f; }
+  .why-item .why-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .why-item .comment-author {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
   .why-item p {
-    display: inline-block;
     margin: 0;
-    font-family: 'Fraunces', serif;
-    font-size: 34px;
-    font-style: italic;
-    font-weight: 500;
-    color: var(--ink);
-    line-height: 1.2;
-    vertical-align: middle;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #222;
+    line-height: 1.4;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
   }
 
   /* ---------- HOW IT WORKS ---------- */
@@ -1664,7 +1722,6 @@
     pointer-events: none !important;
     transform: translate(-50%, 20px) !important;
   }
-
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 1024px) {
     #about, #why-choose, #how {
@@ -1974,8 +2031,7 @@
 </style>
 </head>
 <body class="loading">
-
-<div class="scroll-progress-container"><div class="scroll-progress-bar" id="scrollBar"></div></div>
+  <div class="scroll-progress-container"><div class="scroll-progress-bar" id="scrollBar"></div></div>
 <button class="scroll-to-top" id="scrollTopBtn" aria-label="Scroll to top">
   <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></svg>
 </button>
@@ -2152,9 +2208,7 @@
     <div class="about-grid">
       <div>
         <div class="about-lead">
-          <p>Founded in 2016, our journey began with a simple vision—to build a company driven by quality, innovation, and long-term relationships. What started as a small design firm has grown into a diversified business with a strong presence in the construction industry.</p>
-          <p>Our success has been built on the trust and confidence of our clients, partners, and investors, whom we proudly call our <strong style="color: #ff1493; font-family: 'Fraunces', serif; font-size: 1.4em; font-style: italic; font-weight: 700; display: inline-block; transform: translateY(2px);">believers</strong>.</p>
-          <p style="margin-top: 32px;"><a href="#contact" class="btn btn-gold">Let's connect</a></p>
+          <p style="color: #4A7C59; font-weight: 500; font-size: 1.1em; max-width: 800px; margin-bottom: 32px;">Founded in 2016 as a small design firm, we have grown into a diversified construction business driven by quality and innovation. Our continued success is built entirely on the trust of our clients, partners, and investors, whom we proudly call our <strong style="color: #ff1493; font-family: 'Fraunces', serif; font-size: 1.3em; font-style: italic; font-weight: 700; display: inline-block; transform: translateY(2px);">believers</strong>.</p>
         </div>
     </div>
 
@@ -2205,15 +2259,55 @@
 </section>
 
 <section id="why-choose">
-  <div class="wrap">
-    <span class="eyebrow">Why choose us</span>
+  <div class="wrap why-choose-split">
+    <div class="why-header">
+      <span class="eyebrow">Why choose us</span>
+      <h2 style="font-size: clamp(36px, 4vw, 56px); color: #000; margin-top: 24px; line-height: 1.1; font-family: 'Fraunces', serif; font-weight: 500; letter-spacing: -0.02em;">Building <em style="color:#ff1493; font-style:italic;">trust</em><br>that lasts a lifetime.</h2>
+      <p class="typewriter-words" style="color: #666; font-family: 'Fraunces', serif; font-style: italic; font-weight: 400; font-size: 1.35em; max-width: 440px; margin-top: 24px; letter-spacing: 0.01em; line-height: 1.4; min-height: 120px; text-align: left;">When you partner with us, you're not just making an investment—you're joining a community dedicated to transparent growth and shared success.</p>
+    </div>
     <div class="why-list">
-      <div class="why-item"><div class="idx">&bull;</div><p>Nearly a decade of business experience</p></div>
-      <div class="why-item"><div class="idx">&bull;</div><p>Strong foundation built on trust and transparency</p></div>
-      <div class="why-item"><div class="idx">&bull;</div><p>Diversified expertise in design and construction</p></div>
-      <div class="why-item"><div class="idx">&bull;</div><p>Proven track record of business growth</p></div>
-      <div class="why-item"><div class="idx">&bull;</div><p>Customer-focused approach with long-term relationships</p></div>
-      <div class="why-item"><div class="idx">&bull;</div><p>A growing community of over 400 believers</p></div>
+      <div class="why-item">
+        <div class="idx"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+        <div class="why-text">
+          <span class="comment-author">Experience</span>
+          <p>Nearly a decade of business experience</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="idx"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+        <div class="why-text">
+          <span class="comment-author">Foundation</span>
+          <p>Strong foundation built on trust and transparency</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="idx"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
+        <div class="why-text">
+          <span class="comment-author">Expertise</span>
+          <p>Diversified expertise in design and construction</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="idx"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div>
+        <div class="why-text">
+          <span class="comment-author">Performance</span>
+          <p>Proven track record of business growth</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="idx"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+        <div class="why-text">
+          <span class="comment-author">Relationships</span>
+          <p>Customer-focused approach with long-term relationships</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="idx"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
+        <div class="why-text">
+          <span class="comment-author">Community</span>
+          <p>A growing community of over 400 believers</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -2902,6 +2996,49 @@
     el.classList.add('stagger-fade');
     el.style.transitionDelay = `${index * 0.3}s`;
     scrollObserver.observe(el);
+  });
+  
+  // --- Typewriter Word-by-Word logic ---
+  const twWordsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.animated) {
+        entry.target.dataset.animated = "true";
+        const text = entry.target.innerText;
+        const words = text.split(' ');
+        entry.target.innerHTML = '';
+        let delay = 0;
+        words.forEach((word) => {
+          if (!word) return;
+          const span = document.createElement('span');
+          span.innerText = word;
+          span.style.opacity = '0';
+          span.style.transition = 'opacity 0.25s ease-in-out';
+          span.style.transitionDelay = `${delay}s`;
+          entry.target.appendChild(span);
+          entry.target.appendChild(document.createTextNode(' '));
+          
+          void span.offsetWidth; // force reflow
+          span.style.opacity = '1';
+          delay += 0.15; // 150ms per word
+        });
+        
+        const cursor = document.createElement('span');
+        cursor.innerText = '|';
+        cursor.style.display = 'inline-block';
+        cursor.style.color = '#ccc'; // Light cursor color
+        cursor.style.animation = 'blink 1s step-end infinite';
+        cursor.style.opacity = '0';
+        cursor.style.transition = 'opacity 0.25s';
+        cursor.style.transitionDelay = `${delay}s`;
+        entry.target.appendChild(cursor);
+        
+        setTimeout(() => cursor.style.opacity = '1', 10);
+      }
+    });
+  }, { threshold: 0.5 });
+  
+  document.querySelectorAll('.typewriter-words').forEach(el => {
+    twWordsObserver.observe(el);
   });
   // Preloader Logic (5 seconds with trust counter)
   const preloader = document.getElementById('sitePreloader');
