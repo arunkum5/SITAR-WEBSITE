@@ -126,14 +126,15 @@
   /* ---------- NAV ---------- */
   header{
     position:sticky; top:0; z-index:50;
-    background:rgba(18,16,13,0.86);
-    backdrop-filter: blur(10px);
-    border-bottom:1px solid var(--line);
+    background:rgba(20,20,20,0.35);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    border-bottom:1px solid rgba(255,255,255,0.05);
   }
   .nav{
     display:flex; align-items:center; justify-content:flex-start; gap: 40px;
     padding:8px 32px;
-    max-width:1180px; margin:0 auto;
+    max-width:944px; margin:0 auto;
   }
   .nav-cta{
     display: flex;
@@ -147,15 +148,15 @@
     gap: 8px;
   }
   .wipe-logo{
-    height: 75px;
-    width: 75px;
+    height: 52px;
+    width: 52px;
     object-fit: contain;
     clip-path: circle(0% at 50% 50%);
     animation: logoPulseWipe 8s ease-in-out infinite;
     filter: brightness(1.35) contrast(1.15); /* make logo brighter */
   }
   .logo-text{
-    height: 81px;
+    height: 62px;
     width: auto;
     object-fit: contain;
     opacity: 0;
@@ -207,7 +208,7 @@
     font-size:14px; font-weight:600; color:var(--cream-dim);
   }
   .nav-links a + a {
-    margin-left: 32px;
+    margin-left: 20px;
   }
   .nav-links a[aria-label="Home"] + a {
     margin-left: 10px;
@@ -215,7 +216,11 @@
   .nav-links a{
     transition: all .2s ease;
     text-align: center;
-    padding: 8px 16px;
+    padding: 0 10px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 6px;
     background: rgba(243, 236, 221, 0.04);
     border: 1px solid rgba(243, 236, 221, 0.08);
@@ -248,18 +253,23 @@
     border: none;
     color: var(--cream-dim);
     font-family: inherit;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 0;
+    font-size: 15px;
+    font-weight: 600;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 6px;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    transition: color .2s ease;
+    justify-content: center;
+    gap: 8px;
+    transition: all .2s ease;
   }
   .nav-dropdown-trigger:hover,
   .nav-item-dropdown:hover .nav-dropdown-trigger {
     color: var(--gold);
+    background: rgba(243, 236, 221, 0.12);
+    border: 1px solid rgba(243, 236, 221, 0.08);
   }
   .nav-dropdown-trigger .chevron {
     font-size: 8px;
@@ -362,6 +372,12 @@
   }
 
   .nav-cta{ display:flex; gap:12px; align-items:center; }
+  .nav-text-link {
+    color: #fff; text-decoration: none; font-size: 14.5px; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 6px; transition: color 0.3s ease;
+    background: none; border: none; padding: 0; cursor: pointer;
+  }
+  .nav-text-link:hover { color: var(--gold); }
 
   .btn{
     display:inline-flex; align-items:center; justify-content:center;
@@ -907,7 +923,7 @@
   }
   @media (max-width: 680px){
     .mobile-hide-explore { display: none !important; }
-    .nav-links, .nav-cta .btn-ghost, .nav-cta .btn-login, .nav-cta .btn-signup { display: none !important; }
+    .nav-links, .nav-cta .btn-ghost, .nav-cta .nav-text-link { display: none !important; }
     .menu-toggle{ display:block; }
     .foot-contact { display: none !important; }
     .scroll-to-top { display: none !important; }
@@ -1047,6 +1063,29 @@
       display: flex;
     }
   }
+  /* Override nav link colors to simple white and simple hover button */
+  .nav-links a, .nav-dropdown-trigger, .nav-links a.active {
+    color: #ffffff !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    text-decoration: none !important;
+  }
+  .nav-active-pill {
+    display: none !important;
+  }
+  .nav-links a:hover, 
+  .nav-dropdown-trigger:hover, 
+  .nav-item-dropdown:hover .nav-dropdown-trigger {
+    color: #9ca3af !important;
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+    text-shadow: 0 0 .5px #9ca3af !important;
+    text-decoration: underline !important;
+    text-underline-offset: 6px !important;
+    text-decoration-thickness: 2px !important;
+  }
 </style>
 </head>
 <body>
@@ -1085,8 +1124,10 @@
       <a href="#signup">Signup</a>
     </div>
     <div class="nav-cta">
-      <button class="btn btn-login">Login</button>
-      <button class="btn btn-signup">Signup</button>
+      <a href="#" class="nav-text-link">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        Login / Signup
+      </a>
       <button class="menu-toggle" aria-label="Menu">☰</button>
     </div>
   </nav>
