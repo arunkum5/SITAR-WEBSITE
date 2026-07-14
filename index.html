@@ -684,29 +684,45 @@
   /* Floating Social Proof Alerts */
   .floating-alert-container {
     position: absolute;
-    bottom: 100px;
-    left: 40px;
+    bottom: 110px;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 20;
     pointer-events: none;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 12px;
   }
   .floating-alert {
+    position: relative;
     background: rgba(255, 255, 255, 0.95);
     border: 1px solid rgba(0,0,0,0.05);
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    padding: 10px 20px 10px 10px;
+    padding: 6px 16px 6px 6px;
     border-radius: 50px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 14px;
+    gap: 10px;
+    font-size: 12.5px;
     font-weight: 600;
     color: #333;
     animation: floatAlert 6s ease-in-out forwards;
     opacity: 0;
     transform: translateY(20px);
+  }
+  .confetti-particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+  }
+  @keyframes confettiBurst {
+    0% { transform: translate(0, 0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0.3); opacity: 0; }
   }
   @keyframes floatAlert {
     0% { opacity: 0; transform: translateY(20px); }
@@ -1004,43 +1020,26 @@
     }
   }
 
-  /* About Background Parallax */
+  /* About Background Theme */
   #about {
     position: relative;
     overflow: hidden;
-    background-image: url('about_bg.webp');
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background: linear-gradient(135deg, rgba(255,252,245,1) 0%, rgba(240,235,225,1) 100%);
   }
-  /* Re-adjusted overlay to balance background visibility and text readability */
   #about::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(255, 255, 255, 0.75); 
-    backdrop-filter: brightness(0.9);
+    display: none;
   }
   #about .wrap {
     position: relative;
     z-index: 1;
   }
   
-  /* Make the left and right sides of About Us into distinct dark boxes */
+  /* Layout without distinct backgrounds */
+  #about .about-grid {
+    grid-template-columns: 1fr;
+  }
   #about .about-grid > div {
-    background: rgba(15, 15, 20, 0.35); /* Fallback */
-    padding: 48px;
-    border-radius: 20px;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(12px);
-  }
-  #about .about-grid > div:nth-child(1) {
-    background: linear-gradient(rgba(15, 15, 20, 0.35), rgba(15, 15, 20, 0.35)), url('a1.svg') no-repeat center center / cover;
-  }
-  #about .about-grid > div:nth-child(2) {
-    background: linear-gradient(rgba(15, 15, 20, 0.35), rgba(15, 15, 20, 0.35)), url('a2.svg') no-repeat center center / cover;
+    padding: 24px 0;
   }
   
   /* Text Color Overrides for Dark Boxes */
@@ -1058,7 +1057,7 @@
   
   #about .eyebrow { color: #ff1493 !important; }
   #about .about-lead p { 
-    color: #ffffff !important; 
+    color: #333333 !important; 
     font-size: 18px !important; 
     font-weight: 400 !important; 
     font-family: 'Outfit', sans-serif !important; 
@@ -1081,9 +1080,9 @@
 
 
   #about .about-lead p:hover {
-    color: #e2e8f0 !important; 
+    color: #000000 !important; 
   }
-  #about .about-lead strong { color: #f8fafc !important; }
+  #about .about-lead strong { color: #111111 !important; }
   
   /* Why Choose Us Section */
   #why-choose {
@@ -1173,30 +1172,119 @@
   #about .stat .label { color: #475569 !important; font-weight: 600; font-size: 14px; margin-top: 8px; }
   #about .stat .num { font-size: 28px; font-weight: 800; min-width: 120px; /* prevents resizing when numbers change */ }
   
-  #about .timeline { border-left: 1px solid rgba(0, 0, 0, 0.15) !important; }
+  /* Timeline Horizontal Cards Layout */
+  #about .timeline { 
+    border-left: none !important; 
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    position: relative;
+    padding-top: 50px;
+    margin-top: 20px;
+  }
+  
+  /* Horizontal connecting line */
+  #about .timeline::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 32px;
+    right: 32px;
+    height: 3px;
+    width: auto !important;
+    bottom: auto !important;
+    background: linear-gradient(to right, #4ecdc4, #f5a623, #ff6b9d, #a78bfa);
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 2s ease-in-out;
+  }
+  #about .timeline.visible::before {
+    clip-path: inset(0 0 0 0);
+  }
+
+  #about .tl-item {
+    flex: 1;
+    min-width: 250px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 32px 24px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+    border: 1px solid rgba(0,0,0,0.04);
+    position: relative;
+    transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 1.4s ease !important;
+  }
+  #about .tl-item:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  }
+  
   #about .tl-item:nth-child(1) { --block-color: #4ecdc4; }
   #about .tl-item:nth-child(2) { --block-color: #f5a623; }
   #about .tl-item:nth-child(3) { --block-color: #ff6b9d; }
   #about .tl-item:nth-child(4) { --block-color: #a78bfa; }
-  #about .tl-item::before { border-color: var(--block-color) !important; background: #12100d; }
+  
+  /* Node on the horizontal line */
+  #about .tl-item::before {
+    content: "";
+    position: absolute;
+    top: -51.5px !important; /* -50px from padding + 1.5px to center on 3px line */
+    left: 24px !important;
+    width: 16px !important;
+    height: 16px !important;
+    border-radius: 50% !important;
+    background: #ffffff !important;
+    border: 4px solid var(--block-color) !important;
+    z-index: 2;
+  }
+  
+  /* Connector from node to card */
+  #about .tl-item::after {
+    content: "";
+    position: absolute;
+    top: -40px;
+    left: 31px;
+    width: 2px;
+    height: 40px;
+    background: rgba(0,0,0,0.1);
+  }
 
-  #about .tl-year { color: var(--block-color) !important; font-weight: 800; font-size: 18px; transition: transform 0.3s ease; }
-  #about .tl-title { color: #ffffff !important;
+  #about .tl-year { color: var(--block-color) !important; font-weight: 800; font-size: 16px; margin-bottom: 8px; transition: transform 0.3s ease; }
+  #about .tl-title { color: #111111 !important;
     font-weight: 700 !important; 
-    font-size: 24px !important; 
-    margin-bottom: 6px;
+    font-size: 20px !important; 
+    margin-bottom: 8px;
     transition: transform 0.3s ease;
     cursor: default;
   }
-  #about .tl-text { color: #ffffff !important; font-weight: 400 !important; font-size: 16px !important; line-height: 1.6; }
+  #about .tl-text { color: #555555 !important; font-weight: 600 !important; font-size: 15px !important; line-height: 1.6; text-align: left; }
   
   /* Hover effects for timeline titles */
   #about .tl-item:hover .tl-title {
-    transform: translateX(8px);
-    filter: brightness(1.2);
+    transform: translateY(-2px);
   }
   #about .tl-item:hover .tl-year {
-    transform: translateX(4px);
+    transform: translateY(-2px);
+  }
+  
+  /* Timeline Background Icons */
+  .tl-icon-bg {
+    position: absolute;
+    right: 16px;
+    bottom: -10px;
+    width: 120px;
+    height: 120px;
+    color: var(--block-color);
+    opacity: 0.05;
+    z-index: 0;
+    pointer-events: none;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.6s ease;
+  }
+  #about .tl-item:hover .tl-icon-bg {
+    transform: scale(1.15) rotate(-5deg);
+    opacity: 0.12;
+  }
+  #about .tl-year, #about .tl-title, #about .tl-text {
+    position: relative;
+    z-index: 1;
   }
   .about-bg-graph {
     position: absolute;
@@ -2068,46 +2156,48 @@
           <p>Our success has been built on the trust and confidence of our clients, partners, and investors, whom we proudly call our <strong style="color: #ff1493; font-family: 'Fraunces', serif; font-size: 1.4em; font-style: italic; font-weight: 700; display: inline-block; transform: translateY(2px);">believers</strong>.</p>
           <p style="margin-top: 32px;"><a href="#contact" class="btn btn-gold">Let's connect</a></p>
         </div>
-      <div class="hero-stats" style="margin-top: 40px;">
-        <div class="stat stagger-fade" data-target="1484">
-          <div class="num" style="color:#4ecdc4;">0</div>
-          <div class="label">Founded</div>
-        </div>
-        <div class="stat stagger-fade" data-target="10" data-prefix="₹" data-suffix="L">
-          <div class="num" style="color:#f5a623;">₹0L</div>
-          <div class="label">Starting capital</div>
-        </div>
-        <div class="stat stagger-fade" data-target="400" data-suffix="+">
-          <div class="num" style="color:#ff6b9d;">0+</div>
-          <div class="label">Believers</div>
-        </div>
-        <div class="stat stagger-fade" data-target="2" data-suffix="×">
-          <div class="num" style="color:#a78bfa;">0×</div>
-          <div class="label">Revenue growth</div>
-        </div>
-      </div>
     </div>
 
     <div class="timeline">
       <div class="tl-item">
+        <svg class="tl-icon-bg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 22h10"></path>
+          <path d="M12 22v-9"></path>
+          <path d="M12 13s2-3 5-3 3 2 3 2-2 3-5 3c-1 0-3-2-3-2z"></path>
+          <path d="M12 15s-2-2-4-2-4 1-4 1 1 3 4 3 4-2 4-2z"></path>
+        </svg>
         <div class="tl-year">2016</div>
         <div class="tl-title">A modest beginning</div>
-        <div class="tl-text">Started with ₹10 lakh in capital, determined to create value through dedication, transparency, and consistent performance.</div>
+        <div class="tl-text">Started with ₹10 lakh in capital, driven by a vision to create value through transparency and consistent performance.</div>
       </div>
       <div class="tl-item">
+        <svg class="tl-icon-bg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
         <div class="tl-year">2017 – 2019</div>
         <div class="tl-title">Into construction</div>
-        <div class="tl-text">As our reputation grew, so did the confidence of those who chose to grow with us — we expanded into construction, completing projects while holding to quality and integrity.</div>
+        <div class="tl-text">As reputation grew, so did investor confidence. We expanded into construction, holding firmly to our standards of quality.</div>
       </div>
       <div class="tl-item">
+        <svg class="tl-icon-bg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+          <path d="m9 12 2 2 4-4"></path>
+        </svg>
         <div class="tl-year">2020</div>
         <div class="tl-title">Tested, not broken</div>
-        <div class="tl-text">Like many businesses, we faced the challenges of the pandemic. We stayed focused, adapted, and came through stronger.</div>
+        <div class="tl-text">Faced with global pandemic challenges, we stayed focused, quickly adapted, and emerged as a stronger organization.</div>
       </div>
       <div class="tl-item">
+        <svg class="tl-icon-bg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+          <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+          <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
+          <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
+        </svg>
         <div class="tl-year">Since 2021</div>
         <div class="tl-title">A new chapter</div>
-        <div class="tl-text">We achieved significant growth and doubled our revenue — and today, more than 400 believers continue to place their trust in us.</div>
+        <div class="tl-text">Achieved significant milestone growth, doubling our revenue as over 400 believers continue to place their trust in us.</div>
       </div>
     </div>
     </div>
@@ -2413,10 +2503,16 @@
             isTyping = true;
             const chars = newEl.querySelectorAll('.char');
             chars.forEach(c => {
-              c.style.animation = 'none';
-              c.offsetHeight; // trigger reflow
-              c.style.animation = null; 
+              c.style.animationName = 'none';
             });
+            
+            // Force a reflow on the parent to ensure the animation resets
+            void newEl.offsetWidth;
+            
+            chars.forEach(c => {
+              c.style.animationName = ''; // Restores the CSS class animation name
+            });
+            
             setTimeout(() => {
               isTyping = false;
             }, innerChars.length * 20 + 100);
@@ -2492,6 +2588,23 @@
 
   const timelineEl = document.querySelector('.timeline');
   if (timelineEl) tlObserver.observe(timelineEl);
+
+  // Re-run timeline card animation on hover
+  document.querySelectorAll('.tl-item').forEach(item => {
+    let isAnimating = false;
+    item.addEventListener('mouseenter', () => {
+      if (isAnimating) return;
+      isAnimating = true;
+      item.style.transition = 'none';
+      item.classList.remove('visible');
+      void item.offsetWidth; // Force reflow
+      item.style.transition = '';
+      item.classList.add('visible');
+      setTimeout(() => {
+        isAnimating = false;
+      }, 1400); // Wait for the 1.4s transition to finish
+    });
+  });
 
   // --- Background Graph Intersection Observer ---
   const graphObserver = new IntersectionObserver((entries) => {
@@ -2866,8 +2979,8 @@
 
   // --- Floating Social Proof Alerts ---
   const alertMessages = [
-    { text: "13 New investors joined in the last 30 days", icon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>', color: '#3E8E85' },
-    { text: "16 Door step gold loans delivered in last 30 days", icon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg>', color: '#B8860B' }
+    { text: "13+ New Investors this month", icon: '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>', color: '#3E8E85' },
+    { text: "16+ Gold Loans delivered this month", icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>', color: '#B8860B' }
   ];
 
   const heroSection = document.querySelector('.hero');
@@ -2877,6 +2990,27 @@
     heroSection.appendChild(alertContainer);
 
     let lastMsgIndex = -1;
+    
+    const burstConfetti = (alertEl, color) => {
+      for (let i = 0; i < 14; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'confetti-particle';
+        particle.style.background = color;
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 25 + Math.random() * 45;
+        const tx = Math.cos(angle) * velocity;
+        const ty = Math.sin(angle) * velocity - 10;
+        particle.style.setProperty('--tx', `${tx}px`);
+        particle.style.setProperty('--ty', `${ty}px`);
+        const dur = 0.5 + Math.random() * 0.4;
+        particle.style.animation = `confettiBurst ${dur}s ease-out forwards`;
+        particle.style.left = '50%';
+        particle.style.top = '50%';
+        alertEl.appendChild(particle);
+        setTimeout(() => particle.remove(), dur * 1000);
+      }
+    };
+
     const spawnAlert = () => {
       // Pick the next message sequentially to ensure both show up
       lastMsgIndex = (lastMsgIndex + 1) % alertMessages.length;
@@ -2885,12 +3019,15 @@
       const alert = document.createElement('div');
       alert.className = 'floating-alert';
       alert.innerHTML = `
-        <div style="width:36px;height:36px;border-radius:50%;background:${msg.color}15;display:flex;align-items:center;justify-content:center;color:${msg.color};">
+        <div style="width:28px;height:28px;border-radius:50%;background:${msg.color}15;display:flex;align-items:center;justify-content:center;color:${msg.color};">
           ${msg.icon}
         </div>
         <span>${msg.text}</span>
       `;
       alertContainer.appendChild(alert);
+      
+      // Fire confetti burst right after it pops up
+      setTimeout(() => burstConfetti(alert, msg.color), 600);
       
       // Remove after animation completes (6s)
       setTimeout(() => {
