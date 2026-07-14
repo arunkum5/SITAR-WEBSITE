@@ -45,7 +45,7 @@
     </linearGradient>
   </defs>
   
-  <text x="10" y="60" class="main-text" letter-spacing="0">Sıtar</text>
+  <text x="10" y="60" class="main-text" letter-spacing="0">SıTAR</text>
   <circle cx="49" cy="22" r="4.5" class="dot" style="transform-origin: 49px 22px;"/>
   <text x="12" y="86" class="sub-text">WEALTH</text>
 </svg>
