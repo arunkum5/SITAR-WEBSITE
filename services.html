@@ -461,44 +461,87 @@
 
   .menu-toggle{ display:none; background:none; border:none; color:var(--cream); font-size:22px; cursor:pointer; }
 
-  /* ---------- HERO ---------- */
-  .hero{
-    padding: 0;
-    min-height: 92vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding-top: 20px;
-    border-bottom:none;
-    position:relative;
-    overflow:hidden;
-  }
-  .hero .wrap {
+  /* ---------- HERO SLIDER (REPLACES OLD HERO) ---------- */
+  .h-slider-section {
+    position: relative;
     width: 100%;
-    z-index: 1;
+    height: 100vh;
+    min-height: 600px;
+    overflow: hidden;
+    background: #000;
+    margin-top: -76px; /* Pull slider up under the sticky header */
   }
-  .hero-bg {
+  @keyframes bluePulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(75, 142, 229, 0.7); }
+    50% { transform: scale(1.04); box-shadow: 0 0 0 12px rgba(75, 142, 229, 0); background-color: #6da2eb; color: #ffffff; }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(75, 142, 229, 0); }
+  }
+  .h-slider-section .btn-gold {
+    background-color: #4B8EE5 !important;
+    border-color: #4B8EE5 !important;
+    color: #ffffff !important;
+    animation: bluePulse 2s infinite ease-in-out;
+    transform-origin: center;
+  }
+  .h-slider-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .h-slide-item {
     position: absolute;
     inset: 0;
-    z-index: 0;
+    opacity: 0;
     background-size: cover;
-    background-position: center 73%;
+    background-position: center;
     background-repeat: no-repeat;
-    background-image: url('np.webp');
-    filter: brightness(0.65) contrast(1.05);
-  }
-  .hero-bg::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(rgba(18,16,13,0.12) 0%, rgba(18,16,13,0.55) 75%, var(--bg) 100%);
+    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
     z-index: 1;
-    pointer-events: none;
+    display: flex;
+    align-items: center;
   }
+  .h-slide-item.active {
+    opacity: 1;
+    z-index: 2;
+  }
+  .h-slide-content {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s;
+    max-width: 680px;
+    padding-top: 40px; /* to avoid tabs */
+  }
+  .h-slide-item.active .h-slide-content {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .h-slider-dots {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 20;
+  }
+  .h-slide-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    padding: 0;
+  }
+  .h-slide-dot:hover { background: rgba(255,255,255,0.6); }
+  .h-slide-dot.active { background: var(--gold); transform: scale(1.2); }
 
-  @keyframes heroActiveZoom {
-    0% { transform: scale(1.0); }
-    100% { transform: scale(1.08); }
+  @media (max-width: 768px) {
+    .hero-title { font-size: 34px !important; white-space: normal !important; }
+    .hero-cta { flex-direction: column; width: 100%; align-items: flex-start; }
+    .h-slider-dots { bottom: 20px; }
   }
 
   .hero-inner {
@@ -517,35 +560,44 @@
     font-size: clamp(28px, 4.2vw, 54px);
     line-height: 1.1;
     margin: 0;
+    white-space: nowrap;
     animation: titleSwing 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
     transform-origin: top center;
   }
 
   @keyframes titleSwing {
     0% { transform: rotate(-3deg) scale(0.95); opacity: 0.7; }
-    35% { transform: rotate(2.5deg) scale(1.02); opacity: 1; }
+    
+  @keyframes headsetRing {
+    0% { transform: rotate(0deg); }
+    15% { transform: rotate(-12deg); }
+    30% { transform: rotate(12deg); }
+    45% { transform: rotate(-10deg); }
+    60% { transform: rotate(10deg); }
+    75% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+  }
+  .advisor-icon-animated {
+    animation: headsetRing 2.5s infinite ease-in-out;
+    transform-origin: center;
+  }
+35% { transform: rotate(2.5deg) scale(1.02); opacity: 1; }
     70% { transform: rotate(-1deg) scale(0.99); }
     100% { transform: rotate(0deg) scale(1); }
   }
 
   @media (max-width: 680px) {
     .hero-main-content {
+      flex-direction: column;
+      align-items: flex-start;
       margin-top: 40px;
+      gap: 16px;
+    }
+    .hero-title {
+      white-space: normal;
     }
   }
 
-  .hero .eyebrow{
-    margin-bottom:22px;
-    display:block;
-    font-family:'Fraunces', serif;
-    font-style:italic;
-    font-size:20px;
-    color:var(--gold);
-    text-shadow: 0 2px 8px rgba(0,0,0,0.85);
-    text-transform:none;
-    letter-spacing:0;
-  }
-  .hero h1 .cream{ color:var(--cream); font-style:normal; font-weight:400; }
   .hero-sub{
     margin-top:10px;
     max-width:560px;
@@ -994,11 +1046,16 @@
     }
   }
   /* Override nav link colors to simple white and simple hover button */
-  .nav-links a, .nav-dropdown-trigger, .nav-links a.active {
+  .nav-links a:not(.active), .nav-dropdown-trigger {
     color: #ffffff !important;
     background: transparent !important;
     border: 1px solid transparent !important;
     text-decoration: none !important;
+  }
+  .nav-links a.active {
+    color: var(--gold) !important;
+    background: transparent !important;
+    border-color: transparent !important;
   }
   .nav-active-pill {
     display: none !important;
@@ -1037,11 +1094,11 @@
       <div class="nav-heading">Loan Options</div>
       <div class="nav-links">
         <a href="index.html" aria-label="Home" style="display: inline-flex; align-items: center;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="home-icon"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
-        <a href="#loan-property" class="link-property">Property</a>
-        <a href="#loan-construction" class="link-construction">Construction</a>
-        <a href="#loan-gold" class="link-gold">Gold</a>
-        <a href="#loan-personal" class="link-personal">Personal</a>
-        <a href="#loan-business" class="link-business">Business</a>
+        <a href="#hero-slider" class="h-slide-tab active" data-index="0">Property</a>
+        <a href="#hero-slider" class="h-slide-tab" data-index="1">Construction</a>
+        <a href="#hero-slider" class="h-slide-tab" data-index="2">Gold</a>
+        <a href="#hero-slider" class="h-slide-tab" data-index="3">Personal</a>
+        <a href="#hero-slider" class="h-slide-tab" data-index="4">Business</a>
       </div>
     </div>
     <div class="mobile-nav-links">
@@ -1070,25 +1127,165 @@
   </div>
 </div>
 
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="wrap hero-eyebrow-wrap" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-    <span class="eyebrow">SITAR · Services Offered</span>
-  </div>
-  <div class="wrap">
-    <div class="hero-inner">
-      <div class="hero-main-content">
-        <h1 class="hero-title"><span class="display">Flexible loans.</span><br><span class="cream">Structured for you.</span></h1>
-        <p class="hero-sub">Staged disbursals, high valuation parameters, and a trusted, transparent partner to help you build or expand.</p>
-        
+<section id="hero-slider" class="h-slider-section">
+  <div class="h-slider-track">
+    <!-- Slide 1: Property -->
+    <div class="h-slide-item active" style="background-image: url('bg_property_loan.webp');">
+      <div class="wrap h-slide-content">
+        <h1 class="hero-title"><span class="display">Property</span> <br><span class="cream">Loans</span></h1>
+        <p class="hero-sub">Financing against residential and commercial property, structured around your repayment comfort.</p>
         <div class="hero-cta">
-          <a href="#loans" class="btn btn-gold">Explore loan options</a>
-          <a href="#contact" class="btn btn-ghost">Request pricing</a>
+          <a href="#loans" class="btn btn-gold" style="display:flex; align-items:center; gap:8px;">
+            Get a Property Loan
+          </a>
+          <a href="#" class="btn btn-ghost" style="display:flex; align-items:center; gap:8px; color: #ff4444; border-color: rgba(255,0,0,0.3); background: rgba(255,0,0,0.1);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+            Explore</a>
+
+          <!-- Talk to Advisor CTA -->
+          <a href="tel:+918660108612" class="advisor-action" style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #d4fc79, #96e6a1); padding: 6px 16px 6px 6px; border-radius: 40px; border: none; box-shadow: 0 4px 12px rgba(150, 230, 161, 0.3); text-decoration: none; transition: all 0.3s ease; height: fit-content;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(150, 230, 161, 0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(150, 230, 161, 0.3)';">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #ffffff; display: flex; align-items: center; justify-content: center; color: #111;">
+              <svg class="advisor-icon-animated" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                <path d="M14 21h-2a4 4 0 0 1-4-4"></path>
+              </svg>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+              <span style="font-size: 13px; font-weight: 700; color: #111; line-height: 1;">Talk to Advisor</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Slide 2: Construction -->
+    <div class="h-slide-item" style="background-image: url('bg_construction_loan.webp');">
+      <div class="wrap h-slide-content">
+        <h1 class="hero-title"><span class="display">Construction</span> <br><span class="cream">Loans</span></h1>
+        <p class="hero-sub">Funding for property developments, with staged disbursals linked directly to construction milestones.</p>
+        <div class="hero-cta">
+          <a href="#loans" class="btn btn-gold" style="display:flex; align-items:center; gap:8px;">
+            Get a Construction Loan
+          </a>
+          <a href="#" class="btn btn-ghost" style="display:flex; align-items:center; gap:8px; color: #ff4444; border-color: rgba(255,0,0,0.3); background: rgba(255,0,0,0.1);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+            Explore</a>
+
+          <!-- Talk to Advisor CTA -->
+          <a href="tel:+918660108612" class="advisor-action" style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #d4fc79, #96e6a1); padding: 6px 16px 6px 6px; border-radius: 40px; border: none; box-shadow: 0 4px 12px rgba(150, 230, 161, 0.3); text-decoration: none; transition: all 0.3s ease; height: fit-content;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(150, 230, 161, 0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(150, 230, 161, 0.3)';">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #ffffff; display: flex; align-items: center; justify-content: center; color: #111;">
+              <svg class="advisor-icon-animated" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                <path d="M14 21h-2a4 4 0 0 1-4-4"></path>
+              </svg>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+              <span style="font-size: 13px; font-weight: 700; color: #111; line-height: 1;">Talk to Advisor</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Slide 3: Gold -->
+    <div class="h-slide-item" style="background-image: url('bg_gold_loan.webp');">
+      <div class="wrap h-slide-content">
+        <h1 class="hero-title"><span class="display">Gold</span> <br><span class="cream">Loans</span></h1>
+        <p class="hero-sub">Rapid liquidity against gold assets. Competitive rates, secure storage, and zero hidden fees.</p>
+        <div class="hero-cta">
+          <a href="#loans" class="btn btn-gold" style="display:flex; align-items:center; gap:8px;">
+            Get a Gold Loan
+          </a>
+          <a href="#" class="btn btn-ghost" style="display:flex; align-items:center; gap:8px; color: #ff4444; border-color: rgba(255,0,0,0.3); background: rgba(255,0,0,0.1);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+            Explore</a>
+
+          <!-- Talk to Advisor CTA -->
+          <a href="tel:+918660108612" class="advisor-action" style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #d4fc79, #96e6a1); padding: 6px 16px 6px 6px; border-radius: 40px; border: none; box-shadow: 0 4px 12px rgba(150, 230, 161, 0.3); text-decoration: none; transition: all 0.3s ease; height: fit-content;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(150, 230, 161, 0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(150, 230, 161, 0.3)';">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #ffffff; display: flex; align-items: center; justify-content: center; color: #111;">
+              <svg class="advisor-icon-animated" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                <path d="M14 21h-2a4 4 0 0 1-4-4"></path>
+              </svg>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+              <span style="font-size: 13px; font-weight: 700; color: #111; line-height: 1;">Talk to Advisor</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Slide 4: Personal -->
+    <div class="h-slide-item" style="background-image: url('bg_personal_loan.webp');">
+      <div class="wrap h-slide-content">
+        <h1 class="hero-title"><span class="display">Personal</span> <br><span class="cream">Loans</span></h1>
+        <p class="hero-sub">Flexible unsecured loans for personal milestones, lifestyle upgrades, or unexpected expenses.</p>
+        <div class="hero-cta">
+          <a href="#loans" class="btn btn-gold" style="display:flex; align-items:center; gap:8px;">
+            Get a Personal Loan
+          </a>
+          <a href="#" class="btn btn-ghost" style="display:flex; align-items:center; gap:8px; color: #ff4444; border-color: rgba(255,0,0,0.3); background: rgba(255,0,0,0.1);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+            Explore</a>
+
+          <!-- Talk to Advisor CTA -->
+          <a href="tel:+918660108612" class="advisor-action" style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #d4fc79, #96e6a1); padding: 6px 16px 6px 6px; border-radius: 40px; border: none; box-shadow: 0 4px 12px rgba(150, 230, 161, 0.3); text-decoration: none; transition: all 0.3s ease; height: fit-content;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(150, 230, 161, 0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(150, 230, 161, 0.3)';">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #ffffff; display: flex; align-items: center; justify-content: center; color: #111;">
+              <svg class="advisor-icon-animated" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                <path d="M14 21h-2a4 4 0 0 1-4-4"></path>
+              </svg>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+              <span style="font-size: 13px; font-weight: 700; color: #111; line-height: 1;">Talk to Advisor</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Slide 5: Business -->
+    <div class="h-slide-item" style="background-image: url('bg_business_loan.webp');">
+      <div class="wrap h-slide-content">
+        <h1 class="hero-title"><span class="display">Business</span> <br><span class="cream">Loans</span></h1>
+        <p class="hero-sub">Working capital and expansion financing tailored to fuel your enterprise's next big step.</p>
+        <div class="hero-cta">
+          <a href="#loans" class="btn btn-gold" style="display:flex; align-items:center; gap:8px;">
+            Get a Business Loan
+          </a>
+          <a href="#" class="btn btn-ghost" style="display:flex; align-items:center; gap:8px; color: #ff4444; border-color: rgba(255,0,0,0.3); background: rgba(255,0,0,0.1);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+            Explore</a>
+
+          <!-- Talk to Advisor CTA -->
+          <a href="tel:+918660108612" class="advisor-action" style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #d4fc79, #96e6a1); padding: 6px 16px 6px 6px; border-radius: 40px; border: none; box-shadow: 0 4px 12px rgba(150, 230, 161, 0.3); text-decoration: none; transition: all 0.3s ease; height: fit-content;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(150, 230, 161, 0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(150, 230, 161, 0.3)';">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #ffffff; display: flex; align-items: center; justify-content: center; color: #111;">
+              <svg class="advisor-icon-animated" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                <path d="M14 21h-2a4 4 0 0 1-4-4"></path>
+              </svg>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+              <span style="font-size: 13px; font-weight: 700; color: #111; line-height: 1;">Talk to Advisor</span>
+            </div>
+          </a>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Dots Indicator -->
+  <div class="h-slider-dots">
+    <button class="h-slide-dot active" data-index="0" aria-label="Property"></button>
+    <button class="h-slide-dot" data-index="1" aria-label="Construction"></button>
+    <button class="h-slide-dot" data-index="2" aria-label="Gold"></button>
+    <button class="h-slide-dot" data-index="3" aria-label="Personal"></button>
+    <button class="h-slide-dot" data-index="4" aria-label="Business"></button>
+  </div>
+
+  <!-- Ticker Band -->
   <div class="ticker-band">
     <div class="ticker-track" id="tickerTrack">
       <!-- populated twice via JS for seamless loop -->
@@ -1382,6 +1579,56 @@
       `).join('');
     }
     track.innerHTML = buildItems() + buildItems();
+  }
+
+  // --- Hero Horizontal Slider Logic ---
+  const hSlides = document.querySelectorAll('.h-slide-item');
+  const hTabs = document.querySelectorAll('.h-slide-tab');
+  const hDots = document.querySelectorAll('.h-slide-dot');
+  let currentSlide = 0;
+  let slideInterval;
+
+  function goToSlide(index) {
+    if(hSlides.length === 0) return;
+    hSlides[currentSlide].classList.remove('active');
+    hTabs[currentSlide]?.classList.remove('active');
+    hDots[currentSlide]?.classList.remove('active');
+    
+    currentSlide = index;
+    
+    hSlides[currentSlide].classList.add('active');
+    if(hTabs[currentSlide]) hTabs[currentSlide].classList.add('active');
+    if(hDots[currentSlide]) hDots[currentSlide].classList.add('active');
+  }
+
+  function nextSlide() {
+    if(hSlides.length > 0) {
+      goToSlide((currentSlide + 1) % hSlides.length);
+    }
+  }
+
+  function startSlider() {
+    clearInterval(slideInterval);
+    slideInterval = setInterval(nextSlide, 3000);
+  }
+
+  hTabs.forEach(tab => {
+    tab.addEventListener('click', (e) => {
+      // Allow the native anchor jump to happen, but also change slide
+      goToSlide(parseInt(tab.dataset.index));
+      startSlider(); // reset timer
+    });
+  });
+
+  hDots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      goToSlide(parseInt(dot.dataset.index));
+      startSlider(); // reset timer
+    });
+  });
+
+  if(hSlides.length > 0) {
+    startSlider();
   }
 
 </script>
