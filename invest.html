@@ -375,7 +375,7 @@
   .nav-text-link {
     color: #fff; text-decoration: none; font-size: 14.5px; font-weight: 500;
     display: inline-flex; align-items: center; gap: 6px; transition: color 0.3s ease;
-    background: none; border: none; padding: 0; cursor: pointer;
+    background: none; border: none; padding: 0; cursor: pointer; white-space: nowrap;
   }
   .nav-text-link:hover { color: var(--gold); }
 
@@ -1124,9 +1124,11 @@
       <a href="#signup">Signup</a>
     </div>
     <div class="nav-cta">
-      <a href="#" class="nav-text-link">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-        Login / Signup
+      <a href="#" class="nav-text-link" style="font-size: 12px;">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        Login &nbsp;/&nbsp;
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
+        Signup
       </a>
       <button class="menu-toggle" aria-label="Menu">☰</button>
     </div>
