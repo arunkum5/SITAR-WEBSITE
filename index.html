@@ -2417,9 +2417,15 @@
       .hero-sub strong { font-size: 15px !important; }
       
       /* Hero Stats */
-      .stat-box > div:first-child { font-size: 19px !important; }
-      .stat-box > div:last-child { font-size: 10px !important; }
+      .hero-stats-row { flex-wrap: nowrap !important; gap: 8px !important; justify-content: space-between !important; }
+      .stat-box { min-width: 0 !important; padding: 0 4px !important; text-align: center; }
+      .stat-box > div:first-child { font-size: 15px !important; }
+      .stat-box > div:last-child { font-size: 8.5px !important; line-height: 1.1; }
+      .revenue-growth-text .hide-mobile { display: none !important; }
       
+      /* Floating Alerts (Toast) */
+      .floating-alert { white-space: nowrap !important; font-size: 11px !important; padding: 8px 12px !important; }
+
       /* Service Highlights */
       .service-highlights { flex-direction: column !important; gap: 12px !important; align-items: flex-start !important; margin-top: 20px !important; }
       .service-highlights > * { width: 100% !important; }
@@ -2667,7 +2673,7 @@
             </div>
             
             <!-- Hero Stats -->
-            <div style="display:flex; gap:36px; flex-wrap:wrap; margin-top:40px; border-top:1px solid rgba(0,0,0,0.1); padding-top:24px;">
+            <div class="hero-stats-row" style="display:flex; gap:36px; flex-wrap:wrap; margin-top:40px; border-top:1px solid rgba(0,0,0,0.1); padding-top:24px;">
               <div class="stat-box" style="cursor:pointer;">
                 <div style="font-size:24px; font-weight:700; color:#008080;"><span class="stat-counter" data-target="2016">0</span></div>
                 <div style="font-size:13px; font-weight:600; color:#555; text-transform:uppercase; letter-spacing:0.05em; margin-top:2px;">Founded</div>
@@ -2682,7 +2688,7 @@
               </div>
               <div class="stat-box" style="cursor:pointer;">
                 <div style="font-size:24px; font-weight:700; color:#D2691E;"><span class="stat-counter" data-target="2">0</span>×</div>
-                <div style="font-size:13px; font-weight:600; color:#555; text-transform:uppercase; letter-spacing:0.05em; margin-top:2px;">Revenue growth</div>
+                <div class="revenue-growth-text" style="font-size:13px; font-weight:600; color:#555; text-transform:uppercase; letter-spacing:0.05em; margin-top:2px;">Revenue<span class="hide-mobile"> growth</span></div>
               </div>
             </div>
             
@@ -3116,8 +3122,14 @@
       Investments in real-asset-linked instruments are subject to market and business risk. Returns described are indicative of current plan rates and are not a guarantee against loss. Please read all scheme-related documents carefully before investing.
     </div>
 
-    <div class="foot-bottom">
-      <span>© 2026 SITAR. All rights reserved.</span>
+    <div class="foot-bottom" style="display:flex; flex-direction:column; align-items:center; gap:20px;">
+      <div style="display:flex; align-items:center; gap:15px; flex-wrap:wrap; justify-content:center;">
+        <span>© 2026 SITAR. All rights reserved.</span>
+        <!-- Free Visitor Counter Badge -->
+        <a href="#" style="display:flex; align-items:center; opacity: 0.9;">
+          <img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fsitarwealth.in&label=VISITORS&labelColor=%23111111&countColor=%23C9A227&style=flat" alt="Visitor Count" />
+        </a>
+      </div>
       <div style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;">
         <a href="policies.html#privacy-policy" style="color: #666666; text-decoration: none;">Privacy Policy</a>
         <a href="policies.html#terms-conditions" style="color: #666666; text-decoration: none;">Terms &amp; Conditions</a>
