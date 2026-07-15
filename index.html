@@ -2405,6 +2405,37 @@
     text-decoration-thickness: 2px !important;
   }
 </style>
+  <style id="mobile-only-overrides">
+    @media (max-width: 768px) {
+      /* Fix Horizontal Scroll */
+      html, body { overflow-x: hidden !important; width: 100% !important; position: relative !important; }
+      .wrap { overflow-x: hidden !important; padding: 0 15px !important; }
+
+      /* Hero text reduction */
+      .hero-title .display, .hero-title span { font-size: 24px !important; line-height: 1.2 !important; white-space: normal !important; }
+      .hero-sub .typewriter-line { font-size: 13px !important; white-space: normal !important; line-height: 1.4 !important; }
+      .hero-sub strong { font-size: 15px !important; }
+      
+      /* Why Choose Us Cards */
+      .why-item { padding: 12px 10px !important; min-height: unset !important; gap: 10px !important; }
+      .why-item .idx { min-width: 30px !important; height: 30px !important; font-size: 12px !important; }
+      .why-item .idx svg { width: 14px !important; height: 14px !important; }
+      .why-item .comment-author { font-size: 13px !important; margin-bottom: 2px !important; }
+      .why-item p { font-size: 10px !important; line-height: 1.3 !important; }
+      .why-list { grid-template-columns: 1fr !important; gap: 10px !important; }
+
+      /* Journey / Process Tabs */
+      .how-tabs { flex-direction: column !important; gap: 8px !important; overflow: hidden !important; border-radius: 6px !important; }
+      .how-tab { font-size: 12px !important; padding: 8px 12px !important; width: 100% !important; border-radius: 6px !important; }
+
+      /* 01 02 Option Cards (Journey/Loan steps) */
+      .iflow-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+      .iflow-step { padding: 14px !important; min-height: unset !important; }
+      .iflow-step .h-step-num { font-size: 32px !important; top: -10px !important; right: -5px !important; }
+      .iflow-step h4 { font-size: 14px !important; margin-bottom: 4px !important; }
+      .iflow-step p { font-size: 12px !important; line-height: 1.4 !important; }
+    }
+  </style>
 </head>
 <body class="loading">
   <div class="scroll-progress-container"><div class="scroll-progress-bar" id="scrollBar"></div></div>
@@ -2499,16 +2530,23 @@
       <div style="position:absolute; inset:0; background: rgba(255,252,245,0.55); z-index:1;"></div>
       
       <!-- Bounce Announcement Ticker -->
-      <div style="position:relative; z-index:2; width:100%; background:#111111; border-bottom:1px solid rgba(184,134,11,0.5); overflow:hidden; display:flex;">
+      <div id="tickerWrapper" style="position:relative; z-index:2; width:100%; background:#111111; border-bottom:1px solid rgba(184,134,11,0.5); overflow:hidden; display:flex;">
+        <div id="coinContainer" style="position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:10;"></div>
+        
         <style>
           @keyframes flash-btn { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.95); } }
           @keyframes bounce-anim { 0% { transform: translateX(0); } 100% { transform: translateX(calc(100vw - 100%)); } }
-          .bnc-content { display:inline-flex; align-items:center; gap:40px; white-space:nowrap; padding:6px 20px; font-size:11.5px; font-weight:600; will-change:transform; letter-spacing:0.03em; width:max-content; animation: bounce-anim 15s linear infinite alternate; }
+          @keyframes coin-fall { 
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 
+            100% { transform: translateY(60px) rotate(360deg); opacity: 0; } 
+          }
+          .bnc-content { display:inline-flex; align-items:center; gap:40px; white-space:nowrap; padding:6px 20px; font-size:11.5px; font-weight:600; will-change:transform; letter-spacing:0.03em; width:max-content; animation: bounce-anim 15s linear infinite alternate; z-index:20; position:relative; }
           .bnc-item { display:inline-flex; align-items:center; gap:10px; }
           .bnc-item-invest { color: #FACC15; /* Gold */ }
           .bnc-item-loan { color: #60A5FA; /* Blue */ }
           .bnc-btn { background:var(--gold); color:#111; padding:3px 12px; border-radius:3px; text-decoration:none; font-size:10px; font-weight:800; display:inline-block; text-transform:uppercase; letter-spacing:0.05em; flex-shrink:0; animation: flash-btn 1.5s infinite; }
           .bnc-btn:hover { opacity:0.9; }
+          .falling-coin { position:absolute; font-size:16px; animation: coin-fall 1.2s linear forwards; }
         </style>
 
         <div class="bnc-content">
@@ -2524,6 +2562,37 @@
           </div>
         </div>
       </div>
+
+      <script>
+        (function() {
+          var wrapper = document.getElementById('tickerWrapper');
+          var coinContainer = document.getElementById('coinContainer');
+          var coinInterval;
+          var emojis = ['💰', '🪙', '💸'];
+
+          if (wrapper && coinContainer) {
+            wrapper.addEventListener('mouseenter', function() {
+              coinInterval = setInterval(function() {
+                var coin = document.createElement('div');
+                coin.className = 'falling-coin';
+                coin.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                coin.style.left = Math.random() * 100 + '%';
+                coin.style.animationDuration = (0.8 + Math.random() * 0.8) + 's';
+                coinContainer.appendChild(coin);
+                
+                // Cleanup after animation
+                setTimeout(function() {
+                  if (coin.parentNode) coin.parentNode.removeChild(coin);
+                }, 1600);
+              }, 150); // Spawn a new coin every 150ms while hovering
+            });
+
+            wrapper.addEventListener('mouseleave', function() {
+              clearInterval(coinInterval);
+            });
+          }
+        })();
+      </script>
 
       <div class="wrap">
         <div class="hero-inner">
@@ -2560,14 +2629,24 @@
 
             <!-- Primary CTAs -->
             <div class="hero-cta" style="margin-top:36px; display:flex; gap:14px; flex-wrap:wrap;">
-              <a href="invest.html" style="display:inline-flex; align-items:center; gap:7px; padding:11px 24px; background:linear-gradient(135deg,#c9a227,#8a6d0c); color:#fff; border-radius:8px; font-weight:700; font-size:13.5px; text-decoration:none; border:1px solid rgba(255,255,255,0.15); animation:glowGold 2.5s ease-in-out infinite 1.25s;" onmouseover="this.style.animation='none';this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(201,162,39,0.7)'" onmouseout="this.style.animation='glowGold 2.5s ease-in-out infinite 1.25s';this.style.transform='';this.style.boxShadow=''">
-                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-                Explore Investment Options
-              </a>
-              <a href="services.html" style="display:inline-flex; align-items:center; gap:7px; padding:11px 24px; background:linear-gradient(135deg,#3E8E85,#1a6b62); color:#fff; border-radius:8px; font-weight:700; font-size:13.5px; text-decoration:none; border:1px solid rgba(255,255,255,0.15); animation:glowTeal 2.5s ease-in-out infinite;" onmouseover="this.style.animation='none';this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(62,142,133,0.7)'" onmouseout="this.style.animation='glowTeal 2.5s ease-in-out infinite';this.style.transform='';this.style.boxShadow=''">
-                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-                Explore Loan Options
-              </a>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <a href="invest.html" style="display:inline-flex; align-items:center; gap:7px; padding:11px 24px; background:linear-gradient(135deg,#c9a227,#8a6d0c); color:#fff; border-radius:8px; font-weight:700; font-size:13.5px; text-decoration:none; border:1px solid rgba(255,255,255,0.15); animation:glowGold 2.5s ease-in-out infinite 1.25s;" onmouseover="this.style.animation='none';this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(201,162,39,0.7)'" onmouseout="this.style.animation='glowGold 2.5s ease-in-out infinite 1.25s';this.style.transform='';this.style.boxShadow=''">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+                  Explore Investment Options
+                </a>
+                <a href="#" style="color:#ff0000; display:flex; align-items:center; text-decoration:none; transition:transform 0.2s; animation: flash-btn 1.5s infinite;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" aria-label="Watch Video">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                </a>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <a href="services.html" style="display:inline-flex; align-items:center; gap:7px; padding:11px 24px; background:linear-gradient(135deg,#3E8E85,#1a6b62); color:#fff; border-radius:8px; font-weight:700; font-size:13.5px; text-decoration:none; border:1px solid rgba(255,255,255,0.15); animation:glowTeal 2.5s ease-in-out infinite;" onmouseover="this.style.animation='none';this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(62,142,133,0.7)'" onmouseout="this.style.animation='glowTeal 2.5s ease-in-out infinite';this.style.transform='';this.style.boxShadow=''">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+                  Explore Loan Options
+                </a>
+                <a href="#" style="color:#ff0000; display:flex; align-items:center; text-decoration:none; transition:transform 0.2s; animation: flash-btn 1.5s infinite;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" aria-label="Watch Video">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                </a>
+              </div>
             </div>
             
             <!-- Hero Stats -->
