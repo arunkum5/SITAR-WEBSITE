@@ -2406,7 +2406,10 @@
   }
 </style>
   <style id="mobile-only-overrides">
+    .mobile-login-btn { display: none; }
     @media (max-width: 768px) {
+      .mobile-login-btn { display: inline-flex !important; align-items: center; justify-content: center; margin-left: auto; margin-right: 15px; font-size: 11px; font-weight: 700; color: #111; background: var(--gold); padding: 0 12px; border-radius: 4px; text-decoration: none; white-space: nowrap; height: 28px; line-height: 1; }
+      .nav .logo { margin-right: 0 !important; }
       /* Fix Horizontal Scroll */
       html, body { overflow-x: hidden !important; width: 100% !important; position: relative !important; }
       .wrap { overflow-x: hidden !important; padding: 0 15px !important; }
@@ -2490,6 +2493,7 @@
       <img class="wipe-logo" id="wipeLogo" src="nlogo.svg" alt="SITAR Emblem">
       <img class="logo-text" src="new-header-text.svg" alt="SITAR">
     </a>
+    <a href="#login" class="mobile-login-btn">Login / Signup</a>
     <div class="nav-links">
       <div class="nav-active-pill" id="navActivePill"></div>
       <a href="#about" id="navLinkAbout" class="active" style="--nav-c: var(--gold); --nav-bg: rgba(184, 134, 11, 0.12); --nav-border: rgba(184, 134, 11, 0.3);">About Us</a>
