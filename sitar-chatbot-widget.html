@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SITAR Assistant — Chatbot Widget</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,500&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B0906;
+    --bg:#12100D;
+    --bg-panel:#1B1712;
+    --line: rgba(243,236,221,0.12);
+    --cream:#F3ECDD;
+    --cream-dim: rgba(243,236,221,0.62);
+    --gold:#E6C37C;
+    --gold-dim:#A98A54;
+
+    --villas:#C1694A;
+    --apartments:#6E86A6;
+    --layouts:#C9A227;
+    --restaurants:#8C3B3B;
+    --resorts:#3E8E85;
+    --microfinance:#7C8F5A;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; min-height:100vh;
+    font-family:'Work Sans', sans-serif;
+    background:
+      radial-gradient(ellipse 700px 420px at 78% 8%, rgba(230,195,124,0.10), transparent 60%),
+      #0d0b09;
+    color:var(--cream);
+  }
+  .demo-page{ max-width:720px; margin:0 auto; padding:80px 32px; }
+  .demo-page h1{ font-family:'Fraunces',serif; font-style:italic; font-weight:500; color:var(--gold); font-size:38px; margin-bottom:10px;}
+  .demo-page p{ color:var(--cream-dim); line-height:1.6; }
+
+  /* ===================== WIDGET ===================== */
+  #sitar-bot-launcher{
+    position:fixed; bottom:26px; right:26px; z-index:9999;
+    width:64px; height:64px; border-radius:50%;
+    background:var(--bg-panel); border:2px solid var(--gold); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 8px 24px rgba(0,0,0,0.5);
+    transition: transform .2s ease;
+    padding:0; overflow:hidden;
+  }
+  #sitar-bot-launcher:hover{ transform:scale(1.06); }
+  #sitar-bot-launcher svg{ width:100%; height:100%; display:block; }
+  #sitar-bot-launcher .ping{
+    position:absolute; top:-2px; right:-2px;
+    width:16px; height:16px; border-radius:50%;
+    background:var(--resorts); border:2px solid var(--bg);
+  }
+  #sitar-bot-launcher .ping::before{
+    content:""; position:absolute; inset:0; border-radius:50%;
+    background:var(--resorts); opacity:.6;
+    animation: pingPulse 1.8s ease-out infinite;
+  }
+  @keyframes pingPulse{
+    0%{ transform:scale(1); opacity:.6; }
+    100%{ transform:scale(2.2); opacity:0; }
+  }
+
+  #sitar-bot-panel{
+    position:fixed; bottom:98px; right:26px; z-index:9999;
+    width:360px; max-width:92vw; height:520px; max-height:76vh;
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.55);
+    display:flex; flex-direction:column;
+    overflow:hidden;
+    opacity:0; transform: translateY(16px) scale(.98);
+    pointer-events:none;
+    transition: opacity .22s ease, transform .22s ease;
+  }
+  #sitar-bot-panel.open{ opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
+
+  .bot-header{
+    background: linear-gradient(180deg, #201b14, #17130e);
+    border-bottom:1px solid var(--line);
+    padding:16px 18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .bot-header .avatar{
+    width:38px; height:38px; border-radius:50%;
+    border:1.5px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden; flex-shrink:0;
+  }
+  .bot-header .avatar svg{ width:100%; height:100%; display:block; }
+  .bot-header .info{ flex:1; }
+  .bot-header .name{ font-family:'Fraunces', serif; font-style:italic; font-weight:500; color:var(--gold); font-size:16px; }
+  .bot-header .status{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--cream-dim); display:flex; align-items:center; gap:5px; margin-top:2px;}
+  .bot-header .status::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--resorts); }
+  .bot-header .close{ background:none; border:none; color:var(--cream-dim); font-size:18px; cursor:pointer; padding:4px; }
+  .bot-header .close:hover{ color:var(--gold); }
+
+  .bot-body{
+    flex:1; overflow-y:auto; padding:16px;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .bot-body::-webkit-scrollbar{ width:6px; }
+  .bot-body::-webkit-scrollbar-thumb{ background:var(--line); border-radius:3px; }
+
+  .msg{ max-width:82%; font-size:13.5px; line-height:1.5; padding:10px 13px; border-radius:12px; animation: fadeUp .25s ease; }
+  @keyframes fadeUp{ from{ opacity:0; transform:translateY(6px);} to{ opacity:1; transform:translateY(0);} }
+  .msg.bot{ align-self:flex-start; background:#241f17; color:var(--cream); border-bottom-left-radius:3px; }
+  .msg.user{ align-self:flex-end; background:var(--gold); color:var(--ink); border-bottom-right-radius:3px; font-weight:500; }
+
+  .msg.bot .rate{ font-family:'IBM Plex Mono', monospace; color:var(--gold); }
+
+  .quick-replies{ display:flex; flex-wrap:wrap; gap:8px; align-self:flex-start; max-width:100%; }
+  .qr-btn{
+    font-family:'IBM Plex Mono', monospace; font-size:12px;
+    background:transparent; color:var(--cream);
+    border:1px solid var(--gold-dim); border-radius:20px;
+    padding:8px 14px; cursor:pointer; transition:all .18s ease;
+  }
+  .qr-btn:hover{ background:var(--gold); color:var(--ink); border-color:var(--gold); }
+  .qr-btn.accent-villas{ border-color:var(--villas); }
+  .qr-btn.accent-apartments{ border-color:var(--apartments); }
+  .qr-btn.accent-layouts{ border-color:var(--layouts); }
+  .qr-btn.accent-restaurants{ border-color:var(--restaurants); }
+  .qr-btn.accent-resorts{ border-color:var(--resorts); }
+  .qr-btn.accent-microfinance{ border-color:var(--microfinance); }
+
+  .bot-input-row{
+    border-top:1px solid var(--line);
+    padding:12px; display:flex; gap:8px;
+    background:#171310;
+  }
+  .bot-input-row input{
+    flex:1; background:#0f0c0a; border:1px solid var(--line); border-radius:8px;
+    color:var(--cream); padding:10px 12px; font-size:13px; font-family:'Work Sans',sans-serif;
+    outline:none;
+  }
+  .bot-input-row input:focus{ border-color:var(--gold); }
+  .bot-input-row button{
+    background:var(--gold); border:none; border-radius:8px; padding:0 16px;
+    font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; color:var(--ink);
+    cursor:pointer;
+  }
+  .bot-input-row button:hover{ background:#f0d190; }
+  .bot-input-row.hidden{ display:none; }
+
+  .typing{ display:flex; gap:4px; padding:10px 13px; align-self:flex-start; background:#241f17; border-radius:12px; border-bottom-left-radius:3px; width:fit-content; }
+  .typing span{ width:6px; height:6px; border-radius:50%; background:var(--gold-dim); animation: blink 1.2s infinite; }
+  .typing span:nth-child(2){ animation-delay:.2s; }
+  .typing span:nth-child(3){ animation-delay:.4s; }
+  @keyframes blink{ 0%,80%,100%{ opacity:.25; } 40%{ opacity:1; } }
+
+  @media (max-width:480px){
+    #sitar-bot-panel{ right:12px; bottom:88px; width:94vw; height:70vh; }
+    #sitar-bot-launcher{ right:16px; bottom:16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-page">
+  <h1>SITAR — website preview</h1>
+  <p>This is a stand-in page so you can see the chatbot in context. The widget itself (bottom-right) is fully self-contained — the whole block below the demo notice is what you'd paste into your actual site (WordPress "Custom HTML" block, or Odoo Website → Settings → Custom Code) and it will float over your real page.</p>
+</div>
+
+<!-- ===================== WIDGET MARKUP ===================== -->
+<button id="sitar-bot-launcher" aria-label="Open chat">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="50" cy="50" r="50" fill="#1B1712"/>
+    <path d="M17,58 Q50,80 83,58 L83,100 L17,100 Z" fill="#E6C37C"/>
+    <path d="M22,52 Q22,12 50,12 Q78,12 78,52 L78,66 Q64,54 50,54 Q36,54 22,66 Z" fill="#3B2C1F"/>
+    <ellipse cx="50" cy="50" rx="21" ry="25" fill="#F3ECDD"/>
+    <path d="M29,38 Q31,20 50,18 Q69,20 71,38 Q63,26 50,26 Q37,26 29,38 Z" fill="#3B2C1F"/>
+    <circle cx="41.5" cy="50" r="2.1" fill="#12100D"/>
+    <circle cx="58.5" cy="50" r="2.1" fill="#12100D"/>
+    <path d="M43,60 Q50,65 57,60" stroke="#12100D" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <circle cx="27" cy="55" r="1.8" fill="#E6C37C"/>
+    <circle cx="73" cy="55" r="1.8" fill="#E6C37C"/>
+  </svg>
+  <span class="ping" aria-hidden="true"></span>
+</button>
+
+<div id="sitar-bot-panel">
+  <div class="bot-header">
+    <div class="avatar">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="50" fill="#1B1712"/>
+        <path d="M17,58 Q50,80 83,58 L83,100 L17,100 Z" fill="#E6C37C"/>
+        <path d="M22,52 Q22,12 50,12 Q78,12 78,52 L78,66 Q64,54 50,54 Q36,54 22,66 Z" fill="#3B2C1F"/>
+        <ellipse cx="50" cy="50" rx="21" ry="25" fill="#F3ECDD"/>
+        <path d="M29,38 Q31,20 50,18 Q69,20 71,38 Q63,26 50,26 Q37,26 29,38 Z" fill="#3B2C1F"/>
+        <circle cx="41.5" cy="50" r="2.1" fill="#12100D"/>
+        <circle cx="58.5" cy="50" r="2.1" fill="#12100D"/>
+        <path d="M43,60 Q50,65 57,60" stroke="#12100D" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <circle cx="27" cy="55" r="1.8" fill="#E6C37C"/>
+        <circle cx="73" cy="55" r="1.8" fill="#E6C37C"/>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="name">SITAR Assistant</div>
+      <div class="status">Online now</div>
+    </div>
+    <button class="close" id="sitar-bot-close" aria-label="Close chat">✕</button>
+  </div>
+  <div class="bot-body" id="sitar-bot-body"></div>
+  <div class="bot-input-row" id="sitar-bot-input-row">
+    <input type="text" id="sitar-bot-input" placeholder="Type your answer..." />
+    <button id="sitar-bot-send">Send</button>
+  </div>
+</div>
+
+<script>
+(function(){
+
+  // ---------------------------------------------------------------
+  // CONFIG — point this at wherever you want leads saved.
+  // Leave as-is to just store leads in the browser (localStorage) for testing.
+  // To send to Odoo CRM, replace saveLead() below with a fetch() call to
+  // a small backend endpoint that creates a crm.lead record via Odoo's API
+  // (calling Odoo's JSON-RPC directly from the browser isn't safe/CORS-friendly,
+  // so route it through your own tiny server-side script).
+  // ---------------------------------------------------------------
+  function saveLead(name, phone){
+    try{
+      const leads = JSON.parse(localStorage.getItem('sitar_leads') || '[]');
+      leads.push({ name, phone, ts: new Date().toISOString() });
+      localStorage.setItem('sitar_leads', JSON.stringify(leads));
+    }catch(e){ console.warn('Could not save lead locally', e); }
+
+    // Example webhook call (uncomment + set your URL to actually send it somewhere):
+    // fetch('https://your-backend.example.com/api/leads', {
+    //   method: 'POST',
+    //   headers: {'Content-Type':'application/json'},
+    //   body: JSON.stringify({ name, phone, source: 'SITAR website chatbot' })
+    // });
+
+    console.log('Lead captured:', { name, phone });
+  }
+
+  const RATES = {
+    villas:        { label: "Villas 🏡",               rate: "Up to 12% p.a.",   accent:"villas" },
+    apartments:    { label: "Apartments 🏢",           rate: "Up to 11% p.a.",   accent:"apartments" },
+    layouts:       { label: "Layout Development 📐",   rate: "Up to 13% p.a.",   accent:"layouts" },
+    restaurants:   { label: "Restaurants 🍽️",          rate: "Up to 10% p.a.",   accent:"restaurants" },
+    resorts:       { label: "Resorts 🏖️",              rate: "Up to 12.5% p.a.", accent:"resorts" },
+    microfinance:  { label: "Microfinance 🤝",         rate: "Up to 9% p.a.",    accent:"microfinance" },
+  };
+
+  const LOANS = {
+    property:     { label: "Property Loan",     info: "Financing against residential and commercial property, structured around your repayment comfort." },
+    construction: { label: "Construction Loan", info: "Staged disbursals aligned to your build timeline, from foundation to finish." },
+    gold:         { label: "Gold Loan",         info: "Doorstep gold valuation, low interest, and quick disbursal. We can also release gold pledged elsewhere." },
+    personal:     { label: "Personal Loan",     info: "Quick approval, minimal paperwork, for whatever life asks of you next." },
+    business:     { label: "Business Loan",     info: "Working capital and expansion funding for owners who are ready to grow." },
+  };
+
+  const launcher = document.getElementById('sitar-bot-launcher');
+  const panel = document.getElementById('sitar-bot-panel');
+  const closeBtn = document.getElementById('sitar-bot-close');
+  const body = document.getElementById('sitar-bot-body');
+  const inputRow = document.getElementById('sitar-bot-input-row');
+  const input = document.getElementById('sitar-bot-input');
+  const sendBtn = document.getElementById('sitar-bot-send');
+
+  let state = 'ask_name';
+  let lead = { name: '', phone: '' };
+  let started = false;
+
+  function scrollDown(){ body.scrollTop = body.scrollHeight; }
+
+  function addMessage(text, from){
+    const el = document.createElement('div');
+    el.className = 'msg ' + from;
+    el.innerHTML = text;
+    body.appendChild(el);
+    scrollDown();
+  }
+
+  function showTyping(cb, delay){
+    const el = document.createElement('div');
+    el.className = 'typing';
+    el.innerHTML = '<span></span><span></span><span></span>';
+    body.appendChild(el);
+    scrollDown();
+    setTimeout(() => {
+      el.remove();
+      cb();
+    }, delay || 550);
+  }
+
+  function addQuickReplies(options){
+    const wrap = document.createElement('div');
+    wrap.className = 'quick-replies';
+    options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'qr-btn' + (opt.accent ? ' accent-' + opt.accent : '');
+      btn.textContent = opt.label;
+      btn.onclick = () => handleQuickReply(opt.value, opt.label);
+      wrap.appendChild(btn);
+    });
+    body.appendChild(wrap);
+    scrollDown();
+  }
+
+  function setInputMode(mode){
+    if(mode === 'hidden'){
+      inputRow.classList.add('hidden');
+    } else {
+      inputRow.classList.remove('hidden');
+      input.type = mode === 'tel' ? 'tel' : 'text';
+      input.placeholder = mode === 'tel' ? 'Your phone number...' : 'Type your answer...';
+      input.value = '';
+      input.focus();
+    }
+  }
+
+  function startConversation(){
+    if(started) return;
+    started = true;
+    showTyping(() => {
+      addMessage("Hi there 👋 I'm the SITAR Assistant.", 'bot');
+      showTyping(() => {
+        addMessage("Before we start, could I get your <strong>name</strong>?", 'bot');
+        setInputMode('text');
+      }, 500);
+    }, 400);
+  }
+
+  // Name: letters and spaces only (allows things like "Arun Kumar", apostrophes/hyphens for names like O'Neil or Anne-Marie), min 2 chars
+  function isValidName(str){
+    return /^[A-Za-z][A-Za-z\s'.-]{1,49}$/.test(str.trim());
+  }
+
+  // Indian mobile number: exactly 10 digits, starting with 6, 7, 8, or 9.
+  // Strips spaces, hyphens, and a leading +91/91/0 before checking, so users
+  // can type it in whatever format feels natural to them.
+  function cleanIndianPhone(str){
+    let digits = str.replace(/[\s-]/g, '');
+    digits = digits.replace(/^\+?91/, '');
+    digits = digits.replace(/^0/, '');
+    return digits;
+  }
+  function isValidIndianPhone(str){
+    const digits = cleanIndianPhone(str);
+    return /^[6-9][0-9]{9}$/.test(digits);
+  }
+
+  function handleTextSubmit(){
+    const val = input.value.trim();
+    if(!val) return;
+    addMessage(val, 'user');
+    input.value = '';
+
+    if(state === 'ask_name'){
+      if(!isValidName(val)){
+        showTyping(() => {
+          addMessage("That doesn't quite look like a name — please use letters only (e.g. \"Arun Kumar\"), no numbers or symbols.", 'bot');
+        }, 350);
+        return;
+      }
+      lead.name = val;
+      state = 'ask_phone';
+      showTyping(() => {
+        addMessage(`Nice to meet you, ${escapeHtml(lead.name)}! And your <strong>phone number</strong>?`, 'bot');
+        setInputMode('tel');
+      });
+    } else if(state === 'ask_phone'){
+      if(!isValidIndianPhone(val)){
+        showTyping(() => {
+          addMessage("That doesn't look like a valid Indian mobile number — please enter a 10-digit number starting with 6, 7, 8, or 9 (e.g. 9876543210).", 'bot');
+        }, 350);
+        return;
+      }
+      lead.phone = cleanIndianPhone(val);
+      saveLead(lead.name, lead.phone);
+      state = 'menu';
+      setInputMode('hidden');
+      showTyping(() => {
+        addMessage(`Thanks, ${escapeHtml(lead.name)}! What would you like to explore?`, 'bot');
+        addQuickReplies([
+          { label: '💰 Invest', value: 'invest' },
+          { label: '🏦 Loan', value: 'loan' },
+        ]);
+      });
+    }
+  }
+
+  function handleQuickReply(value, label){
+    addMessage(label, 'user');
+
+    if(state === 'menu'){
+      if(value === 'invest'){
+        state = 'sector';
+        showTyping(() => {
+          addMessage('Great choice. Which sector interests you?', 'bot');
+          addQuickReplies(Object.entries(RATES).map(([key, r]) => ({ label: r.label, value: key, accent: r.accent })));
+        });
+      } else if(value === 'loan'){
+        state = 'loantype';
+        showTyping(() => {
+          addMessage('Sure — which type of loan are you looking for?', 'bot');
+          addQuickReplies(Object.entries(LOANS).map(([key, l]) => ({ label: l.label, value: key })));
+        });
+      }
+    } else if(state === 'sector'){
+      const r = RATES[value];
+      showTyping(() => {
+        addMessage(`${r.label} — <span class="rate">${r.rate}</span><br>Want to see another sector, or talk to an advisor?`, 'bot');
+        addQuickReplies([
+          { label: '🔁 Other sectors', value: 'invest' },
+          { label: '🏦 Loans instead', value: 'loan' },
+          { label: '📞 Talk to advisor', value: 'contact' },
+        ]);
+        state = 'menu_returned';
+      });
+    } else if(state === 'loantype'){
+      const l = LOANS[value];
+      showTyping(() => {
+        addMessage(`<strong>${l.label}</strong><br>${l.info}<br><br>Rates are priced per applicant — an advisor can share exact numbers.`, 'bot');
+        addQuickReplies([
+          { label: '🔁 Other loans', value: 'loan' },
+          { label: '💰 Investments instead', value: 'invest' },
+          { label: '📞 Talk to advisor', value: 'contact' },
+        ]);
+        state = 'menu_returned';
+      });
+    } else if(state === 'menu_returned'){
+      if(value === 'invest'){
+        state = 'sector';
+        showTyping(() => addQuickReplies(Object.entries(RATES).map(([key, r]) => ({ label: r.label, value: key, accent: r.accent }))));
+      } else if(value === 'loan'){
+        state = 'loantype';
+        showTyping(() => addQuickReplies(Object.entries(LOANS).map(([key, l]) => ({ label: l.label, value: key }))));
+      } else if(value === 'contact'){
+        showTyping(() => {
+          addMessage(`Perfect — someone from our team will call ${escapeHtml(lead.name)} on ${escapeHtml(lead.phone)} shortly. 🙏`, 'bot');
+        });
+      }
+    }
+  }
+
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  sendBtn.addEventListener('click', handleTextSubmit);
+  input.addEventListener('keydown', (e) => { if(e.key === 'Enter') handleTextSubmit(); });
+
+  launcher.addEventListener('click', () => {
+    panel.classList.toggle('open');
+    if(panel.classList.contains('open')) startConversation();
+  });
+  closeBtn.addEventListener('click', () => panel.classList.remove('open'));
+
+})();
+</script>
+
+</body>
+</html>
