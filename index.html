@@ -75,7 +75,8 @@
   }
 
   .wrap{
-    max-width:1180px;
+    width: 100%;
+    max-width: 1440px;
     margin:0 auto;
     padding:0 32px;
   }
@@ -98,9 +99,9 @@
     transition: background 0.3s ease, box-shadow 0.3s ease;
   }
   .nav{
-    display:flex; align-items:center; justify-content:flex-start; gap:40px;
+    display:flex; align-items:center; justify-content:flex-start; gap: clamp(10px, 3vw, 40px);
     padding:8px 32px;
-    max-width:1180px; margin:0 auto;
+    width: 100%; max-width: 1440px; margin: 0 auto;
     transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .logo{
@@ -165,9 +166,9 @@
   }
   .nav-links {
     display: flex;
-    gap: 10px;
+    gap: clamp(4px, 1vw, 10px);
     align-items: center;
-    font-size: 15px;
+    font-size: clamp(11px, 1.3vw, 16.5px);
     font-weight: 600;
     color: var(--cream);
     transition: font-size 0.3s ease, gap 0.3s ease;
@@ -223,7 +224,7 @@
     border: 1px solid var(--nav-border, rgba(184, 134, 11, 0.3));
     color: var(--nav-c, var(--gold));
     font-family: inherit;
-    font-size: 15px;
+    font-size: clamp(11px, 1.3vw, 16.5px);
     font-weight: 600;
     height: 30px;
     padding: 0 10px;
@@ -345,7 +346,7 @@
     }
   }
 
-  .nav-cta{ display:flex; gap:12px; align-items:center; }
+  .nav-cta{ display:flex; gap:12px; align-items:center; margin-left: auto; }
   .nav-text-link {
     color: #fff; text-decoration: none; font-size: 14.5px; font-weight: 500;
     display: inline-flex; align-items: center; gap: 6px; transition: color 0.3s ease;
@@ -475,7 +476,7 @@
     flex-direction: column;
     justify-content: flex-start;
     padding-top: 0;
-    padding-bottom: 80px;
+    padding-bottom: 40px;
   }
   .hero-slide.active {
     opacity: 1;
@@ -619,6 +620,10 @@
     width: 100%;
     position: relative;
     z-index: 2;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
   }
   .hero-inner {
     position: relative;
@@ -1597,7 +1602,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 140px;
+    min-height: 260px;
     transition: transform 0.3s ease;
   }
   .h-box:hover {
@@ -1610,8 +1615,8 @@
   .h-slideshow {
     position: relative;
     width: 100%;
-    height: 100%;
-    min-height: 140px;
+    height: 260px;
+    min-height: 260px;
   }
   .slide {
     position: absolute;
@@ -1635,6 +1640,9 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
+    display: block;
+    image-rendering: auto;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
   }
@@ -1656,50 +1664,95 @@
   /* Step 2: Terms */
   .h-terms {
     display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+  .h-terms-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #0d9488;
+    opacity: 1;
+  }
+  .h-terms-numbers {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
     justify-content: center;
   }
   .h-term {
-    padding: 8px 16px;
-    background: rgba(180,140,80,0.1);
-    color: #b48c50;
-    border-radius: 20px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
-    font-weight: 600;
-    transition: all 0.4s ease;
-    animation: highlightTerm 12s infinite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 52px;
+    border-radius: 10px;
+    background: rgba(30,64,175,0.07);
+    border: 1.5px solid rgba(30,64,175,0.2);
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #1e40af;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(12px) scale(0.85);
+    animation: termPopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, termCycleGlow 10s ease-in-out infinite;
   }
-  .h-term:nth-child(1) { animation-delay: 0s; }
-  .h-term:nth-child(2) { animation-delay: 3s; }
-  .h-term:nth-child(3) { animation-delay: 6s; }
-  .h-term:nth-child(4) { animation-delay: 9s; }
-
-  @keyframes highlightTerm {
-    0%, 20% { background: #b48c50; color: #fff; transform: scale(1.1); box-shadow: 0 4px 12px rgba(180,140,80,0.3); }
-    25%, 100% { background: rgba(180,140,80,0.1); color: #b48c50; transform: scale(1); box-shadow: none; }
+  .h-term:nth-child(1) { animation-delay: 0.05s, 0s; }
+  .h-term:nth-child(2) { animation-delay: 0.18s, 2s; }
+  .h-term:nth-child(3) { animation-delay: 0.31s, 4s; }
+  .h-term:nth-child(4) { animation-delay: 0.44s, 6s; }
+  .h-term:nth-child(5) { animation-delay: 0.57s, 8s; }
+  .h-term:hover {
+    background: rgba(30,64,175,0.07);
+    color: #1e40af;
+    border-color: rgba(30,64,175,0.2);
+    transform: none;
+    box-shadow: none;
+    cursor: default;
   }
-
-  /* Sensex Graph Background for Terms Box */
-  .box-terms {
-    position: relative;
-    overflow: hidden;
+  @keyframes termPopIn {
+    to { opacity: 1; transform: translateY(0) scale(1); }
   }
-  .box-terms::before {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 70%;
-    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 50' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='rgba(34,170,80,0.25)'/%3E%3Cstop offset='100%25' stop-color='rgba(34,170,80,0)'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cline x1='0' y1='10' x2='100' y2='10' stroke='rgba(0,0,0,0.04)' stroke-width='0.5'/%3E%3Cline x1='0' y1='25' x2='100' y2='25' stroke='rgba(0,0,0,0.04)' stroke-width='0.5'/%3E%3Cline x1='0' y1='40' x2='100' y2='40' stroke='rgba(0,0,0,0.04)' stroke-width='0.5'/%3E%3Cline x1='20' y1='0' x2='20' y2='50' stroke='rgba(0,0,0,0.04)' stroke-width='0.5'/%3E%3Cline x1='40' y1='0' x2='40' y2='50' stroke='rgba(0,0,0,0.04)' stroke-width='0.5'/%3E%3Cline x1='60' y1='0' x2='60' y2='50' stroke='rgba(0,0,0,0.04)' stroke-width='0.5'/%3E%3Cline x1='80' y1='0' x2='80' y2='50' stroke='rgba(0,0,0,0.04)' stroke-width='0.5'/%3E%3Cline x1='25' y1='25' x2='25' y2='35' stroke='rgba(34,170,80,0.4)' stroke-width='0.5'/%3E%3Crect x='24' y='28' width='2' height='4' fill='rgba(34,170,80,0.5)'/%3E%3Cline x1='40' y1='15' x2='40' y2='25' stroke='rgba(34,170,80,0.4)' stroke-width='0.5'/%3E%3Crect x='39' y='18' width='2' height='5' fill='rgba(34,170,80,0.5)'/%3E%3Cline x1='60' y1='10' x2='60' y2='20' stroke='rgba(34,170,80,0.4)' stroke-width='0.5'/%3E%3Crect x='59' y='12' width='2' height='6' fill='rgba(34,170,80,0.5)'/%3E%3Cline x1='75' y1='5' x2='75' y2='15' stroke='rgba(34,170,80,0.4)' stroke-width='0.5'/%3E%3Crect x='74' y='8' width='2' height='5' fill='rgba(34,170,80,0.5)'/%3E%3Cpath d='M0,50 L0,45 L10,42 L15,46 L25,30 L30,35 L40,20 L50,25 L60,15 L70,18 L75,10 L85,15 L95,5 L100,8 L100,50 Z' fill='url(%23g)'/%3E%3Cpath d='M0,45 L10,42 L15,46 L25,30 L30,35 L40,20 L50,25 L60,15 L70,18 L75,10 L85,15 L95,5 L100,8' fill='none' stroke='rgba(34,170,80,0.6)' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat bottom;
-    background-size: 100% 100%;
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0.9;
+  @keyframes termCycleGlow {
+    0%, 15% { background: #1e40af; color: #fff; border-color: #1e40af; box-shadow: 0 6px 18px rgba(30,64,175,0.35); transform: scale(1.08); }
+    20%, 100% { background: rgba(30,64,175,0.07); color: #1e40af; border-color: rgba(30,64,175,0.2); box-shadow: none; transform: scale(1); }
+  }
+  .h-terms-note {
+    font-size: 15px;
+    font-weight: 500;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 4px;
   }
   .box-terms .h-terms {
     position: relative;
     z-index: 1;
+  }
+  .box-terms {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #fffdf7 0%, #fef9ec 100%);
+  }
+  .box-terms::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='220'%3E%3C!-- Coin 1 large top-right --%3E%3Ccircle cx='220' cy='30' r='28' fill='%23F5C842' opacity='0.18'/%3E%3Ccircle cx='220' cy='30' r='22' fill='none' stroke='%23C9A227' stroke-width='1.5' opacity='0.25'/%3E%3Ctext x='220' y='37' text-anchor='middle' font-size='16' font-family='serif' fill='%23C9A227' opacity='0.35' font-weight='700'%3E%E2%82%B9%3C/text%3E%3Cellipse cx='212' cy='22' rx='6' ry='3' fill='white' opacity='0.2' transform='rotate(-30 212 22)'/%3E%3C!-- Coin 2 medium bottom-left --%3E%3Ccircle cx='28' cy='185' r='22' fill='%23F5C842' opacity='0.15'/%3E%3Ccircle cx='28' cy='185' r='16' fill='none' stroke='%23C9A227' stroke-width='1.2' opacity='0.22'/%3E%3Ctext x='28' y='191' text-anchor='middle' font-size='12' font-family='serif' fill='%23C9A227' opacity='0.3' font-weight='700'%3E%E2%82%B9%3C/text%3E%3Cellipse cx='22' cy='179' rx='5' ry='2.5' fill='white' opacity='0.18' transform='rotate(-30 22 179)'/%3E%3C!-- Coin 3 small top-left --%3E%3Ccircle cx='18' cy='28' r='14' fill='%23F5C842' opacity='0.12'/%3E%3Ccircle cx='18' cy='28' r='10' fill='none' stroke='%23C9A227' stroke-width='1' opacity='0.18'/%3E%3Ctext x='18' y='33' text-anchor='middle' font-size='9' font-family='serif' fill='%23C9A227' opacity='0.25' font-weight='700'%3E%E2%82%B9%3C/text%3E%3C!-- Coin 4 medium-small bottom-right --%3E%3Ccircle cx='240' cy='195' r='18' fill='%23F5C842' opacity='0.14'/%3E%3Ccircle cx='240' cy='195' r='13' fill='none' stroke='%23C9A227' stroke-width='1.2' opacity='0.2'/%3E%3Ctext x='240' y='200' text-anchor='middle' font-size='11' font-family='serif' fill='%23C9A227' opacity='0.28' font-weight='700'%3E%E2%82%B9%3C/text%3E%3Cellipse cx='234' cy='189' rx='4' ry='2' fill='white' opacity='0.18' transform='rotate(-30 234 189)'/%3E%3C!-- Coin 5 tiny middle-right --%3E%3Ccircle cx='248' cy='108' r='10' fill='%23F5C842' opacity='0.1'/%3E%3Ccircle cx='248' cy='108' r='7' fill='none' stroke='%23C9A227' stroke-width='1' opacity='0.15'/%3E%3C!-- scattered dots --%3E%3Ccircle cx='60' cy='70' r='3' fill='%23C9A227' opacity='0.1'/%3E%3Ccircle cx='190' cy='145' r='2.5' fill='%23C9A227' opacity='0.1'/%3E%3Ccircle cx='130' cy='10' r='2' fill='%23C9A227' opacity='0.08'/%3E%3C/svg%3E") repeat;
+    background-size: 260px 220px;
+    opacity: 1;
+    z-index: 0;
+    pointer-events: none;
   }
 
   /* Step 3: Secure */
@@ -1778,7 +1831,7 @@
     text-shadow: 0 0 12px rgba(255,255,255,1), 0 0 4px rgba(255,255,255,1), 0 2px 4px rgba(255,255,255,0.8);
   }
   .h-roi-sub { 
-    font-size: 12px; 
+    font-size: 18px; 
     color: #333; 
     margin-top: 4px; 
     font-family: 'Outfit', sans-serif; 
@@ -2550,7 +2603,7 @@
       <a href="#contact">Contact</a>
     </div>
     <div class="nav-cta">
-      <a href="#" class="nav-text-link" style="font-size: 14px;">
+      <a href="#" class="nav-text-link" style="font-size: clamp(10px, 1.1vw, 15.5px);">
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
         Login &nbsp;/&nbsp;
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
@@ -2636,35 +2689,47 @@
       </script>
 
       <div class="wrap">
-        <div class="hero-inner">
+        <style>
+          .hero-inner-layout { display: flex; gap: 40px; align-items: center; justify-content: space-between; width: 100%; }
+          .hero-inner-layout > .hero-main-content { flex: 1 1 52%; min-width: 0; }
+          .hero-inner-layout > .hero-video { flex: 0 0 44%; max-width: 44%; min-width: 0; display: flex; align-items: center; justify-content: center; position: relative; z-index: 10; }
+          .hero-inner-layout > .hero-video video { width: 100%; max-height: 480px; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); border: 2px solid rgba(255,255,255,0.15); background: #000; cursor: pointer; object-fit: cover; }
+          @media (max-width: 991px) {
+            .hero-inner-layout { flex-direction: column; gap: 24px; }
+            .hero-inner-layout > .hero-main-content { flex: 1 1 100%; max-width: 100%; width: 100%; }
+            .hero-inner-layout > .hero-video { flex: 0 0 auto; max-width: 100%; width: 100%; }
+            .hero-inner-layout > .hero-video video { max-height: 240px; }
+          }
+        </style>
+        <div class="hero-inner hero-inner-layout">
           <div class="hero-main-content">
             <span class="eyebrow" style="font-family:'Work Sans', sans-serif;">SITAR · Your Trusted Wealth Partner</span>
-            <h1 class="hero-title"><span class="display" style="color: var(--gold); font-size:clamp(20px,2.8vw,38px); font-style:normal; font-family:'Work Sans', sans-serif;">Nearly a decade</span><span style="font-family:'Work Sans',sans-serif; font-weight:700; font-size:clamp(20px,2.8vw,38px); color:#222;"> of building wealth &amp; trust.</span></h1>
+            <h1 class="hero-title"><span class="display" style="color: var(--gold); font-size:clamp(17px,2.38vw,32px); font-style:normal; font-family:'Work Sans', sans-serif;">Nearly a decade of building wealth &amp; trust.</span></h1>
             <p class="hero-sub" style="line-height:1.9; font-size: 20px;">
-              <span class="typewriter-line" style="display:block; margin-bottom:8px; color:#111111; font-family:'Work Sans', sans-serif; font-weight:600; font-size:20px; white-space:nowrap; cursor:pointer;">Grow your wealth through secured real-estate investments.</span>
-              <span class="typewriter-line" style="display:block; margin-bottom:8px; color:#111111; font-family:'Work Sans', sans-serif; font-weight:600; font-size:20px; white-space:nowrap; cursor:pointer;">Unlock funds with asset-backed loans.</span>
+              <span class="typewriter-line" style="display:block; margin-bottom:8px; color:#111111; font-family:'Work Sans', sans-serif; font-weight:600; font-size:20px; cursor:pointer;">Grow your wealth through secured real-estate investments.</span>
+              <span class="typewriter-line" style="display:block; margin-bottom:8px; color:#111111; font-family:'Work Sans', sans-serif; font-weight:600; font-size:20px; cursor:pointer;">Unlock funds with asset-backed loans.</span>
               <strong style="display:block; color: #1E3A8A; font-weight:700; margin-top:12px; font-size: 22px; line-height: 1.4; font-family:'Work Sans', sans-serif;">We believe success is best achieved together.</strong>
             </p>
 
             <!-- Service Highlights -->
-            <div class="service-highlights" style="display:flex; gap:32px; margin-top:28px; flex-wrap:wrap;">
-              <a href="invest.html" style="display:flex; align-items:center; gap:10px; text-decoration:none; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
-                <div style="width:38px;height:38px;border-radius:50%;background:rgba(184,134,11,0.12);display:flex;align-items:center;justify-content:center;">
-                  <svg width="18" height="18" fill="none" stroke="#B8860B" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <div class="service-highlights" style="display:flex; gap:12px; margin-top:28px; flex-wrap:nowrap; align-items:center;">
+              <a href="invest.html" style="display:flex; align-items:center; gap:7px; text-decoration:none; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+                <div style="width:30px;height:30px;border-radius:50%;background:rgba(184,134,11,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="15" height="15" fill="none" stroke="#B8860B" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                 </div>
-                <span style="font-size:17px;font-weight:600;color:#333;">Real Asset Investments</span>
+                <span style="font-size:14px;font-weight:600;color:#333;white-space:nowrap;">Real Asset Investments</span>
               </a>
-              <a href="services.html" style="display:flex; align-items:center; gap:10px; text-decoration:none; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
-                <div style="width:38px;height:38px;border-radius:50%;background:rgba(62,142,133,0.12);display:flex;align-items:center;justify-content:center;">
-                  <svg width="18" height="18" fill="none" stroke="#3E8E85" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+              <a href="services.html" style="display:flex; align-items:center; gap:7px; text-decoration:none; transition: opacity 0.2s ease;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+                <div style="width:30px;height:30px;border-radius:50%;background:rgba(62,142,133,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="15" height="15" fill="none" stroke="#3E8E85" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
                 </div>
-                <span style="font-size:17px;font-weight:600;color:#333;">Flexible Loan Solutions</span>
+                <span style="font-size:14px;font-weight:600;color:#333;white-space:nowrap;">Flexible Loan Solutions</span>
               </a>
-              <div style="display:flex; align-items:center; gap:10px;">
-                <div style="width:38px;height:38px;border-radius:50%;background:rgba(110,134,166,0.12);display:flex;align-items:center;justify-content:center;">
-                  <svg width="18" height="18" fill="none" stroke="#6E86A6" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              <div style="display:flex; align-items:center; gap:7px;">
+                <div style="width:30px;height:30px;border-radius:50%;background:rgba(110,134,166,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="15" height="15" fill="none" stroke="#6E86A6" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                 </div>
-                <span style="font-size:17px;font-weight:600;color:#333;">Guaranteed Monthly Returns</span>
+                <span style="font-size:14px;font-weight:600;color:#333;white-space:nowrap;">Guaranteed Monthly Returns</span>
               </div>
             </div>
 
@@ -2759,7 +2824,27 @@
               <span style="font-size: 13px; font-weight: 700; color: #111; line-height: 1;">Talk to Advisor</span>
             </div>
           </a>
+            </div><!-- /Bottom Actions -->
+          </div><!-- /hero-main-content -->
+          <div class="hero-video">
+            <video id="heroVideo" src="video1.mp4" preload="metadata" playsinline></video>
+            <div id="heroVideoPlayBtn" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(184, 134, 11, 0.9); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 24px rgba(0,0,0,0.4);" onmouseover="this.style.background='var(--gold)'; this.style.transform='translate(-50%, -50%) scale(1.1)';" onmouseout="this.style.background='rgba(184, 134, 11, 0.9)'; this.style.transform='translate(-50%, -50%) scale(1)';">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="#111111" style="margin-left: 4px;"><path d="M5 3l14 9-14 9V3z"/></svg>
             </div>
+            <script>
+              const vidBtn = document.getElementById('heroVideoPlayBtn');
+              const vid = document.getElementById('heroVideo');
+              const playVid = () => {
+                if (vid.paused) {
+                  vid.play();
+                  vid.setAttribute('controls', 'true');
+                  vid.style.cursor = 'default';
+                  vidBtn.style.display = 'none';
+                }
+              };
+              vidBtn.addEventListener('click', playVid);
+              vid.addEventListener('click', playVid);
+            </script>
           </div>
         </div>
       </div>
@@ -2912,10 +2997,10 @@
             <h4>Choose your investment option</h4>
             <div class="h-box p-0">
               <div class="h-slideshow">
-                <div class="slide"><img src="slide_villa.png" alt="Villa"><div class="slide-label">Villa</div></div>
-                <div class="slide"><img src="slide_apartment.png" alt="Apt"><div class="slide-label">Apartment</div></div>
-                <div class="slide"><img src="slide_resort.png" alt="Resort"><div class="slide-label">Resort</div></div>
-                <div class="slide"><img src="slide_layout.png" alt="Layout"><div class="slide-label">Layout</div></div>
+                <div class="slide"><img src="slide_villa.png" alt="Villa" style="object-fit: cover;"><div class="slide-label">Villa</div></div>
+                <div class="slide"><img src="slide_apartment.png" alt="Apt" style="object-fit: cover;"><div class="slide-label">Apartment</div></div>
+                <div class="slide"><img src="slide_resort.png" alt="Resort" style="object-fit: cover;"><div class="slide-label">Resort</div></div>
+                <div class="slide"><img src="slide_layout.png" alt="Layout" style="object-fit: cover;"><div class="slide-label">Layout</div></div>
               </div>
             </div>
           </div>
@@ -2925,10 +3010,17 @@
             <h4>Pick your terms</h4>
             <div class="h-box box-terms">
               <div class="h-terms">
-                <div class="h-term">1 yr</div>
-                <div class="h-term">2 yr</div>
-                <div class="h-term">3 yr</div>
-                <div class="h-term">5 yr</div>
+                <span class="h-terms-label">Years</span>
+                <div class="h-terms-numbers">
+                  <div class="h-term">1</div>
+                  <div class="h-term">2</div>
+                  <div class="h-term">3</div>
+                  <div class="h-term">4</div>
+                  <div class="h-term">5</div>
+                </div>
+                <span class="h-terms-note">
+                  Your money is always accessible. Cancel anytime.
+                </span>
               </div>
             </div>
           </div>
@@ -2954,8 +3046,8 @@
             <div class="h-step-num">04</div>
             <h4>Returns / ROI</h4>
             <div class="h-box box-roi">
-              <div class="h-roi">₹2,083</div>
-              <div class="h-roi-sub">Monthly on ₹25,000<br>2-year plan · 10% p.a.</div>
+              <div class="h-roi">₹11,000<span style="font-size:0.45em; font-weight:500; vertical-align:middle;">/-</span></div>
+              <div class="h-roi-sub">For ₹1,00,000 investment<br>@ 11% p.a.</div>
             </div>
           </div>
         </div>
