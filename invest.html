@@ -54,7 +54,8 @@
     background: var(--bg);
     z-index: 9999;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    padding-top: 120px;
     justify-content: center;
     padding: 32px;
     opacity: 0;
@@ -205,7 +206,7 @@
   }
   .nav-links{
     display:flex; align-items:center; gap: clamp(4px, 1vw, 10px);
-    font-size:clamp(11px, 1.3vw, 16.5px); font-weight:600; color:var(--cream-dim);
+    font-size:clamp(11px, 1.3vw, 16.5px); font-weight:600; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.85); font-weight: 500;
   }
   .nav-links a + a {
     margin-left: 20px;
@@ -251,7 +252,7 @@
   .nav-dropdown-trigger {
     background: none;
     border: none;
-    color: var(--cream-dim);
+    color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.85); font-weight: 500;
     font-family: inherit;
     font-size: clamp(11px, 1.3vw, 16.5px);
     font-weight: 600;
@@ -304,7 +305,7 @@
   .nav-dropdown-menu a {
     display: block;
     padding: 10px 20px;
-    color: var(--cream-dim);
+    color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.85); font-weight: 500;
     font-size: 13.5px;
     font-weight: 400;
     white-space: nowrap;
@@ -501,7 +502,8 @@
     transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
     z-index: 1;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    padding-top: 120px;
   }
   .h-slide-item.active {
     opacity: 1;
@@ -544,7 +546,7 @@
   @media (max-width: 768px) {
     .hero-title { font-size: 34px !important; white-space: normal !important; }
     .hero-cta { flex-direction: column; width: 100%; align-items: flex-start; }
-    .h-slider-dots { bottom: 20px; }
+    .h-slider-dots { display: none; }
   }
 
   .hero-inner {
@@ -617,7 +619,9 @@
     margin-top:10px;
     max-width:520px;
     font-size:18px;
-    color:var(--cream-dim);
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.85);
+    font-weight: 500;
   }
   .hero-cta{ display:flex; gap:14px; margin-top:20px; flex-wrap:wrap; }
   .hero-cta .btn{ padding:14px 28px; font-size:14px; }
@@ -653,7 +657,7 @@
     font-size:13.5px;
     white-space:nowrap;
     border-right:1px solid var(--line);
-    color:var(--cream-dim);
+    color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.85); font-weight: 500;
   }
   .ticker-item .sym{ color:var(--cream); font-weight:500;}
   .ticker-item .rate{ color:var(--gold); }
@@ -673,7 +677,7 @@
     font-weight:400;
   }
   .section-head h2 em{ font-style:normal; color:var(--gold); font-family:'Fraunces', serif; }
-  .section-head p{ margin-top:18px; color:var(--cream-dim); font-size:16px; max-width:520px; }
+  .section-head p{ margin-top:18px; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.85); font-weight: 500; font-size:16px; max-width:520px; }
 
   #sectors {
     background: #ffffff url('i.png') right 15% / cover no-repeat fixed;
@@ -735,7 +739,7 @@
   .sc-villas { background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.75)), url('villa_exterior_1783620295618.webp'); --accent: #FF8B60; }
   .sc-villas h3, .sc-villas .rate { color: #FF8B60 !important; }
   
-  .sc-apartments { background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.75)), url('modern_apartment.png'); --accent: #A1C4FD; }
+  .sc-apartments { background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.75)), url('modern_apartment_v2.png'); --accent: #A1C4FD; }
   .sc-apartments h3, .sc-apartments .rate { color: #A1C4FD !important; }
   
   .sc-resorts { background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.75)), url('gallery_resort.webp'); --accent: #5CE1E6; }
@@ -830,7 +834,7 @@
     color: var(--gold);
   }
   .contact-info p {
-    color: var(--cream-dim);
+    color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.85); font-weight: 500;
     margin-top: 16px;
     font-size: 16px;
   }
@@ -908,7 +912,7 @@
   .foot-brand p{ margin-top:14px; color:var(--apartments); font-size:13.5px; max-width:320px; }
   .foot-links{ display:flex; gap:64px; flex-wrap:wrap; }
   .foot-col h4{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--cream-faint); margin-bottom:16px; }
-  .foot-col a{ display:block; font-size:14px; color:var(--cream-dim); margin-bottom:11px; }
+  .foot-col a{ display:block; font-size:14px; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.85); font-weight: 500; margin-bottom:11px; }
   .foot-col a:hover{ color:var(--gold); }
   .foot-bottom{
     padding-top:12px; border-top:1px solid var(--line);
@@ -1080,7 +1084,8 @@
     height: 48px;
     border-radius: 50%;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    padding-top: 120px;
     justify-content: center;
     color: #ffffff;
     box-shadow: 0 4px 16px rgba(0,0,0,0.3);
@@ -1199,7 +1204,7 @@
     <!-- Slide 0: Villa -->
     <div class="h-slide-item active" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.5) 100%), url('villa_exterior_1783620295618.webp');">
       <div class="wrap h-slide-content">
-        <h1 class="hero-title"><span class="display">Invest in</span> <br><span class="cream">Villa Projects</span></h1>
+        <h1 class="hero-title"><span class="display" style="color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9); font-weight: 600;">Invest in</span> <br><span class="cream" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">Villa Projects</span></h1>
         <p class="hero-sub">Independent villa developments in growing residential corridors. Up to 12% p.a. guaranteed.</p>
         <div class="hero-cta">
           <a href="#plans" class="btn btn-gold" style="display:flex; align-items:center; gap:8px;">
@@ -1215,9 +1220,9 @@
     </div>
     
     <!-- Slide 1: Apartment -->
-    <div class="h-slide-item" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.5) 100%), url('modern_apartment.png');">
+    <div class="h-slide-item" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.5) 100%), url('modern_apartment_v2.png');">
       <div class="wrap h-slide-content">
-        <h1 class="hero-title"><span class="display">Invest in</span> <br><span class="cream">Apartment Projects</span></h1>
+        <h1 class="hero-title"><span class="display" style="color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9); font-weight: 600;">Invest in</span> <br><span class="cream" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">Apartment Projects</span></h1>
         <p class="hero-sub">Multi-unit residential projects built for steady occupancy demand. Up to 11% p.a. guaranteed.</p>
         <div class="hero-cta">
           <a href="#plans" class="btn btn-gold" style="display:flex; align-items:center; gap:8px;">
@@ -1235,7 +1240,7 @@
     <!-- Slide 2: Resorts -->
     <div class="h-slide-item" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.5) 100%), url('gallery_resort.webp');">
       <div class="wrap h-slide-content">
-        <h1 class="hero-title"><span class="display">Invest in</span> <br><span class="cream">Hotels & Resorts</span></h1>
+        <h1 class="hero-title"><span class="display" style="color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9); font-weight: 600;">Invest in</span> <br><span class="cream" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">Hotels & Resorts</span></h1>
         <p class="hero-sub">Hospitality and leisure properties in established destinations. Up to 12.5% p.a. guaranteed.</p>
         <div class="hero-cta">
           <a href="#plans" class="btn btn-gold" style="display:flex; align-items:center; gap:8px;">
@@ -1253,7 +1258,7 @@
     <!-- Slide 3: Commercial -->
     <div class="h-slide-item" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.5) 100%), url('gallery_invest_2.webp');">
       <div class="wrap h-slide-content">
-        <h1 class="hero-title"><span class="display">Invest in</span> <br><span class="cream">Commercial Complex</span></h1>
+        <h1 class="hero-title"><span class="display" style="color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9); font-weight: 600;">Invest in</span> <br><span class="cream" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">Commercial Complex</span></h1>
         <p class="hero-sub">High-yield retail spaces, office complexes, and mixed-use developments. Up to 11.5% p.a. guaranteed.</p>
         <div class="hero-cta">
           <a href="#plans" class="btn btn-gold" style="display:flex; align-items:center; gap:8px;">
@@ -1271,7 +1276,7 @@
     <!-- Slide 4: Layouts -->
     <div class="h-slide-item" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.5) 100%), url('gallery_layout.webp');">
       <div class="wrap h-slide-content">
-        <h1 class="hero-title"><span class="display">Invest in</span> <br><span class="cream">Layout Development</span></h1>
+        <h1 class="hero-title"><span class="display" style="color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9); font-weight: 600;">Invest in</span> <br><span class="cream" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">Layout Development</span></h1>
         <p class="hero-sub">Land conversion and plotted developments from acquisition to sale. Up to 13% p.a. guaranteed.</p>
         <div class="hero-cta">
           <a href="#plans" class="btn btn-gold" style="display:flex; align-items:center; gap:8px;">
@@ -1308,7 +1313,7 @@
     <div class="section-head">
       <span class="eyebrow">Investment plans</span>
       <h2 style="font-size:clamp(24px,3.2vw,35px);">Lock in for longer, <em>earn</em> more.</h2>
-      <p style="margin-top:12px; display:flex; align-items:center; gap:6px; font-size:15px; font-weight:500; color:var(--cream-dim);">
+      <p style="margin-top:12px; display:flex; align-items:center; gap:6px; font-size:15px; font-weight:500; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.85); font-weight: 500;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         Your money is always accessible. Cancel anytime.
       </p>

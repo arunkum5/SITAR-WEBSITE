@@ -54,7 +54,8 @@
     background: var(--bg);
     z-index: 9999;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    padding-top: 120px;
     justify-content: center;
     padding: 32px;
     opacity: 0;
@@ -205,7 +206,7 @@
   }
   .nav-links{
     display:flex; align-items:center; gap: clamp(4px, 1vw, 10px);
-    font-size:clamp(11px, 1.3vw, 16.5px); font-weight:600; color:var(--cream-dim);
+    font-size:clamp(11px, 1.3vw, 16.5px); font-weight:600; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.85); font-weight: 500;
   }
   .nav-links a + a {
     margin-left: 20px;
@@ -250,7 +251,7 @@
   .nav-dropdown-trigger {
     background: none;
     border: 1px solid transparent;
-    color: var(--cream-dim);
+    color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.85); font-weight: 500;
     font-family: inherit;
     font-size: clamp(11px, 1.3vw, 16.5px);
     font-weight: 600;
@@ -303,7 +304,7 @@
   .nav-dropdown-menu a {
     display: block;
     padding: 10px 20px;
-    color: var(--cream-dim);
+    color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.85); font-weight: 500;
     font-size: 13.5px;
     font-weight: 400;
     white-space: nowrap;
@@ -499,7 +500,8 @@
     transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
     z-index: 1;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    padding-top: 120px;
   }
   .h-slide-item.active {
     opacity: 1;
@@ -542,7 +544,7 @@
   @media (max-width: 768px) {
     .hero-title { font-size: 34px !important; white-space: normal !important; }
     .hero-cta { flex-direction: column; width: 100%; align-items: flex-start; }
-    .h-slider-dots { bottom: 20px; }
+    .h-slider-dots { display: none; }
   }
 
   .hero-inner {
@@ -603,7 +605,7 @@
     margin-top:10px;
     max-width:560px;
     font-size:18px;
-    color:var(--cream-dim);
+    color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.85); font-weight: 500;
   }
   .hero-cta{ display:flex; gap:14px; margin-top:20px; flex-wrap:wrap; }
   .hero-cta .btn{ padding:14px 28px; font-size:14px; }
@@ -639,7 +641,7 @@
     font-size:13.5px;
     white-space:nowrap;
     border-right:1px solid var(--line);
-    color:var(--cream-dim);
+    color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.85); font-weight: 500;
   }
   .ticker-item .sym{ color:var(--cream); font-weight:500;}
   .ticker-item .rate{ color:var(--gold); }
@@ -659,11 +661,11 @@
     font-weight:400;
   }
   .section-head h2 em{ font-style:normal; color:var(--gold); font-family:'Fraunces', serif; }
-  .section-head p{ margin-top:18px; color:var(--cream-dim); font-size:16px; max-width:520px; }
+  .section-head p{ margin-top:18px; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.85); font-weight: 500; font-size:16px; max-width:520px; }
 
   /* ---------- LOANS ---------- */
   #loans {
-    background: linear-gradient(rgba(17, 19, 21, 0.9), rgba(17, 19, 21, 0.9)), url('loan.webp') top center / 115% auto no-repeat fixed;
+    background: linear-gradient(rgba(17, 19, 21, 0.9), rgba(17, 19, 21, 0.9)), url('personal_loan_v2.png') top center / 115% auto no-repeat fixed;
     background-color: #111315; /* Fallback color for empty spaces */
     color: var(--cream);
     padding-bottom: 80px;
@@ -718,12 +720,12 @@
     transition: opacity 0.7s ease, transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   }
   
-  .lc-property { background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.75)), url('gallery_loan_1.webp'); --accent: #5CE1E6; }
+  .lc-property { background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.75)), url('property_loan_v2.png'); --accent: #5CE1E6; }
   .lc-property h3, .lc-property .link { color: #5CE1E6 !important; }
   .lc-property .link { border-color: rgba(92,225,230,0.3) !important; }
   .lc-property .link:hover { border-color: #5CE1E6 !important; }
   
-  .lc-construction { background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.75)), url('new-for-loan.webp'); --accent: #FF8B60; }
+  .lc-construction { background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.75)), url('construction_loan_v2.png'); --accent: #FF8B60; }
   .lc-construction h3, .lc-construction .link { color: #FF8B60 !important; }
   .lc-construction .link { border-color: rgba(255,139,96,0.3) !important; }
   .lc-construction .link:hover { border-color: #FF8B60 !important; }
@@ -733,7 +735,7 @@
   .lc-gold .link { border-color: rgba(255,215,0,0.3) !important; }
   .lc-gold .link:hover { border-color: #FFD700 !important; }
   
-  .lc-personal { background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.75)), url('loan.webp'); --accent: #D1B3FF; }
+  .lc-personal { background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.75)), url('personal_loan_v2.png'); --accent: #D1B3FF; }
   .lc-personal h3, .lc-personal .link { color: #D1B3FF !important; }
   .lc-personal .link { border-color: rgba(209,179,255,0.3) !important; }
   .lc-personal .link:hover { border-color: #D1B3FF !important; }
@@ -743,7 +745,7 @@
   .lc-business .link { border-color: rgba(161,196,253,0.3) !important; }
   .lc-business .link:hover { border-color: #A1C4FD !important; }
   
-  .lc-talk { background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.75)), url('bg_talk_loan.webp'); --accent: #FF7E7E; }
+  .lc-talk { background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.75)), url('bg_talk_personal_loan_v2.png'); --accent: #FF7E7E; }
   .lc-talk h3, .lc-talk .link { color: #FF7E7E !important; }
   .lc-talk .link { border-color: rgba(255,126,126,0.3) !important; }
   .lc-talk .link:hover { border-color: #FF7E7E !important; }
@@ -794,7 +796,7 @@
 
   /* ---------- CONTACT FORM ---------- */
   .contact-section {
-    background: linear-gradient(rgba(17, 19, 21, 0.9), rgba(17, 19, 21, 0.9)), url('loan.webp') bottom center / 115% auto no-repeat fixed;
+    background: linear-gradient(rgba(17, 19, 21, 0.9), rgba(17, 19, 21, 0.9)), url('personal_loan_v2.png') bottom center / 115% auto no-repeat fixed;
     background-color: #111315;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
@@ -812,7 +814,7 @@
     color: var(--gold);
   }
   .contact-info p {
-    color: var(--cream-dim);
+    color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.85); font-weight: 500;
     margin-top: 16px;
     font-size: 16px;
   }
@@ -880,7 +882,7 @@
   .foot-brand p{ margin-top:14px; color:var(--apartments); font-size:13.5px; max-width:320px; }
   .foot-links{ display:flex; gap:64px; flex-wrap:wrap; }
   .foot-col h4{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--cream-faint); margin-bottom:16px; }
-  .foot-col a{ display:block; font-size:14px; color:var(--cream-dim); margin-bottom:11px; }
+  .foot-col a{ display:block; font-size:14px; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.85); font-weight: 500; margin-bottom:11px; }
   .foot-col a:hover{ color:var(--gold); }
   .foot-bottom{
     padding-top:12px; border-top:1px solid var(--line);
@@ -1026,7 +1028,8 @@
     height: 48px;
     border-radius: 50%;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    padding-top: 120px;
     justify-content: center;
     color: #ffffff;
     box-shadow: 0 4px 16px rgba(0,0,0,0.3);
@@ -1147,9 +1150,9 @@
 <section id="hero-slider" class="h-slider-section">
   <div class="h-slider-track">
     <!-- Slide 1: Property -->
-    <div class="h-slide-item active" style="background-image: url('gallery_loan_1.webp');">
+    <div class="h-slide-item active" style="background-image: url('property_loan_v2.png');">
       <div class="wrap h-slide-content">
-        <h1 class="hero-title"><span class="display">Property</span> <br><span class="cream">Loans</span></h1>
+        <h1 class="hero-title"><span class="display" style="color: #5CE1E6; text-shadow: 0 2px 8px rgba(0,0,0,0.9);">Property</span> <br><span class="cream" style="text-shadow: 0 2px 8px rgba(0,0,0,0.9);">Loans</span></h1>
         <p class="hero-sub">Financing against residential and commercial property, structured around your repayment comfort.</p>
         <div class="hero-cta">
           <a href="#contact" class="btn btn-gold" style="display:flex; align-items:center; gap:8px;">
@@ -1164,9 +1167,9 @@
       </div>
     </div>
     <!-- Slide 2: Construction -->
-    <div class="h-slide-item" style="background-image: url('new-for-loan.webp');">
+    <div class="h-slide-item" style="background-image: url('construction_loan_v2.png');">
       <div class="wrap h-slide-content">
-        <h1 class="hero-title"><span class="display">Construction</span> <br><span class="cream">Loans</span></h1>
+        <h1 class="hero-title"><span class="display" style="color: #FF8B60; text-shadow: 0 2px 8px rgba(0,0,0,0.9);">Construction</span> <br><span class="cream" style="text-shadow: 0 2px 8px rgba(0,0,0,0.9);">Loans</span></h1>
         <p class="hero-sub">Funding for property developments, with staged disbursals linked directly to construction milestones.</p>
         <div class="hero-cta">
           <a href="#contact" class="btn btn-gold" style="display:flex; align-items:center; gap:8px;">
@@ -1183,7 +1186,7 @@
     <!-- Slide 3: Gold -->
     <div class="h-slide-item" style="background-image: url('gallery_loan_2.webp');">
       <div class="wrap h-slide-content">
-        <h1 class="hero-title"><span class="display">Gold</span> <br><span class="cream">Loans</span></h1>
+        <h1 class="hero-title"><span class="display" style="color: #FFD700; text-shadow: 0 2px 8px rgba(0,0,0,0.9);">Gold</span> <br><span class="cream" style="text-shadow: 0 2px 8px rgba(0,0,0,0.9);">Loans</span></h1>
         <p class="hero-sub">Rapid liquidity against gold assets. Competitive rates, secure storage, and zero hidden fees.</p>
         <div class="hero-cta">
           <a href="#contact" class="btn btn-gold" style="display:flex; align-items:center; gap:8px;">
@@ -1198,9 +1201,9 @@
       </div>
     </div>
     <!-- Slide 4: Personal -->
-    <div class="h-slide-item" style="background-image: url('loan.webp');">
+    <div class="h-slide-item" style="background-image: url('personal_loan_v2.png');">
       <div class="wrap h-slide-content">
-        <h1 class="hero-title"><span class="display">Personal</span> <br><span class="cream">Loans</span></h1>
+        <h1 class="hero-title"><span class="display" style="color: #D1B3FF; text-shadow: 0 2px 8px rgba(0,0,0,0.9);">Personal</span> <br><span class="cream" style="text-shadow: 0 2px 8px rgba(0,0,0,0.9);">Loans</span></h1>
         <p class="hero-sub">Flexible unsecured loans for personal milestones, lifestyle upgrades, or unexpected expenses.</p>
         <div class="hero-cta">
           <a href="#contact" class="btn btn-gold" style="display:flex; align-items:center; gap:8px;">
@@ -1217,7 +1220,7 @@
     <!-- Slide 5: Business -->
     <div class="h-slide-item" style="background-image: url('gallery_loan_3.webp');">
       <div class="wrap h-slide-content">
-        <h1 class="hero-title"><span class="display">Business</span> <br><span class="cream">Loans</span></h1>
+        <h1 class="hero-title"><span class="display" style="color: #A1C4FD; text-shadow: 0 2px 8px rgba(0,0,0,0.9);">Business</span> <br><span class="cream" style="text-shadow: 0 2px 8px rgba(0,0,0,0.9);">Loans</span></h1>
         <p class="hero-sub">Working capital and expansion financing tailored to fuel your enterprise's next big step.</p>
         <div class="hero-cta">
           <a href="#contact" class="btn btn-gold" style="display:flex; align-items:center; gap:8px;">
@@ -1345,16 +1348,16 @@
 
 <section id="gallery" class="image-gallery">
   <div class="gallery-track">
-    <img src="gallery_loan_1.webp" alt="Gallery Image 1" class="gallery-item">
+    <img src="property_loan_v2.png" alt="Gallery Image 1" class="gallery-item">
     <img src="gallery_loan_2.webp" alt="Gallery Image 2" class="gallery-item">
     <img src="gallery_loan_3.webp" alt="Gallery Image 3" class="gallery-item">
-    <img src="gallery_loan_1.webp" alt="Gallery Image 1" class="gallery-item">
+    <img src="property_loan_v2.png" alt="Gallery Image 1" class="gallery-item">
     <img src="gallery_loan_2.webp" alt="Gallery Image 2" class="gallery-item">
     <img src="gallery_loan_3.webp" alt="Gallery Image 3" class="gallery-item">
-    <img src="gallery_loan_1.webp" alt="Gallery Image 1" class="gallery-item">
+    <img src="property_loan_v2.png" alt="Gallery Image 1" class="gallery-item">
     <img src="gallery_loan_2.webp" alt="Gallery Image 2" class="gallery-item">
     <img src="gallery_loan_3.webp" alt="Gallery Image 3" class="gallery-item">
-    <img src="gallery_loan_1.webp" alt="Gallery Image 1" class="gallery-item">
+    <img src="property_loan_v2.png" alt="Gallery Image 1" class="gallery-item">
     <img src="gallery_loan_2.webp" alt="Gallery Image 2" class="gallery-item">
     <img src="gallery_loan_3.webp" alt="Gallery Image 3" class="gallery-item">
   </div>
