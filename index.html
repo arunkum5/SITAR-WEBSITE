@@ -622,14 +622,17 @@
     z-index: 2;
     flex: 1 1 auto;
     display: flex;
-    align-items: center;
-    overflow: hidden;
+    align-items: flex-start;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   .hero-inner {
     position: relative;
     width: 100%;
     max-width: 100%;
     z-index: 1;
+    margin: auto 0;
+    padding: 40px 0;
   }
 
   /* Staggered text animations for premium feel */
