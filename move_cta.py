@@ -3,12 +3,12 @@ import sys
 
 # The exact CTA HTML to remove (using regex to match flexible whitespaces if needed)
 cta_regex = re.compile(
-    r'<!-- Talk to Advisor CTA -->\s*<a href="tel:\+918660108612" class="advisor-action"[\s\S]*?</a>',
+    r'<!-- Talk to Advisor CTA -->\s*<a href="tel:\+919480355850" class="advisor-action"[\s\S]*?</a>',
     re.DOTALL
 )
 
 cta_html = """<!-- Talk to Advisor CTA -->
-        <a href="tel:+918660108612" class="advisor-action" style="display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #d4fc79, #96e6a1); padding: 4px 12px 4px 4px; border-radius: 40px; border: none; box-shadow: 0 4px 12px rgba(150, 230, 161, 0.3); text-decoration: none; transition: all 0.3s ease; height: fit-content;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(150, 230, 161, 0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(150, 230, 161, 0.3)';">
+        <a href="tel:+919480355850" class="advisor-action" style="display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #d4fc79, #96e6a1); padding: 4px 12px 4px 4px; border-radius: 40px; border: none; box-shadow: 0 4px 12px rgba(150, 230, 161, 0.3); text-decoration: none; transition: all 0.3s ease; height: fit-content;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(150, 230, 161, 0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(150, 230, 161, 0.3)';">
           <div style="width: 24px; height: 24px; border-radius: 50%; background: #ffffff; display: flex; align-items: center; justify-content: center; color: #111;">
             <svg class="advisor-icon-animated" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
