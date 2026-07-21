@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                 } catch (error) {
                     console.error("Error sending OTP:", error);
-                    phoneError.textContent = "Failed to send OTP. Please try again.";
+                    phoneError.textContent = "Failed to send OTP: " + error.message;
                     phoneError.style.display = 'block';
                     btnSendOtp.disabled = false;
                     btnSendOtp.textContent = "Continue";
