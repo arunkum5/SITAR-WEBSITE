@@ -1,13 +1,13 @@
-export async function onRequestGet({ env }) {
+export async function onRequest({ env }) {
   const supabaseUrl = env.SUPABASE_URL;
   const supabaseKey = env.SUPABASE_ANON_KEY;
   
   if (!supabaseUrl || !supabaseKey) {
-      return new Response(JSON.stringify({ error: "Missing Supabase keys in Cloudflare Env" }), { status: 500 });
+      return new Response(JSON.stringify({ error: "Missing Supabase keys" }), { status: 500 });
   }
 
   try {
-    const response = await fetch(`${supabaseUrl}/rest/v1/profit_calculator_leads?select=*`, {
+    const response = await fetch(`${supabaseUrl}/rest/v1/investment_plans?is_active=eq.true&select=*`, {
       headers: {
         'apikey': supabaseKey,
         'Authorization': `Bearer ${supabaseKey}`,
@@ -24,6 +24,7 @@ export async function onRequestGet({ env }) {
     return new Response(JSON.stringify(data), {
       headers: { 'Content-Type': 'application/json' }
     });
+
   } catch (err) {
     return new Response(JSON.stringify({ error: err.message }), { status: 500 });
   }

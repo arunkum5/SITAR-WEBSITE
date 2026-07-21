@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // 2. Initialize Charts (Chart.js)
-  Chart.defaults.color = 'rgba(243, 236, 221, 0.62)';
+  Chart.defaults.color = '#64748b'; // slate 500
   Chart.defaults.font.family = "'Work Sans', sans-serif";
 
   // Sector Pie Chart
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
       datasets: [{
         label: 'Capital Invested (₹)',
         data: [2000000, 3500000, 1500000, 5000000, 4200000, 8000000],
-        backgroundColor: '#B8860B',
+        backgroundColor: '#2563eb', // blue 600
         borderRadius: 4
       }]
     },
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
       responsive: true,
       maintainAspectRatio: false,
       scales: {
-        y: { beginAtZero: true, grid: { color: 'rgba(243, 236, 221, 0.1)' } },
+        y: { beginAtZero: true, grid: { color: '#e2e8f0' } }, // slate 200 grid
         x: { grid: { display: false } }
       }
     }
@@ -129,19 +129,21 @@ document.addEventListener('DOMContentLoaded', () => {
     data.forEach(lead => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td>${lead.date || '-'}</td>
-        <td>${lead.phone || '-'}</td>
+      tr.innerHTML = `
+        <td>${new Date(lead.created_at).toLocaleDateString() || '-'}</td>
+        <td>${lead.account_id || '-'}</td>
         <td>${lead.sector || '-'}</td>
-        <td>${lead.term || '-'}</td>
+        <td>${lead.term_years || '-'}</td>
         <td>₹ ${lead.amount || '0'}</td>
-        <td style="color: #4ade80;">+ ₹ ${lead.profit || '0'}</td>
-        <td><span class="status-badge status-pending">${lead.status || 'Pending'}</span></td>
+        <td style="color: #4ade80;">+ ₹ ${lead.projected_profit || '0'}</td>
+        <td><span class="status-badge status-pending">Pending</span></td>
       `;
       leadsTbody.appendChild(tr);
     });
   }
 
   // Fetch real data from Supabase via Cloudflare API
+  let globalLeads = [];
   async function fetchLeads() {
     try {
       leadsTbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #64748b;">Loading data...</td></tr>';
@@ -154,6 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       
+      globalLeads = data;
       renderLeads(data);
     } catch (err) {
       console.error(err);
@@ -194,24 +197,140 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 4. Filtering Logic
   const filterSector = document.getElementById('filter-sector');
   const filterTerm = document.getElementById('filter-term');
 
   function applyFilters() {
+    if (!filterSector || !filterTerm) return;
     const sVal = filterSector.value.toLowerCase();
     const tVal = filterTerm.value.toLowerCase();
 
-    const filtered = mockLeads.filter(lead => {
-      const matchSector = sVal === 'all' || lead.sector.toLowerCase() === sVal;
-      const matchTerm = tVal === 'all' || lead.term.charAt(0) === tVal;
+    const filtered = globalLeads.filter(lead => {
+      const matchSector = sVal === 'all' || (lead.sector && lead.sector.toLowerCase() === sVal);
+      const matchTerm = tVal === 'all' || (lead.term_years && lead.term_years.toString() === tVal);
       return matchSector && matchTerm;
     });
     
     renderLeads(filtered);
   }
 
-  filterSector.addEventListener('change', applyFilters);
-  filterTerm.addEventListener('change', applyFilters);
+  if (filterSector) filterSector.addEventListener('change', applyFilters);
+  if (filterTerm) filterTerm.addEventListener('change', applyFilters);
+
+  // INVESTMENTS LOGIC
+  const invTbody = document.getElementById('table-investments-body');
+  async function fetchInvestments() {
+    if (!invTbody) return;
+    try {
+      const response = await fetch('/api/admin/getInvestments');
+      const data = await response.json();
+      
+      if (data.error) {
+        invTbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #ef4444;">Error loading investments.</td></tr>';
+        return;
+      }
+
+      invTbody.innerHTML = '';
+      if (data.length === 0) {
+        invTbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #64748b;">No investments found.</td></tr>';
+        return;
+      }
+
+      data.forEach(inv => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-size: 11px;">${inv.transaction_id.substring(0,8)}</td>
+          <td>${inv.account_id || '-'}</td>
+          <td style="text-transform: capitalize;">${inv.sector || '-'}</td>
+          <td>${inv.term_years || '-'} Yrs</td>
+          <td>₹ ${inv.invested_amount || '0'}</td>
+          <td>${inv.applied_interest_rate || '0'}%</td>
+          <td>${inv.maturity_date || '-'}</td>
+          <td><span class="status-badge status-active">${inv.status || 'Active'}</span></td>
+        `;
+        invTbody.appendChild(tr);
+      });
+    } catch (err) {
+      invTbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #ef4444;">Connection error.</td></tr>';
+    }
+  }
+  fetchInvestments();
+
+  // RATES CONFIGURATION LOGIC
+  const ratesTbody = document.getElementById('table-rates-body');
+  let currentRates = [];
+
+  async function fetchRates() {
+    if (!ratesTbody) return;
+    try {
+      const response = await fetch('/api/getRates');
+      currentRates = await response.json();
+      
+      if (currentRates.error) {
+        ratesTbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #ef4444;">Error loading rates.</td></tr>';
+        return;
+      }
+
+      ratesTbody.innerHTML = '';
+      if (currentRates.length === 0) {
+        ratesTbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #64748b;">No rates found. (Click populate below if empty)</td></tr>';
+        return;
+      }
+
+      // Sort by sector then term
+      currentRates.sort((a, b) => a.sector.localeCompare(b.sector) || a.term_years - b.term_years);
+
+      currentRates.forEach(rate => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="text-transform: capitalize;">${rate.sector}</td>
+          <td>${rate.term_years}</td>
+          <td><input type="number" step="0.1" value="${rate.interest_rate_pa}" data-id="${rate.id}" class="rate-input" style="width: 80px; padding: 4px; border: 1px solid #cbd5e1; color: #0f172a; border-radius: 4px;"></td>
+          <td><span class="status-badge status-active">Active</span></td>
+        `;
+        ratesTbody.appendChild(tr);
+      });
+    } catch (err) {
+      ratesTbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #ef4444;">Connection error.</td></tr>';
+    }
+  }
+  fetchRates();
+
+  const btnSaveRates = document.getElementById('btn-save-rates');
+  if (btnSaveRates) {
+    btnSaveRates.addEventListener('click', async () => {
+      const inputs = document.querySelectorAll('.rate-input');
+      const updates = [];
+      inputs.forEach(input => {
+        updates.push({
+          id: parseInt(input.getAttribute('data-id')),
+          interest_rate_pa: parseFloat(input.value)
+        });
+      });
+
+      const originalText = btnSaveRates.textContent;
+      btnSaveRates.textContent = 'Saving...';
+      btnSaveRates.disabled = true;
+
+      try {
+        const response = await fetch('/api/admin/updateRates', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updates)
+        });
+        const result = await response.json();
+        if (result.success) {
+          alert('Rates updated successfully!');
+        } else {
+          alert('Failed to update rates: ' + result.error);
+        }
+      } catch (err) {
+        alert('Connection error.');
+      } finally {
+        btnSaveRates.textContent = originalText;
+        btnSaveRates.disabled = false;
+      }
+    });
+  }
 
 });

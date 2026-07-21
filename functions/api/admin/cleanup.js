@@ -21,24 +21,30 @@ export async function onRequestPost({ env }) {
     // Let's use `?phone=not.is.null` as fallback since profiles/leads often have phone.
     // If it fails due to column missing, we can try something else, but this is the standard way.
     
-    // Clear leads table
-    const leadsRes = await fetch(`${supabaseUrl}/rest/v1/leads?phone=not.is.null`, { 
-        method: 'DELETE', 
-        headers 
+    // Clear transactions
+    const txRes = await fetch(`${supabaseUrl}/rest/v1/transactions?account_id=not.is.null`, { 
+        method: 'DELETE', headers 
     });
 
-    // Clear profiles table
-    const profilesRes = await fetch(`${supabaseUrl}/rest/v1/profiles?phone=not.is.null`, { 
-        method: 'DELETE', 
-        headers 
+    // Clear profit_calculator_leads
+    const leadsRes = await fetch(`${supabaseUrl}/rest/v1/profit_calculator_leads?account_id=not.is.null`, { 
+        method: 'DELETE', headers 
     });
 
-    if (!leadsRes.ok && leadsRes.status !== 404) {
-        console.error("Failed to clear leads:", await leadsRes.text());
-    }
-    if (!profilesRes.ok && profilesRes.status !== 404) {
-        console.error("Failed to clear profiles:", await profilesRes.text());
-    }
+    // Clear bank_accounts
+    const bankRes = await fetch(`${supabaseUrl}/rest/v1/bank_accounts?account_id=not.is.null`, { 
+        method: 'DELETE', headers 
+    });
+
+    // Clear investors
+    const invRes = await fetch(`${supabaseUrl}/rest/v1/investors?account_id=not.is.null`, { 
+        method: 'DELETE', headers 
+    });
+
+    if (!txRes.ok && txRes.status !== 404) console.error("Failed to clear transactions:", await txRes.text());
+    if (!leadsRes.ok && leadsRes.status !== 404) console.error("Failed to clear leads:", await leadsRes.text());
+    if (!bankRes.ok && bankRes.status !== 404) console.error("Failed to clear banks:", await bankRes.text());
+    if (!invRes.ok && invRes.status !== 404) console.error("Failed to clear investors:", await invRes.text());
 
     return new Response(JSON.stringify({ success: true, message: "Database wiped successfully." }), {
       headers: { 'Content-Type': 'application/json' }

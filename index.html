@@ -6597,6 +6597,22 @@
       </div>
       
       <div style="padding: 24px;">
+        <div style="display: flex; gap: 16px; margin-bottom: 24px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
+          <button id="tab-profile-details" style="background: none; border: none; font-family: 'Work Sans', sans-serif; font-weight: 700; color: #1A2980; font-size: 16px; cursor: pointer; border-bottom: 2px solid #1A2980;">Profile Details</button>
+          <button id="tab-portfolio" style="background: none; border: none; font-family: 'Work Sans', sans-serif; font-weight: 600; color: #64748b; font-size: 16px; cursor: pointer;">My Portfolio</button>
+        </div>
+
+        <div id="portfolio-view" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h4 style="font-family: 'Work Sans', sans-serif; font-size: 16px; color: #001122; margin: 0;">Active Investments</h4>
+            <button onclick="downloadPassbook()" style="background: #1A2980; border: none; color: white; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer;">↓ Download Passbook</button>
+          </div>
+          
+          <div id="portfolio-list" style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="text-align: center; color: #64748b; padding: 24px; background: #f8fafc; border-radius: 12px;">Loading portfolio...</div>
+          </div>
+        </div>
+
         <div id="profile-view-mode">
           <!-- Identity Details -->
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
@@ -6922,25 +6938,36 @@
             bankAcc: document.getElementById('edit-bank-acc').value,
             bankIfsc: document.getElementById('edit-bank-ifsc').value,
             bankType: document.getElementById('edit-bank-type').value
-          })
-        }).then(response => response.json())
-          .then(result => {
-            if(result.error) {
-              alert("Failed to save: " + result.error);
-              btn.innerHTML = 'Save Changes';
-              btn.disabled = false;
-              return;
-            }
-            
-            // Mask Aadhar for UI
+        try {
+          const res = await fetch('/api/updateProfile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              phone: localStorage.getItem('user_phone') || '',
+              name: document.getElementById('edit-full-name').value,
+              email: document.getElementById('edit-email').value,
+              pan: document.getElementById('edit-pan').value,
+              aadhar: document.getElementById('edit-aadhar').value,
+              nomineeName: document.getElementById('edit-nominee-name').value,
+              nomineeRel: document.getElementById('edit-nominee-rel').value,
+              nomineePhone: document.getElementById('edit-nominee-phone').value,
+              bankAcc: document.getElementById('edit-bank-acc').value,
+              bankIfsc: document.getElementById('edit-bank-ifsc').value,
+              bankType: document.getElementById('edit-bank-type').value
+            })
+          });
+
+          const result = await res.json();
+          
+          if (result.error) {
+            alert("Failed to save profile: " + result.error);
+          } else {
             const rawAadhar = document.getElementById('edit-aadhar').value.replace(/\s/g, '');
             const maskedAadhar = rawAadhar.length >= 4 ? `XXXX-XXXX-${rawAadhar.slice(-4)}` : (rawAadhar ? 'Invalid' : '-');
             
-            // Update View Mode DOM
             const newName = document.getElementById('edit-full-name').value || 'Investor';
             document.getElementById('view-full-name').textContent = newName;
             
-            // Extract initials
             const nameParts = newName.trim().split(' ');
             let initials = 'U';
             if (nameParts.length > 0 && nameParts[0].length > 0) {
@@ -6967,20 +6994,120 @@
             
             const rawAcc = document.getElementById('edit-bank-acc').value;
             const maskedAcc = rawAcc.length >= 4 ? `XXXX XXXX ${rawAcc.slice(-4)}` : rawAcc;
-            document.getElementById('view-bank-acc').textContent = maskedAcc;
-            document.getElementById('view-bank-ifsc').textContent = document.getElementById('edit-bank-ifsc').value;
-            document.getElementById('view-bank-type').textContent = document.getElementById('edit-bank-type').value;
+            document.getElementById('view-bank-acc').textContent = maskedAcc || '-';
+            document.getElementById('view-bank-ifsc').textContent = document.getElementById('edit-bank-ifsc').value || '-';
+            document.getElementById('view-bank-type').textContent = document.getElementById('edit-bank-type').value || '-';
 
-            btn.innerHTML = 'Save Changes';
-            btn.disabled = false;
             toggleProfileEdit(false);
-          })
-          .catch(err => {
-            console.error(err);
-            alert("Error saving profile");
-            btn.innerHTML = 'Save Changes';
-            btn.disabled = false;
+          }
+
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+        } catch (err) {
+          alert("Connection error while saving profile.");
+          btn.innerHTML = "Save Changes";
+          btn.disabled = false;
+        }
+      };
+
+      // TABS LOGIC
+      const tabProfile = document.getElementById('tab-profile-details');
+      const tabPortfolio = document.getElementById('tab-portfolio');
+      const viewProfileMode = document.getElementById('profile-view-mode');
+      const viewPortfolio = document.getElementById('portfolio-view');
+      const editProfileMode = document.getElementById('profile-edit-mode');
+
+      tabProfile.addEventListener('click', () => {
+        tabProfile.style.fontWeight = '700'; tabProfile.style.color = '#1A2980'; tabProfile.style.borderBottom = '2px solid #1A2980';
+        tabPortfolio.style.fontWeight = '600'; tabPortfolio.style.color = '#64748b'; tabPortfolio.style.borderBottom = 'none';
+        viewPortfolio.style.display = 'none';
+        viewProfileMode.style.display = 'block';
+        editProfileMode.style.display = 'none';
+      });
+
+      let portfolioData = [];
+
+      tabPortfolio.addEventListener('click', async () => {
+        tabPortfolio.style.fontWeight = '700'; tabPortfolio.style.color = '#1A2980'; tabPortfolio.style.borderBottom = '2px solid #1A2980';
+        tabProfile.style.fontWeight = '600'; tabProfile.style.color = '#64748b'; tabProfile.style.borderBottom = 'none';
+        viewProfileMode.style.display = 'none';
+        editProfileMode.style.display = 'none';
+        viewPortfolio.style.display = 'block';
+
+        const listEl = document.getElementById('portfolio-list');
+        listEl.innerHTML = '<div style="text-align: center; color: #64748b; padding: 24px; background: #f8fafc; border-radius: 12px;">Loading portfolio...</div>';
+
+        const phone = localStorage.getItem('user_phone');
+        if (!phone) {
+          listEl.innerHTML = '<div style="text-align: center; color: #ef4444; padding: 24px;">Please login to view portfolio.</div>';
+          return;
+        }
+
+        try {
+          const res = await fetch(`/api/getInvestments?phone=${encodeURIComponent(phone)}`);
+          portfolioData = await res.json();
+
+          if (portfolioData.error) throw new Error();
+          
+          if (portfolioData.length === 0) {
+            listEl.innerHTML = '<div style="text-align: center; color: #64748b; padding: 24px; background: #f8fafc; border-radius: 12px;">You do not have any active investments yet.</div>';
+            return;
+          }
+
+          listEl.innerHTML = '';
+          portfolioData.forEach(inv => {
+            const el = document.createElement('div');
+            el.style = 'background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 12px;';
+            el.innerHTML = `
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <div style="font-size: 14px; font-weight: 700; color: #0f172a; text-transform: capitalize;">${inv.sector} Plan</div>
+                <div style="font-size: 12px; color: #10b981; background: #d1fae5; padding: 2px 8px; border-radius: 12px; font-weight: 600;">Active</div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div>
+                  <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">Invested</div>
+                  <div style="font-size: 14px; color: #0f172a; font-weight: 600;">₹ ${inv.invested_amount.toLocaleString('en-IN')}</div>
+                </div>
+                <div>
+                  <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">Maturity Value</div>
+                  <div style="font-size: 14px; color: #0f172a; font-weight: 600;">₹ ${inv.maturity_amount.toLocaleString('en-IN')}</div>
+                </div>
+                <div>
+                  <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">Interest Rate</div>
+                  <div style="font-size: 13px; color: #0f172a; font-weight: 600;">${inv.applied_interest_rate}% p.a.</div>
+                </div>
+                <div>
+                  <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">Maturity Date</div>
+                  <div style="font-size: 13px; color: #0f172a; font-weight: 600;">${inv.maturity_date}</div>
+                </div>
+              </div>
+            `;
+            listEl.appendChild(el);
           });
+        } catch (err) {
+          listEl.innerHTML = '<div style="text-align: center; color: #ef4444; padding: 24px; background: #fef2f2; border-radius: 12px;">Failed to load portfolio.</div>';
+        }
+      });
+
+      window.downloadPassbook = function() {
+        if (!portfolioData || portfolioData.length === 0) {
+          alert('No active investments to download.');
+          return;
+        }
+
+        let csvContent = "Transaction ID,Sector,Term (Years),Invested Amount,Rate (%),Maturity Value,Maturity Date,Status\n";
+        portfolioData.forEach(inv => {
+          csvContent += `"${inv.transaction_id}","${inv.sector}","${inv.term_years}","${inv.invested_amount}","${inv.applied_interest_rate}","${inv.maturity_amount}","${inv.maturity_date}","${inv.status}"\n`;
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `SITAR_Passbook_${localStorage.getItem('user_phone')}.csv`;
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
       };
     });
   </script>

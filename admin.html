@@ -12,15 +12,15 @@
   
   <style>
     :root {
-      --ink: #0B0906;
-      --bg: #12100D;
-      --bg-panel: #1B1712;
-      --bg-panel-2: #211C15;
-      --line: rgba(243, 236, 221, 0.10);
-      --line-strong: rgba(243, 236, 221, 0.18);
-      --cream: #F3ECDD;
-      --cream-dim: rgba(243, 236, 221, 0.62);
-      --gold: #B8860B;
+      --ink: #0f172a;
+      --bg: #f8fafc;
+      --bg-panel: #ffffff;
+      --bg-panel-2: #f1f5f9;
+      --line: #e2e8f0;
+      --line-strong: #cbd5e1;
+      --cream: #0f172a;
+      --cream-dim: #64748b;
+      --gold: #2563eb;
       
       --villas: #C1694A;
       --apartments: #6E86A6;
@@ -52,7 +52,7 @@
       align-items: center;
     }
     .logo { font-family: 'Fraunces', serif; font-size: 24px; color: var(--gold); font-weight: 600; text-decoration: none; }
-    .admin-badge { background: rgba(184, 134, 11, 0.15); color: var(--gold); padding: 4px 12px; border-radius: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+    .admin-badge { background: rgba(37, 99, 235, 0.15); color: var(--gold); padding: 4px 12px; border-radius: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
 
     /* Layout */
     .dashboard-container {
@@ -222,13 +222,41 @@
     <!-- Tables -->
     <div class="tabs-container">
       <div class="tabs">
-        <button class="tab-btn active" data-tab="leads">Calculator Leads</button>
+        <button class="tab-btn active" data-tab="investments">Investments</button>
+        <button class="tab-btn" data-tab="leads">Calculator Leads</button>
         <button class="tab-btn" data-tab="investors">Verified Investors</button>
         <button class="tab-btn" data-tab="users">Registered Users</button>
+        <button class="tab-btn" data-tab="rates">Rates Configuration</button>
+      </div>
+
+      <!-- Tab: Investments -->
+      <div id="investments" class="tab-content active">
+        <div class="filter-bar" style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 16px;">
+          <button onclick="downloadTableCSV('table-investments-body', 'investments.csv')" style="background: #0f172a; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; cursor: pointer;">↓ Download CSV</button>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Tx ID</th>
+                <th>Investor (Phone)</th>
+                <th>Sector</th>
+                <th>Term</th>
+                <th>Amount (₹)</th>
+                <th>Rate (%)</th>
+                <th>Maturity</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="table-investments-body">
+              <tr><td colspan="8" style="text-align: center;">Loading investments...</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <!-- Tab: Leads -->
-      <div id="leads" class="tab-content active">
+      <div id="leads" class="tab-content">
         <div class="filter-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
           <div>
             <select id="filter-sector" class="filter-select">
@@ -308,6 +336,29 @@
             </thead>
             <tbody id="table-users-body">
               <!-- JS Populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab: Rates -->
+      <div id="rates" class="tab-content">
+        <div class="filter-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="margin:0; font-family:'Fraunces',serif; font-size: 20px; color: var(--gold);">Global Interest Rates</h3>
+          <button id="btn-save-rates" style="background: var(--gold); color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; cursor: pointer;">Save Changes</button>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Sector</th>
+                <th>Term (Years)</th>
+                <th>Interest Rate (%)</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="table-rates-body">
+              <tr><td colspan="4" style="text-align: center;">Loading rates...</td></tr>
             </tbody>
           </table>
         </div>

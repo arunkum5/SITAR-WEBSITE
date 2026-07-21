@@ -12,39 +12,80 @@ export async function onRequestPost({ request, env }) {
         return new Response(JSON.stringify({ error: "Server misconfiguration: Missing Supabase keys in Cloudflare Env" }), { status: 500 });
     }
 
-    // Call Supabase REST API to Upsert (Insert or Update based on phone unique constraint)
-    const response = await fetch(`${supabaseUrl}/rest/v1/profiles`, {
-      method: 'POST',
-      headers: {
-        'apikey': supabaseKey,
-        'Authorization': `Bearer ${supabaseKey}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'resolution=merge-duplicates,return=representation'
-      },
-      body: JSON.stringify({
-        phone: phone,
-        full_name: data.name,
-        email: data.email,
-        pan_number: data.pan,
-        aadhar_masked: data.aadhar,
-        nominee_name: data.nomineeName,
-        nominee_relation: data.nomineeRel,
-        nominee_phone: data.nomineePhone,
-        bank_account: data.bankAcc,
-        bank_ifsc: data.bankIfsc,
-        bank_type: data.bankType
-      })
-    });
+    try {
+      // 1. Upsert into investors table
+      const investorsPayload = {
+        account_id: phone, // Using phone as the primary account_id
+        name: data.name || '-',
+        pan_number: data.pan || '-',
+        aadhar_number: data.aadhar || '-',
+        nominee_name: data.nomineeName || null,
+        nominee_contact: data.nomineePhone || null,
+      };
 
-    if (!response.ok) {
-        const errBody = await response.text();
-        return new Response(JSON.stringify({ error: `Supabase Error: ${errBody}` }), { status: response.status });
+      const invResponse = await fetch(`${supabaseUrl}/rest/v1/investors?on_conflict=account_id`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Prefer': 'resolution=merge-duplicates'
+        },
+        body: JSON.stringify(investorsPayload)
+      });
+
+      if (!invResponse.ok) {
+        const errText = await invResponse.text();
+        return new Response(JSON.stringify({ error: "Failed to update investors", details: errText }), {
+          status: 500, headers: { 'Content-Type': 'application/json' }
+        });
+      }
+
+      // 2. Delete existing bank accounts for this investor to replace with new one
+      await fetch(`${supabaseUrl}/rest/v1/bank_accounts?account_id=eq.${encodeURIComponent(phone)}`, {
+        method: 'DELETE',
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`
+        }
+      });
+
+      // 3. Insert new bank account
+      const bankPayload = {
+        account_id: phone,
+        account_name: data.name || '-',
+        account_type: 'Savings', // Frontend doesn't explicitly send type, defaulting to Savings
+        account_number: data.bankAcc || '-',
+        ifsc_code: data.bankIfsc || '-'
+      };
+
+      const bankResponse = await fetch(`${supabaseUrl}/rest/v1/bank_accounts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`
+        },
+        body: JSON.stringify(bankPayload)
+      });
+
+      if (!bankResponse.ok) {
+         const errText = await bankResponse.text();
+         console.warn("Failed to insert bank account", errText);
+         // We still return success since main profile saved, but this is a note
+      }
+
+      return new Response(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+    } catch (err) {
+      return new Response(JSON.stringify({ error: err.message }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
-
-    const result = await response.json();
-    return new Response(JSON.stringify({ success: true, data: result }), {
-      headers: { 'Content-Type': 'application/json' }
-    });
 
   } catch (err) {
     return new Response(JSON.stringify({ error: err.message }), { status: 500 });

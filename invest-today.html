@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invest Today — SITAR Wealth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0B0906;
+    --bg: #12100D;
+    --bg-panel: #1B1712;
+    --cream: #F3ECDD;
+    --cream-dim: rgba(243,236,221,0.62);
+    --gold: #E6C37C;
+    --villas: #C1694A;
+    --apartments: #6E86A6;
+    --layouts: #C9A227;
+    --commercial: #A370A1;
+    --resorts: #3E8E85;
+    
+    --success: #10b981;
+    --error: #ef4444;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Work Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  a { text-decoration: none; color: inherit; }
+
+  header {
+    padding: 24px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(243,236,221,0.1);
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: -0.02em;
+  }
+
+  .container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 32px;
+    background: var(--bg-panel);
+    border-radius: 16px;
+    border: 1px solid rgba(243,236,221,0.1);
+    box-shadow: 0 24px 48px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    margin: 0 0 8px 0;
+    color: var(--cream);
+  }
+
+  p.subtitle {
+    color: var(--cream-dim);
+    margin: 0 0 32px 0;
+  }
+
+  /* Form Styles */
+  .form-group {
+    margin-bottom: 24px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--cream-dim);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  select, input {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(243,236,221,0.2);
+    color: var(--cream);
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: 'Work Sans', sans-serif;
+    outline: none;
+    transition: all 0.2s;
+  }
+  select:focus, input:focus {
+    border-color: var(--gold);
+    background: rgba(255,255,255,0.08);
+  }
+
+  /* Calculation Box */
+  .calc-box {
+    background: rgba(230,195,124,0.1);
+    border: 1px solid rgba(230,195,124,0.3);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+  .calc-box .label {
+    font-size: 14px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .calc-box .value {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--cream);
+    font-family: 'Fraunces', serif;
+    margin-bottom: 4px;
+  }
+  .calc-box .date {
+    font-size: 14px;
+    color: var(--cream-dim);
+  }
+
+  /* Button */
+  .btn {
+    display: block;
+    width: 100%;
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .btn:hover {
+    background: #f0d193;
+    transform: translateY(-2px);
+  }
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Sections */
+  #step-config, #step-payment, #step-success { display: none; }
+
+  /* Payment Details */
+  .payment-details {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(243,236,221,0.1);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .qr-placeholder {
+    width: 200px;
+    height: 200px;
+    background: white;
+    margin: 0 auto 24px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: var(--ink);
+  }
+
+  /* Auth Overlay */
+  #auth-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(18,16,13,0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    text-align: center;
+    padding: 32px;
+  }
+
+  /* Copied Auth Modal Styles */
+  .auth-modal {
+    background: white;
+    color: #0B0906;
+    padding: 32px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 400px;
+  }
+  .auth-input {
+    width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 16px; font-size: 16px; color: black; background: white;
+  }
+  .auth-btn {
+    width: 100%; background: #003366; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 16px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">SITAR.</a>
+  <a href="index.html" style="font-size: 14px; font-weight: 500; color: var(--cream-dim);">← Back to Dashboard</a>
+</header>
+
+<div class="container">
+  
+  <!-- AUTH OVERLAY -->
+  <div id="auth-overlay">
+    <div style="margin-bottom: 24px;">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+    </div>
+    <h2 style="font-family: 'Fraunces', serif; font-size: 28px; margin: 0 0 12px 0;">Secure Login Required</h2>
+    <p style="color: var(--cream-dim); margin: 0 0 32px 0;">Please log in or create an account to securely process your investment.</p>
+    
+    <div class="auth-modal" id="auth-step-1">
+      <h3 style="margin: 0 0 16px 0; font-family: 'Work Sans', sans-serif;">Enter Phone Number</h3>
+      <input type="text" id="auth-phone-input" class="auth-input" placeholder="+91 99999 99999">
+      <div id="auth-phone-error" style="color: #ef4444; font-size: 12px; margin-top: -12px; margin-bottom: 12px; display: none;">Invalid phone number</div>
+      <button class="auth-btn" id="auth-send-otp">Send OTP</button>
+    </div>
+
+    <div class="auth-modal" id="auth-step-2" style="display: none;">
+      <h3 style="margin: 0 0 16px 0; font-family: 'Work Sans', sans-serif;">Enter OTP</h3>
+      <p style="font-size: 13px; color: #64748b; margin-top: -12px; margin-bottom: 16px;">Sent to your number</p>
+      <input type="text" id="auth-otp-input" class="auth-input" placeholder="123456">
+      <button class="auth-btn" id="auth-verify-otp">Verify & Login</button>
+    </div>
+  </div>
+
+  <!-- STEP 1: CONFIGURATION -->
+  <div id="step-config" style="display: block;">
+    <h1>Configure Investment</h1>
+    <p class="subtitle">Select your plan and amount to calculate returns.</p>
+
+    <div class="form-group">
+      <label>Investment Sector</label>
+      <select id="invest-sector">
+        <option value="villas">Villas (up to 12.0% p.a.)</option>
+        <option value="apartments">Apartments (up to 11.0% p.a.)</option>
+        <option value="commercial">Commercial (up to 12.0% p.a.)</option>
+        <option value="resorts">Resorts (up to 12.5% p.a.)</option>
+        <option value="layouts">Layouts (up to 13.0% p.a.)</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Investment Term</label>
+      <select id="invest-term">
+        <option value="1">1 Year</option>
+        <option value="2">2 Years</option>
+        <option value="3">3 Years</option>
+        <option value="4">4 Years</option>
+        <option value="5">5 Years</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Investment Amount (₹)</label>
+      <input type="number" id="invest-amount" value="500000" min="100000" step="50000">
+    </div>
+
+    <div class="calc-box">
+      <div class="label">Estimated Maturity Amount</div>
+      <div class="value" id="maturity-amount">₹ 0</div>
+      <div class="date" id="maturity-date">Matures on: -</div>
+    </div>
+
+    <button class="btn" id="btn-proceed">Proceed to Payment →</button>
+  </div>
+
+  <!-- STEP 2: PAYMENT -->
+  <div id="step-payment">
+    <h1>Complete Payment</h1>
+    <p class="subtitle">Scan the QR code or use the bank details below to transfer the funds.</p>
+
+    <div class="payment-details">
+      <div class="qr-placeholder">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        <div style="margin-top: 12px; font-weight: 600;">SCAN TO PAY</div>
+        <div style="font-size: 12px; color: #666; margin-top: 4px;" id="qr-amount">₹ 5,00,000</div>
+      </div>
+
+      <div style="border-top: 1px solid rgba(243,236,221,0.1); margin: 24px 0;"></div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div>
+          <div style="font-size: 12px; color: var(--cream-dim);">Account Name</div>
+          <div style="font-weight: 600;">SITAR Wealth Mgmt</div>
+        </div>
+        <div>
+          <div style="font-size: 12px; color: var(--cream-dim);">Account Number</div>
+          <div style="font-weight: 600;">50100445566778</div>
+        </div>
+        <div>
+          <div style="font-size: 12px; color: var(--cream-dim);">IFSC Code</div>
+          <div style="font-weight: 600;">HDFC0001234</div>
+        </div>
+        <div>
+          <div style="font-size: 12px; color: var(--cream-dim);">Bank Name</div>
+          <div style="font-weight: 600;">HDFC Bank</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn" id="btn-confirm-payment">I have completed the payment</button>
+    <button class="btn" id="btn-back-config" style="background: transparent; border: 1px solid var(--cream-dim); color: var(--cream-dim); margin-top: 12px;">← Back to details</button>
+  </div>
+
+  <!-- STEP 3: SUCCESS -->
+  <div id="step-success" style="text-align: center; padding: 40px 0;">
+    <div style="width: 80px; height: 80px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    </div>
+    <h1 style="color: var(--success);">Investment Initiated!</h1>
+    <p class="subtitle" style="margin-bottom: 40px;">Your transaction is being verified. It will appear in your portfolio shortly.</p>
+    <a href="index.html" class="btn">Go to Dashboard</a>
+  </div>
+
+</div>
+
+<!-- Scripts -->
+<script type="module" src="firebase-auth.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const authOverlay = document.getElementById('auth-overlay');
+  
+  // Check Login Status
+  function checkAuth() {
+    const phone = localStorage.getItem('user_phone');
+    if (phone) {
+      authOverlay.style.display = 'none';
+    } else {
+      authOverlay.style.display = 'flex';
+    }
+  }
+  checkAuth();
+
+  setInterval(() => {
+    if (localStorage.getItem('user_phone') && authOverlay.style.display === 'flex') {
+      authOverlay.style.display = 'none';
+    }
+  }, 1000);
+
+  // Form Elements
+  const sectorEl = document.getElementById('invest-sector');
+  const termEl = document.getElementById('invest-term');
+  const amountEl = document.getElementById('invest-amount');
+  const maturityAmountEl = document.getElementById('maturity-amount');
+  const maturityDateEl = document.getElementById('maturity-date');
+  const qrAmountEl = document.getElementById('qr-amount');
+  const proceedBtn = document.getElementById('btn-proceed');
+
+  // Load Rates
+  let investmentRates = {};
+  proceedBtn.textContent = 'Loading Rates...';
+  proceedBtn.disabled = true;
+
+  try {
+    const res = await fetch('/api/getRates');
+    if (res.ok) {
+      const data = await res.json();
+      data.forEach(item => {
+        investmentRates[`${item.sector}_${item.term_years}`] = item.interest_rate_pa;
+      });
+    }
+  } catch (err) {
+    console.error('Failed to load dynamic rates, using fallback.');
+  }
+
+  proceedBtn.textContent = 'Proceed to Payment →';
+  proceedBtn.disabled = false;
+
+  let currentCalculatedRate = 0;
+  let currentMaturityDate = '';
+  let currentMaturityAmount = 0;
+
+  function calculateReturns() {
+    const sector = sectorEl.value;
+    const term = parseInt(termEl.value);
+    const amount = parseFloat(amountEl.value) || 0;
+
+    const rateKey = `${sector}_${term}`;
+    const rate = investmentRates[rateKey] || 10.0; // fallback
+    currentCalculatedRate = rate;
+
+    // Simple interest calculation (A = P(1 + rt))
+    const totalReturn = amount * (rate / 100) * term;
+    currentMaturityAmount = amount + totalReturn;
+
+    maturityAmountEl.textContent = '₹ ' + Math.round(currentMaturityAmount).toLocaleString('en-IN');
+    
+    const today = new Date();
+    today.setFullYear(today.getFullYear() + term);
+    currentMaturityDate = today.toISOString().split('T')[0];
+    maturityDateEl.textContent = 'Matures on: ' + today.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  sectorEl.addEventListener('change', calculateReturns);
+  termEl.addEventListener('change', calculateReturns);
+  amountEl.addEventListener('input', calculateReturns);
+
+  calculateReturns();
+
+  const stepConfig = document.getElementById('step-config');
+  const stepPayment = document.getElementById('step-payment');
+  const stepSuccess = document.getElementById('step-success');
+
+  proceedBtn.addEventListener('click', () => {
+    const amount = parseFloat(amountEl.value) || 0;
+    if (amount < 10000) {
+      alert("Minimum investment amount is ₹ 10,000");
+      return;
+    }
+    qrAmountEl.textContent = '₹ ' + Math.round(amount).toLocaleString('en-IN');
+    stepConfig.style.display = 'none';
+    stepPayment.style.display = 'block';
+  });
+
+  document.getElementById('btn-back-config').addEventListener('click', () => {
+    stepPayment.style.display = 'none';
+    stepConfig.style.display = 'block';
+  });
+
+  document.getElementById('btn-confirm-payment').addEventListener('click', async (e) => {
+    const btn = e.target;
+    const originalText = btn.textContent;
+    btn.textContent = 'Verifying...';
+    btn.disabled = true;
+
+    const payload = {
+      phone: localStorage.getItem('user_phone') || 'Unknown',
+      sector: sectorEl.value,
+      term: parseInt(termEl.value),
+      amount: parseFloat(amountEl.value),
+      rate: currentCalculatedRate,
+      maturity_date: currentMaturityDate,
+      maturity_amount: currentMaturityAmount
+    };
+
+    try {
+      const response = await fetch('/api/createInvestment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      
+      const result = await response.json();
+      
+      if(result.error) {
+        alert("Failed to confirm investment: " + result.error);
+        btn.textContent = originalText;
+        btn.disabled = false;
+        return;
+      }
+      
+      // Success
+      stepPayment.style.display = 'none';
+      stepSuccess.style.display = 'block';
+
+    } catch (err) {
+      alert("Error confirming payment. Please contact support.");
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
+  });
+
+});
+</script>
+</body>
+</html>
