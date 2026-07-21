@@ -65,6 +65,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       btn.classList.add('active');
       const targetId = btn.getAttribute('data-tab');
       document.getElementById(targetId).classList.add('active');
+      
+      // Auto-refresh the tab's data dynamically!
+      if (targetId === 'tab-leads') fetchLeads();
+      if (targetId === 'tab-investments') fetchInvestments();
+      if (targetId === 'tab-investors') fetchInvestors();
+      if (targetId === 'tab-users') fetchUsers();
+      if (targetId === 'tab-rates') fetchRates();
     });
   });
 
