@@ -1,0 +1,1350 @@
+          (function () {
+            var wrapper = document.getElementById('tickerWrapper');
+            var coinContainer = document.getElementById('coinContainer');
+            var coinInterval;
+            var emojis = ['💰', '🪙', '💸'];
+
+            if (wrapper && coinContainer) {
+              wrapper.addEventListener('mouseenter', function () {
+                coinInterval = setInterval(function () {
+                  var coin = document.createElement('div');
+                  coin.className = 'falling-coin';
+                  coin.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                  coin.style.left = Math.random() * 100 + '%';
+                  coin.style.animationDuration = (0.8 + Math.random() * 0.8) + 's';
+                  coinContainer.appendChild(coin);
+
+                  // Cleanup after animation
+                  setTimeout(function () {
+                    if (coin.parentNode) coin.parentNode.removeChild(coin);
+                  }, 1600);
+                }, 150); // Spawn a new coin every 150ms while hovering
+              });
+
+              wrapper.addEventListener('mouseleave', function () {
+                clearInterval(coinInterval);
+              });
+            }
+          })();
+                const vidBtn = document.getElementById('heroVideoPlayBtn');
+                const vid = document.getElementById('heroVideo');
+                const playVid = () => {
+                  if (vid.paused) {
+                    vid.play();
+                    vid.setAttribute('controls', 'true');
+                    vid.style.cursor = 'default';
+                    vidBtn.style.display = 'none';
+                  }
+                };
+                vidBtn.addEventListener('click', playVid);
+                vid.addEventListener('click', playVid);
+    // Scroll Indicator & Scroll To Top
+    const scrollBar = document.getElementById('scrollBar');
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+    window.addEventListener('scroll', () => {
+      const scrollPx = document.documentElement.scrollTop;
+      const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollLen = (scrollPx / winHeightPx) * 100;
+      if (scrollBar) scrollBar.style.width = scrollLen + '%';
+
+      if (scrollPx > 300) {
+        scrollTopBtn.classList.add('visible');
+      } else {
+        scrollTopBtn.classList.remove('visible');
+      }
+    });
+
+    scrollTopBtn?.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // --- Word-by-Word Animation for Hero Subtitle ---
+    const heroSub = document.querySelector('.hero-sub');
+    if (heroSub) {
+      const childNodes = Array.from(heroSub.childNodes);
+      heroSub.innerHTML = '';
+      let wordDelay = 0;
+
+      childNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) {
+          const chars = node.textContent.split('');
+          chars.forEach(char => {
+            if (char === ' ' || char === '\n') {
+              heroSub.appendChild(document.createTextNode(char));
+            } else {
+              const span = document.createElement('span');
+              span.className = 'char';
+              span.style.animationDelay = `${wordDelay * 0.02}s`;
+              span.textContent = char;
+              heroSub.appendChild(span);
+              wordDelay++;
+            }
+          });
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+          const newEl = document.createElement(node.tagName);
+          // Copy all attributes (href, style, onmouseover, etc.)
+          Array.from(node.attributes).forEach(attr => {
+            newEl.setAttribute(attr.name, attr.value);
+          });
+
+          if (node.classList.contains('typewriter-line')) {
+            let localDelay = 0;
+            const innerChars = node.textContent.split('');
+            innerChars.forEach(char => {
+              if (char === ' ' || char === '\n') {
+                newEl.appendChild(document.createTextNode(char));
+              } else {
+                const span = document.createElement('span');
+                span.className = 'char';
+                span.style.animationDelay = `${localDelay * 0.02}s`;
+                span.textContent = char;
+                newEl.appendChild(span);
+                localDelay++;
+              }
+            });
+
+            let isTyping = false;
+            newEl.addEventListener('mouseenter', () => {
+              if (isTyping) return;
+              isTyping = true;
+              const chars = newEl.querySelectorAll('.char');
+              chars.forEach(c => {
+                c.style.animationName = 'none';
+              });
+
+              // Force a reflow on the parent to ensure the animation resets
+              void newEl.offsetWidth;
+
+              chars.forEach(c => {
+                c.style.animationName = ''; // Restores the CSS class animation name
+              });
+
+              setTimeout(() => {
+                isTyping = false;
+              }, innerChars.length * 20 + 100);
+            });
+          } else {
+            newEl.innerHTML = node.innerHTML;
+          }
+          heroSub.appendChild(newEl);
+        }
+      });
+    }
+    // Build the ticker from the sector + plan rates, duplicated for a seamless loop.
+    const rates = [
+      { sym: "VILLAS", rate: "12.0%", dot: "#C1694A" },
+      { sym: "APARTMENTS", rate: "11.0%", dot: "#6E86A6" },
+      { sym: "LAYOUT DEV.", rate: "13.0%", dot: "#C9A227" },
+      { sym: "COMMERCIAL", rate: "11.5%", dot: "#A370A1" },
+      { sym: "HOTELS & RESORTS", rate: "12.5%", dot: "#3E8E85" },
+      { sym: "1YR PLAN", rate: "9.5%", dot: "#E6C37C" },
+      { sym: "2YR PLAN", rate: "10.5%", dot: "#E6C37C" },
+      { sym: "3YR PLAN", rate: "11.5%", dot: "#E6C37C" },
+      { sym: "5YR PLAN", rate: "12.0%", dot: "#E6C37C" },
+    ];
+
+    const track = document.getElementById('tickerTrack');
+    function buildItems() {
+      return rates.map(r => `
+      <div class="ticker-item">
+        <span class="ticker-dot" style="background:${r.dot}"></span>
+        <span class="sym" style="color:${r.dot}">${r.sym}</span>
+        <span class="rate" style="color:${r.dot}">▲ ${r.rate}</span>
+      </div>
+    `).join('');
+    }
+    // duplicate the set so the -50% translateX loop is seamless
+    track.innerHTML = buildItems() + buildItems();
+
+    // mobile menu (toggle of a simplified flat dropdown)
+    const toggle = document.querySelector('.menu-toggle');
+    const mobileLinks = document.querySelector('.mobile-nav-links');
+    toggle.addEventListener('click', () => {
+      mobileLinks.classList.toggle('open');
+    });
+
+    // Close mobile menu when a link is clicked
+    document.querySelectorAll('.mobile-nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileLinks.classList.remove('open');
+      });
+    });
+
+    // --- Timeline "appear one by one" ---
+    const tlObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const items = entry.target.querySelectorAll('.tl-item');
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          items.forEach((item, idx) => {
+            setTimeout(() => {
+              if (entry.isIntersecting) {
+                item.classList.add('visible');
+              }
+            }, idx * 350);
+          });
+        } else {
+          entry.target.classList.remove('visible');
+          items.forEach(item => {
+            item.classList.remove('visible');
+          });
+        }
+      });
+    }, { threshold: 0.1, rootMargin: "0px 0px -100px 0px" });
+
+    const timelineEl = document.querySelector('.timeline');
+    if (timelineEl) tlObserver.observe(timelineEl);
+
+    // Re-run timeline card animation on hover
+    document.querySelectorAll('.tl-item').forEach(item => {
+      let isAnimating = false;
+      item.addEventListener('mouseenter', () => {
+        if (isAnimating) return;
+        isAnimating = true;
+        item.style.transition = 'none';
+        item.classList.remove('visible');
+        void item.offsetWidth; // Force reflow
+        item.style.transition = '';
+        item.classList.add('visible');
+        setTimeout(() => {
+          isAnimating = false;
+        }, 1400); // Wait for the 1.4s transition to finish
+      });
+    });
+
+    // --- Background Graph Intersection Observer ---
+    const graphObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const graph = document.querySelector('.about-bg-graph');
+        if (graph) {
+          if (entry.isIntersecting) {
+            graph.classList.add('animate');
+          } else {
+            graph.classList.remove('animate');
+          }
+        }
+      });
+    }, { threshold: 0.1 });
+
+    const aboutSection = document.getElementById('about');
+    if (aboutSection) graphObserver.observe(aboutSection);
+
+    // --- Running numbers on stats ---
+    function animateValue(obj, start, end, duration, prefix = '', suffix = '') {
+      let startTimestamp = null;
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        const current = Math.floor(progress * (end - start) + start);
+        obj.innerHTML = prefix + current + suffix;
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        }
+      };
+      window.requestAnimationFrame(step);
+    }
+
+    const stats = document.querySelectorAll('.stat');
+    function triggerStatAnimation(stat) {
+      const numEl = stat.querySelector('.num');
+      const target = parseInt(stat.getAttribute('data-target'), 10);
+      const prefix = stat.getAttribute('data-prefix') || '';
+      const suffix = stat.getAttribute('data-suffix') || '';
+
+      if (stat.classList.contains('animating')) return;
+      stat.classList.add('animating');
+
+      animateValue(numEl, 0, target, 1200, prefix, suffix);
+
+      setTimeout(() => {
+        stat.classList.remove('animating');
+      }, 1200);
+    }
+
+    const statObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          triggerStatAnimation(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    stats.forEach(stat => {
+      statObserver.observe(stat);
+      stat.addEventListener('mouseenter', () => {
+        triggerStatAnimation(stat);
+      });
+    });
+
+
+
+    // --- Hero Content Slider ---
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.slider-dots .dot');
+    const arrowLeft = document.querySelector('.arrow-left');
+    const arrowRight = document.querySelector('.arrow-right');
+    let currentSlide = 0;
+    let slideInterval;
+
+    const navLinkAbout = document.getElementById('navLinkAbout');
+    const navDropdownServices = document.getElementById('navDropdownServices');
+    const navDropdownInvest = document.getElementById('navDropdownInvest');
+
+    function showSlide(idx) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === idx);
+      });
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === idx);
+      });
+      currentSlide = idx;
+
+      // Dynamically highlight header nav links/dropdowns based on active hero slide
+      if (navLinkAbout && navDropdownServices && navDropdownInvest) {
+        if (idx === 0) {
+          navLinkAbout.classList.add('active');
+          navDropdownServices.classList.remove('active');
+          navDropdownInvest.classList.remove('active');
+
+          // Re-trigger running counter animation for stats on active slide
+          const heroStats = document.querySelectorAll('.hero-stats .stat');
+          heroStats.forEach(stat => {
+            triggerStatAnimation(stat);
+          });
+
+          // Trigger growth graph animation
+          const heroGraph = document.getElementById('heroGraph');
+          if (heroGraph) {
+            heroGraph.classList.add('animate-in');
+          }
+        } else {
+          navLinkAbout.classList.remove('active');
+          if (idx === 1) {
+            navDropdownServices.classList.add('active');
+            navDropdownInvest.classList.remove('active');
+          } else if (idx === 2) {
+            navDropdownServices.classList.remove('active');
+            navDropdownInvest.classList.add('active');
+          }
+
+          // Reset growth graph animation so it replays when switching back
+          const heroGraph = document.getElementById('heroGraph');
+          if (heroGraph) {
+            heroGraph.classList.remove('animate-in');
+          }
+        }
+      }
+
+      // Update the sliding nav pill position
+      setTimeout(updateNavPill, 10);
+    }
+
+    function updateNavPill() {
+      const pill = document.getElementById('navActivePill');
+      if (!pill) return;
+
+      // Find the currently active link or dropdown trigger
+      let activeEl = document.querySelector('.nav-links a.active');
+      if (!activeEl) {
+        const activeDropdown = document.querySelector('.nav-item-dropdown.active');
+        if (activeDropdown) {
+          activeEl = activeDropdown.querySelector('.nav-dropdown-trigger');
+        }
+      }
+
+      if (activeEl) {
+        const navLinks = document.querySelector('.nav-links');
+        const navLinksRect = navLinks.getBoundingClientRect();
+        const activeRect = activeEl.getBoundingClientRect();
+
+        // Set color to match active element
+        const activeColor = activeEl.style.getPropertyValue('--nav-c') || 'var(--gold)';
+        pill.style.background = activeColor;
+        pill.style.borderColor = activeColor;
+
+        // Adjust size and position based on absolute client rects
+        pill.style.width = activeRect.width + 'px';
+        pill.style.height = activeRect.height + 'px';
+        pill.style.left = (activeRect.left - navLinksRect.left) + 'px';
+        pill.style.top = (activeRect.top - navLinksRect.top) + 'px';
+        pill.style.opacity = '1';
+      } else {
+        pill.style.opacity = '0';
+      }
+    }
+
+    window.addEventListener('resize', updateNavPill);
+
+    // Hover graph to restart animation from 2016 to 2021+
+    const heroGraphEl = document.getElementById('heroGraph');
+    if (heroGraphEl) {
+      heroGraphEl.addEventListener('mouseenter', () => {
+        heroGraphEl.classList.remove('animate-in');
+        void heroGraphEl.offsetWidth; // trigger reflow
+        heroGraphEl.classList.add('animate-in');
+      });
+    }
+
+    function nextSlide() {
+      const nextIdx = (currentSlide + 1) % slides.length;
+      showSlide(nextIdx);
+    }
+
+    function prevSlide() {
+      const nextIdx = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(nextIdx);
+    }
+
+    function startAutoPlay() {
+      clearInterval(slideInterval);
+      // slideInterval = setInterval(nextSlide, 10000); // Disabled slider
+    }
+
+    if (arrowLeft && arrowRight) {
+      arrowLeft.addEventListener('click', () => {
+        prevSlide();
+        startAutoPlay();
+      });
+      arrowRight.addEventListener('click', () => {
+        nextSlide();
+        startAutoPlay();
+      });
+    }
+
+    dots.forEach((dot, idx) => {
+      dot.addEventListener('click', () => {
+        showSlide(idx);
+        startAutoPlay();
+      });
+    });
+
+    // Dynamic header shrink on scroll
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+      const wasScrolled = header.classList.contains('scrolled');
+      if (window.scrollY > 40) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+      const isScrolled = header.classList.contains('scrolled');
+
+      if (wasScrolled !== isScrolled) {
+        const navLinks = document.querySelector('.nav-links');
+        if (navLinks) {
+          navLinks.classList.add('header-transitioning');
+        }
+
+        const duration = 300; // ms (matches CSS transition duration)
+        const startTime = performance.now();
+
+        function animatePill(currentTime) {
+          const elapsed = currentTime - startTime;
+          updateNavPill();
+          if (elapsed < duration) {
+            requestAnimationFrame(animatePill);
+          } else {
+            if (navLinks) {
+              navLinks.classList.remove('header-transitioning');
+            }
+            updateNavPill();
+          }
+        }
+        requestAnimationFrame(animatePill);
+      }
+    });
+
+    // Initialize with a slight delay to trigger CSS transitions on page load
+    setTimeout(() => {
+      showSlide(0);
+      startAutoPlay();
+    }, 50);
+
+
+
+    // Scroll animation for How it Works cards and content
+    const scrollObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        } else {
+          entry.target.classList.remove('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    // 0. Observe About lead paragraphs and stats
+    document.querySelectorAll('#about .about-lead p, .fade-in-p').forEach(el => scrollObserver.observe(el));
+    document.querySelectorAll('#about .stat').forEach((el, index) => {
+      el.style.transitionDelay = `${index * 0.15 + 0.3}s`;
+      scrollObserver.observe(el);
+    });
+
+    // 1. Observe the How it Works half-cards
+    document.querySelectorAll('.how-half').forEach((el, index) => {
+      el.style.transitionDelay = `${index * 0.15}s`;
+      scrollObserver.observe(el);
+
+      // 2. Observe the inner step items
+      const steps = el.querySelectorAll('.step');
+      steps.forEach((step, stepIndex) => {
+        step.classList.add('stagger-fade');
+        // Delay factors in which half it's in, plus the step's order
+        step.style.transitionDelay = `${(index * 0.2) + (stepIndex * 0.15) + 0.2}s`;
+        scrollObserver.observe(step);
+      });
+    });
+
+    // 3. Observe the Why Choose Us items
+    document.querySelectorAll('.why-item').forEach((el, index) => {
+      // Delay sequentially for single column list (slow load)
+      el.style.animationDelay = `${index * 0.4}s`;
+      scrollObserver.observe(el);
+    });
+
+    // 4. Observe CTA section lines
+    document.querySelectorAll('.cta-line').forEach((el, index) => {
+      el.classList.add('stagger-fade');
+      el.style.transitionDelay = `${index * 0.3}s`;
+      scrollObserver.observe(el);
+    });
+
+    // --- Typewriter Word-by-Word logic ---
+    const twWordsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          if (!entry.target.dataset.animated) {
+            entry.target.dataset.animated = "true";
+
+            if (!entry.target.dataset.initialized) {
+              entry.target.dataset.initialized = "true";
+              const text = entry.target.innerText;
+              const words = text.split(' ');
+              entry.target.innerHTML = '';
+
+              words.forEach((word) => {
+                if (!word) return;
+                const span = document.createElement('span');
+                span.innerText = word;
+                span.style.opacity = '0';
+                span.style.transition = 'opacity 0.25s ease-in-out';
+                entry.target.appendChild(span);
+                entry.target.appendChild(document.createTextNode(' '));
+              });
+
+              const cursor = document.createElement('span');
+              cursor.innerText = '|';
+              cursor.style.display = 'inline-block';
+              cursor.style.color = '#ccc'; // Light cursor color
+              cursor.style.animation = 'blink 1s step-end infinite';
+              cursor.style.opacity = '0';
+              cursor.style.transition = 'opacity 0.25s';
+              cursor.classList.add('tw-cursor');
+              entry.target.appendChild(cursor);
+            }
+
+            let delay = 0;
+            const spans = entry.target.querySelectorAll('span:not(.tw-cursor)');
+            spans.forEach(span => {
+              span.style.transitionDelay = `${delay}s`;
+              void span.offsetWidth; // force reflow
+              span.style.opacity = '1';
+              delay += 0.15; // 150ms per word
+            });
+
+            const cursor = entry.target.querySelector('.tw-cursor');
+            if (cursor) {
+              cursor.style.transitionDelay = `${delay}s`;
+              setTimeout(() => cursor.style.opacity = '1', 10);
+            }
+          }
+        } else {
+          // Reset animation state when scrolled out of view
+          if (entry.target.dataset.animated) {
+            entry.target.dataset.animated = "";
+            const spans = entry.target.querySelectorAll('span');
+            spans.forEach(span => {
+              span.style.transitionDelay = '0s';
+              span.style.opacity = '0';
+            });
+          }
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.typewriter-words').forEach(el => {
+      twWordsObserver.observe(el);
+    });
+
+    // --- Investment Process Flow: staggered scroll-in ---
+    const investFlow = document.getElementById('investFlow');
+    if (investFlow) {
+      const iflowSteps = investFlow.querySelectorAll('.iflow-step');
+      const iflowObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Activate each step with a stagger delay
+            iflowSteps.forEach((step, i) => {
+              setTimeout(() => {
+                step.classList.add('active');
+              }, i * 280);
+            });
+            iflowObs.disconnect();
+          }
+        });
+      }, { threshold: 0.15 });
+      iflowObs.observe(investFlow);
+    }
+
+    // --- Loan Steps: staggered scroll-in from left ---
+    const loanSteps = document.getElementById('loanSteps');
+    if (loanSteps) {
+      const lSteps = loanSteps.querySelectorAll('.loan-step');
+      const loanObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            lSteps.forEach((step, i) => {
+              setTimeout(() => {
+                step.classList.add('active');
+              }, i * 200);
+            });
+            loanObs.disconnect();
+          }
+        });
+      }, { threshold: 0.15 });
+      loanObs.observe(loanSteps);
+    }
+
+    // --- Sector thumb click interactivity ---
+    document.querySelectorAll('.sector-thumb').forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        document.querySelectorAll('.sector-thumb').forEach(t => t.classList.remove('selected'));
+        thumb.classList.add('selected');
+      });
+    });
+
+    // --- Plan pill click interactivity ---
+    document.querySelectorAll('.plan-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.plan-pill').forEach(p => p.classList.remove('selected'));
+        pill.classList.add('selected');
+      });
+    });
+    // Preloader Logic (5 seconds with trust counter)
+    const preloader = document.getElementById('sitePreloader');
+    const counterEl = document.getElementById('preloaderCounter');
+    const barEl = document.getElementById('preloaderBar');
+    if (preloader) {
+      if (!sessionStorage.getItem('sitarLoaded')) {
+        sessionStorage.setItem('sitarLoaded', 'true');
+        let count = 0;
+        // The counter fades in at 1.2s, so we wait 1.2s then count to 100 over ~3.5s
+        setTimeout(() => {
+          const interval = setInterval(() => {
+            count += Math.floor(Math.random() * 2) + 1; // random increment for realism
+            if (count > 100) count = 100;
+            if (counterEl) {
+              counterEl.innerText = `${count}%`;
+            }
+            if (barEl) {
+              barEl.style.width = `${count}%`;
+            }
+            if (count >= 100) {
+              clearInterval(interval);
+            }
+          }, 35); // 35ms tick
+        }, 1200);
+
+        setTimeout(() => {
+          preloader.classList.add('fade-out');
+          document.body.classList.remove('loading');
+        }, 5000);
+      } else {
+        // Immediately hide preloader if already loaded in this session
+        preloader.style.display = 'none';
+        document.body.classList.remove('loading');
+      }
+    }
+
+    // --- Hero Stat Counters Animation ---
+    const statCounters = document.querySelectorAll('.stat-counter');
+    statCounters.forEach(counter => {
+      const target = +counter.getAttribute('data-target');
+      const duration = 2000; // 2 seconds
+      const increment = target / (duration / 16); // 60fps
+      let isAnimating = false;
+
+      const runCounter = () => {
+        if (isAnimating) return;
+        isAnimating = true;
+        let current = 0;
+        counter.innerText = '0';
+
+        const updateCounter = () => {
+          current += increment;
+          if (current < target) {
+            counter.innerText = Math.ceil(current);
+            requestAnimationFrame(updateCounter);
+          } else {
+            counter.innerText = target;
+            isAnimating = false;
+          }
+        };
+
+        requestAnimationFrame(updateCounter);
+      };
+
+      // Initial run on page load
+      setTimeout(runCounter, 600);
+    });
+
+    // --- Floating Social Proof Alerts ---
+    const alertMessages = [
+      { text: "13+ New Investors this month", icon: '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>', color: '#3E8E85' },
+      { text: "16+ Gold Loans delivered this month", icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>', color: '#B8860B' }
+    ];
+
+    const heroSection = document.querySelector('.hero');
+    if (heroSection) {
+      const alertContainer = document.createElement('div');
+      alertContainer.className = 'floating-alert-container';
+      heroSection.appendChild(alertContainer);
+
+      let lastMsgIndex = -1;
+
+      const burstConfetti = (alertEl, color) => {
+        for (let i = 0; i < 14; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'confetti-particle';
+          particle.style.background = color;
+          const angle = Math.random() * Math.PI * 2;
+          const velocity = 25 + Math.random() * 45;
+          const tx = Math.cos(angle) * velocity;
+          const ty = Math.sin(angle) * velocity - 10;
+          particle.style.setProperty('--tx', `${tx}px`);
+          particle.style.setProperty('--ty', `${ty}px`);
+          const dur = 0.5 + Math.random() * 0.4;
+          particle.style.animation = `confettiBurst ${dur}s ease-out forwards`;
+          particle.style.left = '50%';
+          particle.style.top = '50%';
+          alertEl.appendChild(particle);
+          setTimeout(() => particle.remove(), dur * 1000);
+        }
+      };
+
+      const spawnAlert = () => {
+        // Pick the next message sequentially to ensure both show up
+        lastMsgIndex = (lastMsgIndex + 1) % alertMessages.length;
+        const msg = alertMessages[lastMsgIndex];
+
+        const alert = document.createElement('div');
+        alert.className = 'floating-alert';
+        alert.innerHTML = `
+        <div style="width:28px;height:28px;border-radius:50%;background:${msg.color}15;display:flex;align-items:center;justify-content:center;color:${msg.color};">
+          ${msg.icon}
+        </div>
+        <span>${msg.text}</span>
+      `;
+        alertContainer.appendChild(alert);
+
+        // Fire confetti burst right after it pops up
+        setTimeout(() => burstConfetti(alert, msg.color), 600);
+
+        // Remove after animation completes (6s)
+        setTimeout(() => {
+          alert.remove();
+        }, 6000);
+      };
+
+      // Start spawning
+      setTimeout(() => {
+        spawnAlert();
+        setInterval(spawnAlert, 7500); // Spawn sequentially every 7.5 seconds
+      }, 2500);
+    }
+
+    // --- HOW IT WORKS TABS INTERACTIVITY ---
+    const howTabs = document.querySelectorAll('.how-tab');
+    const howContents = document.querySelectorAll('.how-content');
+
+    howTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active from all tabs
+        howTabs.forEach(t => t.classList.remove('active'));
+        // Add active to clicked tab
+        tab.classList.add('active');
+
+        // Hide all contents
+        howContents.forEach(c => c.classList.remove('active'));
+
+        // Show the target content
+        const targetId = tab.getAttribute('data-target');
+        document.getElementById(targetId).classList.add('active');
+      });
+    });
+    (function () {
+
+      // ---------------------------------------------------------------
+      // CONFIG — point this at wherever you want leads saved.
+      // Leave as-is to just store leads in the browser (localStorage) for testing.
+      // To send to Odoo CRM, replace saveLead() below with a fetch() call to
+      // a small backend endpoint that creates a crm.lead record via Odoo's API
+      // (calling Odoo's JSON-RPC directly from the browser isn't safe/CORS-friendly,
+      // so route it through your own tiny server-side script).
+      // ---------------------------------------------------------------
+      function saveLead(name, phone) {
+        try {
+          const leads = JSON.parse(localStorage.getItem('sitar_leads') || '[]');
+          leads.push({ name, phone, ts: new Date().toISOString() });
+          localStorage.setItem('sitar_leads', JSON.stringify(leads));
+        } catch (e) { console.warn('Could not save lead locally', e); }
+
+        // Example webhook call (uncomment + set your URL to actually send it somewhere):
+        // fetch('https://your-backend.example.com/api/leads', {
+        //   method: 'POST',
+        //   headers: {'Content-Type':'application/json'},
+        //   body: JSON.stringify({ name, phone, source: 'SITAR website chatbot' })
+        // });
+
+        console.log('Lead captured:', { name, phone });
+      }
+
+      const RATES = {
+        villas: { label: "Villas 🏡", rate: "Up to 12% p.a.", accent: "villas" },
+        apartments: { label: "Apartments 🏢", rate: "Up to 11% p.a.", accent: "apartments" },
+        layouts: { label: "Layout Development 📐", rate: "Up to 13% p.a.", accent: "layouts" },
+        restaurants: { label: "Restaurants 🍽️", rate: "Up to 10% p.a.", accent: "restaurants" },
+        resorts: { label: "Resorts 🏖️", rate: "Up to 12.5% p.a.", accent: "resorts" },
+        microfinance: { label: "Microfinance 🤝", rate: "Up to 9% p.a.", accent: "microfinance" },
+      };
+
+      const LOANS = {
+        property: { label: "Property Loan", info: "Financing against residential and commercial property, structured around your repayment comfort." },
+        construction: { label: "Construction Loan", info: "Staged disbursals aligned to your build timeline, from foundation to finish." },
+        gold: { label: "Gold Loan", info: "Doorstep gold valuation, low interest, and quick disbursal. We can also release gold pledged elsewhere." },
+        personal: { label: "Personal Loan", info: "Quick approval, minimal paperwork, for whatever life asks of you next." },
+        business: { label: "Business Loan", info: "Working capital and expansion funding for owners who are ready to grow." },
+      };
+
+      const launcher = document.getElementById('sitar-bot-launcher');
+      const panel = document.getElementById('sitar-bot-panel');
+      const closeBtn = document.getElementById('sitar-bot-close');
+      const body = document.getElementById('sitar-bot-body');
+      const inputRow = document.getElementById('sitar-bot-input-row');
+      const input = document.getElementById('sitar-bot-input');
+      const sendBtn = document.getElementById('sitar-bot-send');
+
+      let state = 'ask_name';
+      let lead = { name: '', phone: '' };
+      let started = false;
+
+      function scrollDown() { body.scrollTop = body.scrollHeight; }
+
+      function addMessage(text, from) {
+        const el = document.createElement('div');
+        el.className = 'msg ' + from;
+        el.innerHTML = text;
+        body.appendChild(el);
+        scrollDown();
+      }
+
+      function showTyping(cb, delay) {
+        const el = document.createElement('div');
+        el.className = 'typing';
+        el.innerHTML = '<span></span><span></span><span></span>';
+        body.appendChild(el);
+        scrollDown();
+        setTimeout(() => {
+          el.remove();
+          cb();
+        }, delay || 550);
+      }
+
+      function addQuickReplies(options) {
+        const wrap = document.createElement('div');
+        wrap.className = 'quick-replies';
+        options.forEach(opt => {
+          const btn = document.createElement('button');
+          btn.className = 'qr-btn' + (opt.accent ? ' accent-' + opt.accent : '');
+          btn.textContent = opt.label;
+          btn.onclick = () => handleQuickReply(opt.value, opt.label);
+          wrap.appendChild(btn);
+        });
+        body.appendChild(wrap);
+        scrollDown();
+      }
+
+      function setInputMode(mode) {
+        if (mode === 'hidden') {
+          inputRow.classList.add('hidden');
+        } else {
+          inputRow.classList.remove('hidden');
+          input.type = mode === 'tel' ? 'tel' : 'text';
+          input.placeholder = mode === 'tel' ? 'Your phone number...' : 'Type your answer...';
+          input.value = '';
+          input.focus();
+        }
+      }
+
+      function startConversation() {
+        if (started) return;
+        started = true;
+        showTyping(() => {
+          addMessage("Hi there 👋 I'm the SITAR Assistant.", 'bot');
+          showTyping(() => {
+            addMessage("Before we start, could I get your <strong>name</strong>?", 'bot');
+            setInputMode('text');
+          }, 500);
+        }, 400);
+      }
+
+      // Name: letters and spaces only (allows things like "Arun Kumar", apostrophes/hyphens for names like O'Neil or Anne-Marie), min 2 chars
+      function isValidName(str) {
+        return /^[A-Za-z][A-Za-z\s'.-]{1,49}$/.test(str.trim());
+      }
+
+      // Indian mobile number: exactly 10 digits, starting with 6, 7, 8, or 9.
+      // Strips spaces, hyphens, and a leading +91/91/0 before checking, so users
+      // can type it in whatever format feels natural to them.
+      function cleanPhone(str) {
+        return str.replace(/[\s-]/g, '');
+      }
+      function isValidPhone(str) {
+        const digits = cleanPhone(str);
+        return /^\+?[0-9]{7,15}$/.test(digits);
+      }
+
+      function handleTextSubmit() {
+        const val = input.value.trim();
+        if (!val) return;
+        addMessage(val, 'user');
+        input.value = '';
+
+        if (state === 'ask_name') {
+          if (!isValidName(val)) {
+            showTyping(() => {
+              addMessage("That doesn't quite look like a name — please use letters only (e.g. \"Arun Kumar\"), no numbers or symbols.", 'bot');
+            }, 350);
+            return;
+          }
+          lead.name = val;
+          state = 'ask_phone';
+          showTyping(() => {
+            addMessage(`Nice to meet you, ${escapeHtml(lead.name)}! And your <strong>phone number</strong>?`, 'bot');
+            setInputMode('tel');
+          });
+        } else if (state === 'ask_phone') {
+          if (!isValidPhone(val)) {
+            showTyping(() => {
+              addMessage("That doesn't look like a valid phone number — please enter a valid number (e.g. 9876543210 or +1234567890).", 'bot');
+            }, 350);
+            return;
+          }
+          lead.phone = cleanPhone(val);
+          saveLead(lead.name, lead.phone);
+          state = 'menu';
+          setInputMode('hidden');
+          showTyping(() => {
+            addMessage(`Thanks, ${escapeHtml(lead.name)}! What would you like to explore?`, 'bot');
+            addQuickReplies([
+              { label: '💰 Invest', value: 'invest' },
+              { label: '🏦 Loan', value: 'loan' },
+              { label: '🧮 Profit Calculator', value: 'calculator' },
+            ]);
+          });
+        }
+      }
+
+      function handleQuickReply(value, label) {
+        addMessage(label, 'user');
+
+        if (state === 'menu') {
+          if (value === 'calculator') {
+            state = 'menu_returned';
+            showTyping(() => {
+              addMessage('We have a powerful Profit Calculator to help you estimate your returns! You can access it directly here: <a href="calculator.html" style="color:#007BFF; text-decoration:underline;">Profit Calculator</a>.', 'bot');
+              addQuickReplies([
+                { label: '💰 Invest', value: 'invest' },
+                { label: '🏦 Loan', value: 'loan' },
+                { label: '📞 Talk to advisor', value: 'contact' },
+              ]);
+            });
+          } else if (value === 'invest') {
+            state = 'sector';
+            showTyping(() => {
+              addMessage('Great choice. Which sector interests you?', 'bot');
+              addQuickReplies(Object.entries(RATES).map(([key, r]) => ({ label: r.label, value: key, accent: r.accent })));
+            });
+          } else if (value === 'loan') {
+            state = 'loantype';
+            showTyping(() => {
+              addMessage('Sure — which type of loan are you looking for?', 'bot');
+              addQuickReplies(Object.entries(LOANS).map(([key, l]) => ({ label: l.label, value: key })));
+            });
+          }
+        } else if (state === 'sector') {
+          const r = RATES[value];
+          showTyping(() => {
+            addMessage(`${r.label} — <span class="rate">${r.rate}</span><br>Want to see another sector, or talk to an advisor?`, 'bot');
+            addQuickReplies([
+              { label: '🚀 Invest Now', value: 'invest_now', accent: 'invest-now' },
+              { label: '🔁 Other sectors', value: 'invest' },
+              { label: '🏦 Loans instead', value: 'loan' },
+              { label: '🧮 Profit Calculator', value: 'calculator' },
+              { label: '📞 Talk to advisor', value: 'contact' },
+            ]);
+            state = 'menu_returned';
+          });
+        } else if (state === 'loantype') {
+          const l = LOANS[value];
+          showTyping(() => {
+            addMessage(`<strong>${l.label}</strong><br>${l.info}<br><br>Rates are priced per applicant — an advisor can share exact numbers.`, 'bot');
+            addQuickReplies([
+              { label: '🔁 Other loans', value: 'loan' },
+              { label: '💰 Investments instead', value: 'invest' },
+              { label: '🧮 Profit Calculator', value: 'calculator' },
+              { label: '📞 Talk to advisor', value: 'contact' },
+            ]);
+            state = 'menu_returned';
+          });
+        } else if (state === 'menu_returned') {
+          if (value === 'invest_now') {
+            showTyping(() => {
+              addMessage('Awesome! Redirecting you to our investment page...', 'bot');
+              setTimeout(() => { window.location.href = "invest.html"; }, 1500);
+            });
+          } else if (value === 'calculator') {
+            state = 'menu_returned';
+            showTyping(() => {
+              addMessage('We have a powerful Profit Calculator to help you estimate your returns! You can access it directly here: <a href="calculator.html" style="color:#007BFF; text-decoration:underline;">Profit Calculator</a>.', 'bot');
+              addQuickReplies([
+                { label: '💰 Invest', value: 'invest' },
+                { label: '🏦 Loan', value: 'loan' },
+                { label: '📞 Talk to advisor', value: 'contact' },
+              ]);
+            });
+          } else if (value === 'invest') {
+            state = 'sector';
+            showTyping(() => addQuickReplies(Object.entries(RATES).map(([key, r]) => ({ label: r.label, value: key, accent: r.accent }))));
+          } else if (value === 'loan') {
+            state = 'loantype';
+            showTyping(() => addQuickReplies(Object.entries(LOANS).map(([key, l]) => ({ label: l.label, value: key }))));
+          } else if (value === 'contact') {
+            showTyping(() => {
+              addMessage(`Perfect — someone from our team will call ${escapeHtml(lead.name)} on ${escapeHtml(lead.phone)} shortly. 🙏`, 'bot');
+            });
+          }
+        }
+      }
+
+      function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      sendBtn.addEventListener('click', handleTextSubmit);
+      input.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleTextSubmit(); });
+
+      launcher.addEventListener('click', () => {
+        panel.classList.toggle('open');
+        if (panel.classList.contains('open')) startConversation();
+      });
+      closeBtn.addEventListener('click', () => panel.classList.remove('open'));
+
+    })();
+    document.addEventListener('DOMContentLoaded', () => {
+      const authModal = document.getElementById('auth-modal');
+      const profileModal = document.getElementById('profile-modal');
+      
+      const navLoginBtn = document.getElementById('nav-login-btn');
+      const navProfileBtn = document.getElementById('nav-profile-btn');
+      const mobileNavLoginBtn = document.getElementById('mobile-nav-login-btn');
+      const mobileNavProfileBtn = document.getElementById('mobile-nav-profile-btn');
+
+      const btnSendOtp = document.getElementById('auth-send-otp');
+      const btnVerifyOtp = document.getElementById('auth-verify-otp');
+      const step1 = document.getElementById('auth-step-1');
+      const step2 = document.getElementById('auth-step-2');
+      const btnLogout = document.getElementById('auth-logout-btn');
+      const btnDashboard = document.getElementById('view-dashboard-btn');
+
+      function openModal(modal) {
+        modal.style.display = 'flex';
+        // force reflow
+        void modal.offsetWidth;
+        modal.classList.add('show');
+      }
+
+      function closeModal(modal) {
+        modal.classList.remove('show');
+        setTimeout(() => {
+          modal.style.display = 'none';
+        }, 300);
+      }
+
+      function updateNavState() {
+        const isLoggedIn = localStorage.getItem('sitar_logged_in') === 'true';
+        if (isLoggedIn) {
+          if (navLoginBtn) navLoginBtn.style.display = 'none';
+          if (navProfileBtn) navProfileBtn.style.display = 'flex';
+          if (mobileNavLoginBtn) mobileNavLoginBtn.style.display = 'none';
+          if (mobileNavProfileBtn) mobileNavProfileBtn.style.display = 'block';
+        } else {
+          if (navLoginBtn) navLoginBtn.style.display = 'flex';
+          if (navProfileBtn) navProfileBtn.style.display = 'none';
+          if (mobileNavLoginBtn) mobileNavLoginBtn.style.display = 'block';
+          if (mobileNavProfileBtn) mobileNavProfileBtn.style.display = 'none';
+        }
+      }
+
+      // Initialize nav state
+      updateNavState();
+
+      // Open Auth Modal
+      const loginTriggers = document.querySelectorAll('a[href="#login"]');
+      loginTriggers.forEach(t => {
+        t.addEventListener('click', (e) => {
+          e.preventDefault();
+          step1.style.display = 'block';
+          step2.style.display = 'none';
+          document.getElementById('auth-phone-input').value = '';
+          document.getElementById('auth-phone-error').style.display = 'none';
+          document.getElementById('auth-otp-input').value = '';
+          openModal(authModal);
+        });
+      });
+
+      // Open Profile Modal
+      const profileTriggers = document.querySelectorAll('.nav-profile-trigger');
+      profileTriggers.forEach(t => {
+        t.addEventListener('click', (e) => {
+          e.preventDefault();
+          openModal(profileModal);
+        });
+      });
+
+      // Close buttons
+      document.getElementById('close-auth-modal').addEventListener('click', () => closeModal(authModal));
+      document.getElementById('close-profile-modal').addEventListener('click', () => closeModal(profileModal));
+
+      // Listen for successful auth from Firebase
+      window.addEventListener('auth-success', () => {
+        updateNavState();
+        closeModal(authModal);
+      });
+
+      // Logout
+      btnLogout.addEventListener('click', () => {
+        localStorage.removeItem('sitar_logged_in');
+        closeModal(profileModal);
+        updateNavState();
+      });
+
+      // Dashboard
+      btnDashboard.addEventListener('click', () => {
+        closeModal(profileModal);
+        // Custom logic here later
+      });
+      // Profile Edit Logic
+      window.toggleProfileEdit = function(showEdit) {
+        document.getElementById('profile-view-mode').style.display = showEdit ? 'none' : 'block';
+        document.getElementById('profile-edit-mode').style.display = showEdit ? 'block' : 'none';
+        document.getElementById('view-dashboard-btn').style.display = showEdit ? 'none' : 'block';
+        document.getElementById('auth-logout-btn').style.display = showEdit ? 'none' : 'block';
+      };
+
+      window.saveProfileDetails = function() {
+        const aadharInput = document.getElementById('edit-aadhar').value;
+        const aadharClean = aadharInput.replace(/\s/g, '');
+        if (aadharClean && !/^\d{12}$/.test(aadharClean)) {
+          alert("Please enter a valid 12-digit Aadhar number.");
+          return;
+        }
+
+        const nomPhoneInput = document.getElementById('edit-nominee-phone').value;
+        const nomPhoneClean = nomPhoneInput.replace(/\D/g, '');
+        if (nomPhoneInput && nomPhoneClean.length < 10) {
+          alert("Please enter a valid 10-digit phone number for the nominee.");
+          return;
+        }
+
+        const btn = document.getElementById('save-profile-btn');
+        btn.innerHTML = `<svg class="animate-spin" style="width: 18px; height: 18px; margin-right: 8px; color: white;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Saving...`;
+        btn.disabled = true;
+
+        // Call Backend API
+        try {
+          const res = await fetch('/api/updateProfile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              phone: localStorage.getItem('user_phone') || '',
+              name: document.getElementById('edit-full-name').value,
+              email: document.getElementById('edit-email').value,
+              pan: document.getElementById('edit-pan').value,
+              aadhar: document.getElementById('edit-aadhar').value,
+              nomineeName: document.getElementById('edit-nominee-name').value,
+              nomineeRel: document.getElementById('edit-nominee-rel').value,
+              nomineePhone: document.getElementById('edit-nominee-phone').value,
+              bankAcc: document.getElementById('edit-bank-acc').value,
+              bankIfsc: document.getElementById('edit-bank-ifsc').value,
+              bankType: document.getElementById('edit-bank-type').value
+            })
+          });
+
+          const result = await res.json();
+          
+          if (result.error) {
+            alert("Failed to save profile: " + result.error);
+          } else {
+            const rawAadhar = document.getElementById('edit-aadhar').value.replace(/\s/g, '');
+            const maskedAadhar = rawAadhar.length >= 4 ? `XXXX-XXXX-${rawAadhar.slice(-4)}` : (rawAadhar ? 'Invalid' : '-');
+            
+            const newName = document.getElementById('edit-full-name').value || 'Investor';
+            document.getElementById('view-full-name').textContent = newName;
+            
+            const nameParts = newName.trim().split(' ');
+            let initials = 'U';
+            if (nameParts.length > 0 && nameParts[0].length > 0) {
+              initials = nameParts[0][0];
+              if (nameParts.length > 1 && nameParts[nameParts.length - 1].length > 0) {
+                initials += nameParts[nameParts.length - 1][0];
+              }
+            }
+            document.getElementById('view-initials').textContent = initials.toUpperCase();
+            
+            document.getElementById('view-email').textContent = document.getElementById('edit-email').value || 'Email not added';
+            document.getElementById('view-pan').textContent = document.getElementById('edit-pan').value || '-';
+            
+            if (rawAadhar) {
+              document.getElementById('view-aadhar').innerHTML = `${maskedAadhar} <span style="font-size: 10px; color: #10b981; background: #d1fae5; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">Verified</span>`;
+            } else {
+              document.getElementById('view-aadhar').innerHTML = '-';
+            }
+            
+            const nomineeName = document.getElementById('edit-nominee-name').value || '-';
+            const nomineeRel = document.getElementById('edit-nominee-rel').value || '-';
+            document.getElementById('view-nominee-name').innerHTML = `${nomineeName} <span style="color: #64748b; font-weight: 400; font-size: 13px;">(${nomineeRel})</span>`;
+            document.getElementById('view-nominee-phone').textContent = document.getElementById('edit-nominee-phone').value || '-';
+            
+            const rawAcc = document.getElementById('edit-bank-acc').value;
+            const maskedAcc = rawAcc.length >= 4 ? `XXXX XXXX ${rawAcc.slice(-4)}` : rawAcc;
+            document.getElementById('view-bank-acc').textContent = maskedAcc || '-';
+            document.getElementById('view-bank-ifsc').textContent = document.getElementById('edit-bank-ifsc').value || '-';
+            document.getElementById('view-bank-type').textContent = document.getElementById('edit-bank-type').value || '-';
+
+            toggleProfileEdit(false);
+          }
+
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+        } catch (err) {
+          alert("Connection error while saving profile.");
+          btn.innerHTML = "Save Changes";
+          btn.disabled = false;
+        }
+      };
+
+      // TABS LOGIC
+      const tabProfile = document.getElementById('tab-profile-details');
+      const tabPortfolio = document.getElementById('tab-portfolio');
+      const viewProfileMode = document.getElementById('profile-view-mode');
+      const viewPortfolio = document.getElementById('portfolio-view');
+      const editProfileMode = document.getElementById('profile-edit-mode');
+
+      tabProfile.addEventListener('click', () => {
+        tabProfile.style.fontWeight = '700'; tabProfile.style.color = '#1A2980'; tabProfile.style.borderBottom = '2px solid #1A2980';
+        tabPortfolio.style.fontWeight = '600'; tabPortfolio.style.color = '#64748b'; tabPortfolio.style.borderBottom = 'none';
+        viewPortfolio.style.display = 'none';
+        viewProfileMode.style.display = 'block';
+        editProfileMode.style.display = 'none';
+      });
+
+      let portfolioData = [];
+
+      tabPortfolio.addEventListener('click', async () => {
+        tabPortfolio.style.fontWeight = '700'; tabPortfolio.style.color = '#1A2980'; tabPortfolio.style.borderBottom = '2px solid #1A2980';
+        tabProfile.style.fontWeight = '600'; tabProfile.style.color = '#64748b'; tabProfile.style.borderBottom = 'none';
+        viewProfileMode.style.display = 'none';
+        editProfileMode.style.display = 'none';
+        viewPortfolio.style.display = 'block';
+
+        const listEl = document.getElementById('portfolio-list');
+        listEl.innerHTML = '<div style="text-align: center; color: #64748b; padding: 24px; background: #f8fafc; border-radius: 12px;">Loading portfolio...</div>';
+
+        const phone = localStorage.getItem('user_phone');
+        if (!phone) {
+          listEl.innerHTML = '<div style="text-align: center; color: #ef4444; padding: 24px;">Please login to view portfolio.</div>';
+          return;
+        }
+
+        try {
+          const res = await fetch(`/api/getInvestments?phone=${encodeURIComponent(phone)}`);
+          portfolioData = await res.json();
+
+          if (portfolioData.error) throw new Error();
+          
+          if (portfolioData.length === 0) {
+            listEl.innerHTML = '<div style="text-align: center; color: #64748b; padding: 24px; background: #f8fafc; border-radius: 12px;">You do not have any active investments yet.</div>';
+            return;
+          }
+
+          listEl.innerHTML = '';
+          portfolioData.forEach(inv => {
+            const el = document.createElement('div');
+            el.style = 'background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 12px;';
+            el.innerHTML = `
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <div style="font-size: 14px; font-weight: 700; color: #0f172a; text-transform: capitalize;">${inv.sector} Plan</div>
+                <div style="font-size: 12px; color: #10b981; background: #d1fae5; padding: 2px 8px; border-radius: 12px; font-weight: 600;">Active</div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div>
+                  <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">Invested</div>
+                  <div style="font-size: 14px; color: #0f172a; font-weight: 600;">₹ ${inv.invested_amount.toLocaleString('en-IN')}</div>
+                </div>
+                <div>
+                  <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">Maturity Value</div>
+                  <div style="font-size: 14px; color: #0f172a; font-weight: 600;">₹ ${inv.maturity_amount.toLocaleString('en-IN')}</div>
+                </div>
+                <div>
+                  <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">Interest Rate</div>
+                  <div style="font-size: 13px; color: #0f172a; font-weight: 600;">${inv.applied_interest_rate}% p.a.</div>
+                </div>
+                <div>
+                  <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">Maturity Date</div>
+                  <div style="font-size: 13px; color: #0f172a; font-weight: 600;">${inv.maturity_date}</div>
+                </div>
+              </div>
+            `;
+            listEl.appendChild(el);
+          });
+        } catch (err) {
+          listEl.innerHTML = '<div style="text-align: center; color: #ef4444; padding: 24px; background: #fef2f2; border-radius: 12px;">Failed to load portfolio.</div>';
+        }
+      });
+
+      window.downloadPassbook = function() {
+        if (!portfolioData || portfolioData.length === 0) {
+          alert('No active investments to download.');
+          return;
+        }
+
+        let csvContent = "Transaction ID,Sector,Term (Years),Invested Amount,Rate (%),Maturity Value,Maturity Date,Status\n";
+        portfolioData.forEach(inv => {
+          csvContent += `"${inv.transaction_id}","${inv.sector}","${inv.term_years}","${inv.invested_amount}","${inv.applied_interest_rate}","${inv.maturity_amount}","${inv.maturity_date}","${inv.status}"\n`;
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `SITAR_Passbook_${localStorage.getItem('user_phone')}.csv`;
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+    });

@@ -6903,7 +6903,7 @@
         document.getElementById('auth-logout-btn').style.display = showEdit ? 'none' : 'block';
       };
 
-      window.saveProfileDetails = function() {
+      window.saveProfileDetails = async function() {
         const aadharInput = document.getElementById('edit-aadhar').value;
         const aadharClean = aadharInput.replace(/\s/g, '');
         if (aadharClean && !/^\d{12}$/.test(aadharClean)) {
