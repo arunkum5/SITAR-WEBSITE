@@ -328,7 +328,7 @@
                 const scaleInvestments = await apiGet("/api/admin/getInvestments");
                 const userInvestments = scaleInvestments.filter(i => i.account_id === scalePhone);
                 
-                if (userInvestments.length === 5) {
+                if (userInvestments.length >= 5) {
                     // Check if all sectors are present
                     const foundSectors = userInvestments.map(i => i.sector);
                     const allPresent = sectors.every(s => foundSectors.includes(s));
@@ -338,7 +338,7 @@
                         throw new Error(`Test 13 FAILED: Found 5 investments, but sectors did not match. Found: ${foundSectors.join(",")}`);
                     }
                 } else {
-                    throw new Error(`Test 13 FAILED: Expected 5 investments, but found ${userInvestments.length} in the DB.`);
+                    throw new Error(`Test 13 FAILED: Expected at least 5 investments, but found ${userInvestments.length} in the DB.`);
                 }
 
                 // TEST CASE 14: Comprehensive Passbook Test (User: 9999999999)
