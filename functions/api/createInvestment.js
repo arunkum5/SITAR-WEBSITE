@@ -24,7 +24,7 @@ export async function onRequestPost({ request, env }) {
         'Content-Type': 'application/json',
         'apikey': supabaseKey,
         'Authorization': `Bearer ${supabaseKey}`,
-        'Prefer': 'resolution=ignore-duplicates'
+        'Prefer': 'resolution=merge-duplicates'
       },
       body: JSON.stringify(investorsPayload)
     });
