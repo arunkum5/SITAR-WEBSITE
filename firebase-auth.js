@@ -29,6 +29,7 @@ const setupRecaptcha = () => {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    setupRecaptcha(); // Pre-initialize invisible reCAPTCHA to eliminate latency
     const btnSendOtp = document.getElementById('auth-send-otp');
     const btnVerifyOtp = document.getElementById('auth-verify-otp');
     const step1 = document.getElementById('auth-step-1');
