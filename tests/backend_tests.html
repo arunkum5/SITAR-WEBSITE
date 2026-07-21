@@ -373,16 +373,22 @@
                         }
                     }
                 }
-                log(`Created 10 investments for ${passbookPhone}. Approving them all...`);
+                log(`Created 10 investments for ${passbookPhone}. Fetching IDs to approve them all...`);
                 
-                for (const txId of passbookTxIds) {
+                const getInvRes = await fetch('/api/admin/getInvestments');
+                const allInvestments = await getInvRes.json();
+                
+                // Find all pending investments for this test user
+                const pendingTxs = allInvestments.filter(i => i.account_id === passbookPhone && i.status === 'Pending');
+                
+                for (const inv of pendingTxs) {
                     const approveRes = await fetch('/api/admin/updateTransactionStatus', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ transaction_id: txId, status: 'Approved' })
+                        body: JSON.stringify({ transaction_id: inv.transaction_id, status: 'Approved' })
                     });
                     if (!approveRes.ok) {
-                         throw new Error(`Test 14 FAILED: Could not approve tx ${txId}.`);
+                         throw new Error(`Test 14 FAILED: Could not approve tx ${inv.transaction_id}.`);
                     }
                 }
                 log(`Test 14 PASSED: 10 Approved investments successfully injected for ${passbookPhone}.`);
