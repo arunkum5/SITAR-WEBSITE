@@ -228,6 +228,74 @@
                     throw new Error("Test 9 FAILED: Lead was NOT found in the database.");
                 }
 
+
+                // TEST CASE 10: Invest Today -> Completed Payment (Pending)
+                log("\n--- TEST CASE 10: Create Investment (Pending) ---");
+                const investPhone = "+916666000001";
+                const investPayload = {
+                    phone: investPhone,
+                    sector: "Apartments",
+                    term: 3,
+                    amount: 1000000,
+                    rate: 12,
+                    maturity_date: "2029-07-21",
+                    maturity_amount: 1404928
+                };
+                
+                log(`Simulating a user completing an investment of ₹10,00,000...`);
+                await apiPost("/api/createInvestment", investPayload);
+                
+                log("Fetching all investments to verify it is Pending...");
+                const investments = await apiGet("/api/admin/getInvestments");
+                const pendingInv = investments.find(i => i.account_id === investPhone && i.status === "Pending");
+                
+                if (pendingInv) {
+                    log(`Test 10 PASSED: Investment created and correctly set to Pending! (Transaction ID: ${pendingInv.transaction_id})`, "success");
+                } else {
+                    throw new Error("Test 10 FAILED: Pending investment was NOT found in the database.");
+                }
+
+                // TEST CASE 11: Admin Approves Investment (Active)
+                log("\n--- TEST CASE 11: Admin Approves Investment (Active) ---");
+                log(`Simulating Admin clicking Approve for Transaction ${pendingInv.transaction_id}...`);
+                await apiPost("/api/admin/updateTransactionStatus", {
+                    transaction_id: pendingInv.transaction_id,
+                    status: "Active"
+                });
+                
+                log("Fetching investments to verify status changed to Active...");
+                const checkInvestments = await apiGet("/api/admin/getInvestments");
+                const activeInv = checkInvestments.find(i => i.transaction_id === pendingInv.transaction_id);
+                
+                if (activeInv && activeInv.status === "Active") {
+                    log(`Test 11 PASSED: Investment successfully updated to Active!`, "success");
+                } else {
+                    throw new Error(`Test 11 FAILED: Status is ${activeInv ? activeInv.status : "missing"}.`);
+                }
+
+                // TEST CASE 12: Admin Rejects Investment
+                log("\n--- TEST CASE 12: Admin Rejects Investment ---");
+                log("Simulating a new investment being created, then rejected...");
+                await apiPost("/api/createInvestment", { ...investPayload, amount: 2000000 });
+                const latestInvestments = await apiGet("/api/admin/getInvestments");
+                // Find the newest pending one
+                const newestPending = latestInvestments.find(i => i.account_id === investPhone && i.status === "Pending" && parseFloat(i.invested_amount) === 2000000);
+                
+                log(`Rejecting Transaction ${newestPending.transaction_id}...`);
+                await apiPost("/api/admin/updateTransactionStatus", {
+                    transaction_id: newestPending.transaction_id,
+                    status: "Rejected"
+                });
+                
+                const finalCheck = await apiGet("/api/admin/getInvestments");
+                const rejectedInv = finalCheck.find(i => i.transaction_id === newestPending.transaction_id);
+                
+                if (rejectedInv && rejectedInv.status === "Rejected") {
+                    log(`Test 12 PASSED: Investment successfully marked as Rejected!`, "success");
+                } else {
+                    throw new Error(`Test 12 FAILED: Status is ${rejectedInv ? rejectedInv.status : "missing"}.`);
+                }
+
                 log('\n🎉 ALL BACKEND TESTS COMPLETED SUCCESSFULLY!', 'success');
 
             } catch(e) {
