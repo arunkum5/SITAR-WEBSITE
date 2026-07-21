@@ -17,8 +17,8 @@ export async function onRequestPost({ request, env }) {
       const investorsPayload = {
         account_id: phone, // Using phone as the primary account_id
         name: data.name || '-',
-        pan_number: data.pan || `TEMP-${phone}`,
-        aadhar_number: data.aadhar || `TEMP-${phone}`,
+        pan_number: data.pan || `T${phone.replace(/\\D/g, "").slice(-9)}`.padEnd(10, "0"),
+        aadhar_number: data.aadhar || `T0${phone.replace(/\\D/g, "").slice(-10)}`.padEnd(12, "0"),
         nominee_name: data.nomineeName || null,
         nominee_contact: data.nomineePhone || null,
       };

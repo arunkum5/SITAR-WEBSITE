@@ -14,8 +14,8 @@ export async function onRequestPost({ request, env }) {
     const investorsPayload = {
       account_id: phone,
       name: "Investor",
-      pan_number: `TEMP-${phone}`,
-      aadhar_number: `TEMP-${phone}`,
+      pan_number: `T${phone.replace(/\D/g, '').slice(-9)}`.padEnd(10, '0'),
+      aadhar_number: `T0${phone.replace(/\D/g, '').slice(-10)}`.padEnd(12, '0'),
     };
 
     const invResponse = await fetch(`${supabaseUrl}/rest/v1/investors?on_conflict=account_id`, {
