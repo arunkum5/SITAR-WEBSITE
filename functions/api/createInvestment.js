@@ -8,7 +8,15 @@ export async function onRequestPost({ request, env }) {
 
   try {
     const data = await request.json();
-    const phone = data.phone || "Unknown";
+    let phone = data.phone || "Unknown";
+    
+    // Normalize phone to prevent unique constraint pan_number collisions 
+    // caused by mixing "9999999999" and "+919999999999" account_ids
+    if (phone.length === 10 && !phone.startsWith('+')) {
+      phone = `+91${phone}`;
+    } else if (phone.length > 10 && !phone.startsWith('+')) {
+      phone = `+${phone}`;
+    }
 
     // Upsert into investors to prevent foreign key constraint violations
     const investorsPayload = {
