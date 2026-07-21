@@ -238,6 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
       data.forEach(inv => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
+          <td><input type="checkbox" class="row-select" data-id="${inv.transaction_id}"></td>
           <td style="font-size: 11px;">${inv.transaction_id.substring(0,8)}</td>
           <td>${(inv.investors && inv.investors.folio_number) ? inv.investors.folio_number : (inv.account_id || '-')}</td>
           <td style="text-transform: capitalize;">${inv.sector || '-'}</td>
@@ -419,3 +420,130 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
+  // VERIFIED INVESTORS
+  const invBody = document.getElementById('table-investors-body');
+  async function fetchInvestors() {
+    if (!invBody) return;
+    try {
+      invBody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #64748b;">Loading data...</td></tr>';
+      const res = await fetch('/api/admin/getInvestors');
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      
+      invBody.innerHTML = '';
+      if (data.length === 0) {
+        invBody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #64748b;">No investors found.</td></tr>';
+        return;
+      }
+      
+      data.forEach(inv => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><input type="checkbox" class="row-select" data-id="${inv.account_id}"></td>
+          <td style="font-size: 12px; font-weight: 600;">${inv.folio_number || '-'}</td>
+          <td>${inv.name || '-'}</td>
+          <td>${inv.account_id || '-'}</td>
+          <td style="font-size: 11px;">PAN: ${inv.pan_number || '-'}<br>AAD: ${inv.aadhar_number || '-'}</td>
+          <td>-</td>
+          <td>-</td>
+        `;
+        invBody.appendChild(tr);
+      });
+    } catch (err) {
+      invBody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #ef4444;">Error connecting to server.</td></tr>';
+    }
+  }
+  fetchInvestors();
+
+  // REGISTERED USERS
+  const usersBody = document.getElementById('table-users-body');
+  async function fetchUsers() {
+    if (!usersBody) return;
+    try {
+      usersBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #64748b;">Loading data...</td></tr>';
+      const res = await fetch('/api/admin/getUsers');
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      
+      usersBody.innerHTML = '';
+      if (data.length === 0) {
+        usersBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #64748b;">No users found.</td></tr>';
+        return;
+      }
+      
+      data.forEach(u => {
+        const tr = document.createElement('tr');
+        const dateStr = new Date(u.created_at).toLocaleDateString('en-IN', { year:'numeric', month:'short', day:'numeric'});
+        const loginStr = new Date(u.last_login).toLocaleDateString('en-IN', { year:'numeric', month:'short', day:'numeric'});
+        tr.innerHTML = `
+          <td><input type="checkbox" class="row-select" data-id="${u.id}"></td>
+          <td>${dateStr}</td>
+          <td>${u.phone_number || '-'}</td>
+          <td>${loginStr}</td>
+        `;
+        usersBody.appendChild(tr);
+      });
+    } catch (err) {
+      usersBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #ef4444;">Error connecting to server.</td></tr>';
+    }
+  }
+  fetchUsers();
+
+  // BULK DELETION LOGIC
+  document.querySelectorAll('.select-all').forEach(selectAll => {
+    selectAll.addEventListener('change', (e) => {
+      const table = e.target.closest('table');
+      const checkboxes = table.querySelectorAll('.row-select');
+      checkboxes.forEach(cb => cb.checked = e.target.checked);
+    });
+  });
+
+  document.querySelectorAll('.btn-delete-selected').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      const table = e.target.getAttribute('data-table');
+      const idCol = e.target.getAttribute('data-idcol');
+      const wrapper = e.target.closest('.tab-content');
+      const checkboxes = wrapper.querySelectorAll('.row-select:checked');
+      
+      const ids = Array.from(checkboxes).map(cb => cb.getAttribute('data-id'));
+      if (ids.length === 0) {
+        alert("Please select at least one record to delete.");
+        return;
+      }
+      
+      if (!confirm(`Are you sure you want to delete ${ids.length} record(s)? This cannot be undone.`)) {
+        return;
+      }
+
+      const origText = e.target.textContent;
+      e.target.textContent = "Deleting...";
+      e.target.disabled = true;
+
+      try {
+        const res = await fetch('/api/admin/deleteRecords', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ table, ids, id_column: idCol })
+        });
+        const result = await res.json();
+
+        if (result.success) {
+          alert("Records deleted successfully.");
+          if (table === 'transactions') fetchInvestments();
+          if (table === 'profit_calculator_leads') fetchLeads();
+          if (table === 'investors') fetchInvestors();
+          if (table === 'registered_users') fetchUsers();
+          const selectAll = wrapper.querySelector('.select-all');
+          if (selectAll) selectAll.checked = false;
+        } else {
+          alert("Error: " + result.error);
+        }
+      } catch (err) {
+        alert("Connection error.");
+      } finally {
+        e.target.textContent = origText;
+        e.target.disabled = false;
+      }
+    });
+  });
