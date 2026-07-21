@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${new Date(lead.created_at).toLocaleDateString() || '-'}</td>
-        <td>${lead.account_id || '-'}</td>
+        <td>${(lead.investors && lead.investors.folio_number) ? lead.investors.folio_number : (lead.account_id || '-')}</td>
         <td>${lead.sector || '-'}</td>
         <td>${lead.term_years || '-'}</td>
         <td>₹ ${Math.round(lead.amount || 0).toLocaleString('en-IN')}</td>
@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td style="font-size: 11px;">${inv.transaction_id.substring(0,8)}</td>
-          <td>${inv.account_id || '-'}</td>
+          <td>${(inv.investors && inv.investors.folio_number) ? inv.investors.folio_number : (inv.account_id || '-')}</td>
           <td style="text-transform: capitalize;">${inv.sector || '-'}</td>
           <td>${inv.term_years || '-'} Yrs</td>
           <td>₹ ${Math.round(inv.invested_amount || 0).toLocaleString('en-IN')}</td>

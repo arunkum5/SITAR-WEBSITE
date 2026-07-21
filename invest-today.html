@@ -406,6 +406,31 @@ document.addEventListener('DOMContentLoaded', async () => {
   let currentMaturityDate = '';
   let currentMaturityAmount = 0;
 
+  let leadTimeout = null;
+  function trackLead() {
+    const amount = parseFloat(amountEl.value) || 0;
+    if (amount < 25000) return;
+    const phone = localStorage.getItem('user_phone');
+    if (!phone) return;
+
+    if (leadTimeout) clearTimeout(leadTimeout);
+    leadTimeout = setTimeout(() => {
+       fetch('/api/logLead', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({
+           phone: phone,
+           sector: sectorEl.value,
+           termYears: parseInt(termEl.value),
+           amount: amount,
+           appliedRate: currentCalculatedRate,
+           projectedProfit: currentMaturityAmount - amount,
+           maturityValue: currentMaturityAmount
+         })
+       }).catch(console.error);
+    }, 2000);
+  }
+
   function calculateReturns() {
     const sector = sectorEl.value;
     const term = parseInt(termEl.value);
@@ -425,6 +450,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     today.setFullYear(today.getFullYear() + term);
     currentMaturityDate = today.toISOString().split('T')[0];
     maturityDateEl.innerHTML = `Matures on: <strong style="color:white;">${today.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}</strong> &nbsp;|&nbsp; Interest Rate: <strong style="color:white;">${rate}% p.a.</strong>`;
+    trackLead();
   }
 
   sectorEl.addEventListener('change', calculateReturns);

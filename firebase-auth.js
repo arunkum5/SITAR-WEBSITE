@@ -106,6 +106,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     let savedPhone = user.phoneNumber || phoneInput.value.replace(/\D/g, '');
                     if (savedPhone.length > 10) savedPhone = savedPhone.slice(-10); // store as 10 digits
                     localStorage.setItem('user_phone', savedPhone);
+
+                    // Log user in backend
+                    try {
+                        await fetch("/api/loginUser", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ phone: user.phoneNumber || phoneInput.value })
+                        });
+                    } catch(e) {
+                        console.error("Backend login tracking failed:", e);
+                    }
+
                     
                     // Get the token for later bridging to Supabase
                     const firebaseToken = await user.getIdToken();
