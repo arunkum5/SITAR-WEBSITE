@@ -517,7 +517,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       data.forEach(u => {
         const tr = document.createElement('tr');
         const dateStr = new Date(u.created_at).toLocaleDateString('en-IN', { year:'numeric', month:'short', day:'numeric'});
-        const loginStr = new Date(u.last_login).toLocaleDateString('en-IN', { year:'numeric', month:'short', day:'numeric'});
+        const loginStr = new Date(u.last_login).toLocaleString('en-IN', { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
         tr.innerHTML = `
           <td><input type="checkbox" class="row-select" data-id="${u.id}"></td>
           <td>${dateStr}</td>
