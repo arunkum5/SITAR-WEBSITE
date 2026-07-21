@@ -137,12 +137,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   function renderLeads(data) {
     leadsTbody.innerHTML = '';
     if (!data || data.length === 0) {
-      leadsTbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #64748b;">No leads found.</td></tr>';
+      leadsTbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #64748b;">No leads found.</td></tr>';
       return;
     }
     data.forEach(lead => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
+        <td><input type="checkbox" class="row-select" data-id="${lead.id}"></td>
         <td>${new Date(lead.created_at).toLocaleDateString() || '-'}</td>
         <td>${(lead.investors && lead.investors.folio_number) ? lead.investors.folio_number : (lead.account_id || '-')}</td>
         <td>${lead.sector || '-'}</td>
@@ -592,20 +593,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const btnRefresh = document.getElementById('btn-refresh-dashboard');
   if (btnRefresh) {
     btnRefresh.addEventListener('click', () => {
-      const origText = btnRefresh.textContent;
-      btnRefresh.textContent = '↻ Refreshing...';
+      btnRefresh.textContent = '↻ Reloading...';
       btnRefresh.disabled = true;
-      
-      Promise.all([
-        fetchInvestments(),
-        fetchLeads(),
-        fetchInvestors(),
-        fetchUsers(),
-        fetchRates()
-      ]).finally(() => {
-        btnRefresh.textContent = origText;
-        btnRefresh.disabled = false;
-      });
+      window.location.reload(true);
     });
   }
 
