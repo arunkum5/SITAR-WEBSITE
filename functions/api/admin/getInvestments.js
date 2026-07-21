@@ -1,6 +1,6 @@
 export async function onRequestGet({ env }) {
   const supabaseUrl = env.SUPABASE_URL;
-  const supabaseKey = env.SUPABASE_ANON_KEY;
+  const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_ANON_KEY;
   
   if (!supabaseUrl || !supabaseKey) {
       return new Response(JSON.stringify({ error: "Missing Supabase keys" }), { status: 500 });

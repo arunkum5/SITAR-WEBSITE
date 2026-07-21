@@ -6,7 +6,7 @@ export async function onRequestPost({ request, env }) {
     const phone = data.phone || "+919999999999";
 
     const supabaseUrl = env.SUPABASE_URL;
-    const supabaseKey = env.SUPABASE_ANON_KEY;
+    const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
         return new Response(JSON.stringify({ error: "Server misconfiguration: Missing Supabase keys in Cloudflare Env" }), { status: 500 });
