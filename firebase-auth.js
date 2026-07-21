@@ -39,8 +39,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnSendOtp) {
         btnSendOtp.addEventListener('click', async () => {
-            // HARDCODED TO TEST NUMBER to prevent accidental real SMS
-            const phoneNumber = "+919999999999";
+            let rawPhone = phoneInput.value.replace(/\D/g, ''); // strip non-digits
+            // Check if user entered country code, extract last 10 digits
+            if (rawPhone.length > 10) {
+                rawPhone = rawPhone.slice(-10);
+            }
+
+            if (rawPhone.length !== 10) {
+                phoneError.textContent = "Please enter a valid 10-digit phone number.";
+                phoneError.style.display = 'block';
+                return;
+            }
+            
+            const phoneNumber = "+91" + rawPhone;
             
             phoneError.style.display = 'none';
             setupRecaptcha();
@@ -90,6 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // Store locally to mark as logged in
                     localStorage.setItem('sitar_logged_in', 'true');
+                    
+                    // Save the validated phone number to localStorage for our app to use
+                    let savedPhone = user.phoneNumber || phoneInput.value.replace(/\D/g, '');
+                    if (savedPhone.length > 10) savedPhone = savedPhone.slice(-10); // store as 10 digits
+                    localStorage.setItem('user_phone', savedPhone);
                     
                     // Get the token for later bridging to Supabase
                     const firebaseToken = await user.getIdToken();
