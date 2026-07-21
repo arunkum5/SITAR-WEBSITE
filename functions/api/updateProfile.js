@@ -17,8 +17,8 @@ export async function onRequestPost({ request, env }) {
       const investorsPayload = {
         account_id: phone, // Using phone as the primary account_id
         name: data.name || '-',
-        pan_number: data.pan || '-',
-        aadhar_number: data.aadhar || '-',
+        pan_number: data.pan || `TEMP-${phone}`,
+        aadhar_number: data.aadhar || `TEMP-${phone}`,
         nominee_name: data.nomineeName || null,
         nominee_contact: data.nomineePhone || null,
       };
@@ -36,7 +36,7 @@ export async function onRequestPost({ request, env }) {
 
       if (!invResponse.ok) {
         const errText = await invResponse.text();
-        return new Response(JSON.stringify({ error: "Failed to update investors", details: errText }), {
+        return new Response(JSON.stringify({ error: `Failed to update investors: ${errText}` }), {
           status: 500, headers: { 'Content-Type': 'application/json' }
         });
       }
