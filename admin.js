@@ -138,6 +138,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     leadsTbody.innerHTML = '';
     if (!data || data.length === 0) {
       leadsTbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #64748b;">No leads found.</td></tr>';
+      updateDashboardMetrics();
       return;
     }
     data.forEach(lead => {
@@ -154,6 +155,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       `;
       leadsTbody.appendChild(tr);
     });
+    updateDashboardMetrics();
   }
 
   // Fetch real data from Supabase via Cloudflare API
@@ -249,6 +251,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       invTbody.innerHTML = '';
       if (data.length === 0) {
         invTbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #64748b;">No investments found.</td></tr>';
+        updateDashboardMetrics();
         return;
       }
 
