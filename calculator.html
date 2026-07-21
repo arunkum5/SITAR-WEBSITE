@@ -1237,7 +1237,10 @@
             </div>
           </div>
 
-          <a href="invest-today.html" class="btn" style="width: 100%; text-align: center; justify-content: center; background: #1A2980; color: #fff; border: none; font-weight: 600; box-shadow: 0 4px 15px rgba(26,41,128,0.3);">Invest Today</a>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <a href="invest-today.html" class="btn" style="width: 100%; text-align: center; justify-content: center; background: #1A2980; color: #fff; border: none; font-weight: 600; box-shadow: 0 4px 15px rgba(26,41,128,0.3);">Invest Today</a>
+            <button id="btn-save-lead" class="btn" style="width: 100%; text-align: center; justify-content: center; background: var(--gold); color: #fff; border: none; font-weight: 600; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); cursor: pointer;">Save & Request Callback</button>
+          </div>
           
           <div style="font-size: 13px; color: #666; text-align: center; margin-top: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;">
             <span>Your money is always accessible.</span>
@@ -1369,6 +1372,60 @@
 
 
     calculate();
+
+    const saveLeadBtn = document.getElementById("btn-save-lead");
+    saveLeadBtn.addEventListener("click", async () => {
+      let phone = localStorage.getItem('user_phone');
+      if (!phone) {
+        phone = prompt("Please enter your 10-digit phone number to receive a callback with this calculation:");
+        if (!phone) return;
+        phone = phone.replace(/\D/g, '');
+        if (phone.length < 10) {
+          alert("Please enter a valid 10-digit phone number.");
+          return;
+        }
+      }
+
+      saveLeadBtn.textContent = "Saving...";
+      saveLeadBtn.disabled = true;
+
+      const sector = sectorInput.value;
+      const termYears = parseInt(termInput.value);
+      const amount = parseFloat(amountInput.value.replace(/,/g, '')) || 0;
+      
+      const rateKey = `${sector}_${termYears}`;
+      const appliedRate = typeof investmentRates !== 'undefined' ? (investmentRates[rateKey] || 0) : 0;
+      const decimalRate = appliedRate / 100;
+      const maturityValue = amount * Math.pow(1 + decimalRate, termYears);
+      const projectedProfit = maturityValue - amount;
+
+      try {
+        const res = await fetch('/api/logLead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            phone, 
+            sector, 
+            termYears, 
+            amount, 
+            appliedRate, 
+            projectedProfit: Math.round(projectedProfit), 
+            maturityValue: Math.round(maturityValue)
+          })
+        });
+        const result = await res.json();
+        if (result.success) {
+          alert("Calculation saved! We will contact you shortly with this plan.");
+        } else {
+          alert("Error saving calculation: " + (result.error || "Unknown Error"));
+        }
+      } catch (err) {
+        alert("Connection error: " + err.message);
+      } finally {
+        saveLeadBtn.textContent = "Save & Request Callback";
+        saveLeadBtn.disabled = false;
+      }
+    });
   });
 </script>
 
