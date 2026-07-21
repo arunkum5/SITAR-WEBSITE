@@ -430,9 +430,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       const inputs = document.querySelectorAll('.rate-input');
       const updates = [];
       inputs.forEach(input => {
+        const id = parseInt(input.getAttribute('data-id'));
+        const orig = currentRates.find(r => r.id === id);
         updates.push({
-          id: parseInt(input.getAttribute('data-id')),
-          interest_rate_pa: parseFloat(input.value)
+          id: id,
+          interest_rate_pa: parseFloat(input.value),
+          sector: orig.sector,
+          term_years: orig.term_years,
+          is_active: orig.is_active
         });
       });
 

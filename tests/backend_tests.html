@@ -166,11 +166,20 @@
                 }
                 
                 // Keep track of originals to restore later
-                const originalPayload = currentRates.map(r => ({ id: r.id, interest_rate_pa: r.interest_rate_pa }));
+                const originalPayload = currentRates.map(r => ({ 
+                    id: r.id, 
+                    sector: r.sector,
+                    term_years: r.term_years,
+                    is_active: r.is_active,
+                    interest_rate_pa: r.interest_rate_pa 
+                }));
                 
                 // Add 0.5% to all rates to test
                 const updatedPayload = currentRates.map(r => ({
                     id: r.id,
+                    sector: r.sector,
+                    term_years: r.term_years,
+                    is_active: r.is_active,
                     interest_rate_pa: parseFloat(r.interest_rate_pa) + 0.5
                 }));
                 
