@@ -23,6 +23,8 @@ export async function onRequestPost({ request, env }) {
       },
       body: JSON.stringify({
         phone: phone,
+        full_name: data.name,
+        email: data.email,
         pan_number: data.pan,
         aadhar_masked: data.aadhar,
         nominee_name: data.nomineeName,

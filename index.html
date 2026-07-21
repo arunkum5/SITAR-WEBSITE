@@ -6591,9 +6591,9 @@
     <div class="modal-card" style="max-width: 480px; padding: 0; overflow: hidden; max-height: 90vh; overflow-y: auto;">
       <div style="background: linear-gradient(135deg, #1A2980 0%, #26D0CE 100%); padding: 32px 24px; text-align: center; position: relative;">
         <button class="modal-close" id="close-profile-modal" style="color: white; background: rgba(255,255,255,0.2);">&times;</button>
-        <div style="width: 80px; height: 80px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 32px; font-weight: 800; color: #1A2980; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">AK</div>
-        <h3 style="color: white; font-family: 'Work Sans', sans-serif; font-size: 24px; margin: 0;">Aravind Kumar</h3>
-        <p style="color: rgba(255,255,255,0.8); font-size: 14px; margin: 4px 0 0 0;">Investor Dashboard</p>
+        <div id="view-initials" style="width: 80px; height: 80px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 32px; font-weight: 800; color: #1A2980; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">U</div>
+        <h3 id="view-full-name" style="color: white; font-family: 'Work Sans', sans-serif; font-size: 24px; margin: 0;">Investor</h3>
+        <p id="view-email" style="color: rgba(255,255,255,0.8); font-size: 14px; margin: 4px 0 0 0;">Add your email below</p>
       </div>
       
       <div style="padding: 24px;">
@@ -6653,7 +6653,17 @@
           <h4 style="font-family: 'Work Sans', sans-serif; font-size: 16px; color: #001122; margin: 0 0 12px 0;">Update Details</h4>
           
           <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
-            <div style="font-size: 12px; font-weight: 700; color: #0f172a; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Identity</div>
+            <div style="font-size: 12px; font-weight: 700; color: #0f172a; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Personal Details</div>
+            
+            <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">Full Name</label>
+            <input type="text" id="edit-full-name" placeholder="Your Name" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
+            
+            <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">Email ID</label>
+            <input type="email" id="edit-email" placeholder="your@email.com" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
+
+            <div style="border-top: 1px dashed #e2e8f0; margin: 12px 0; padding-top: 12px;"></div>
+            
+            <div style="font-size: 12px; font-weight: 700; color: #0f172a; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Identity (Optional)</div>
             
             <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">PAN Number</label>
             <input type="text" id="edit-pan" value="ABCDE1234F" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
@@ -6902,6 +6912,8 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             phone: localStorage.getItem('user_phone') || '', // Optional identifier
+            name: document.getElementById('edit-full-name').value,
+            email: document.getElementById('edit-email').value,
             pan: document.getElementById('edit-pan').value,
             aadhar: document.getElementById('edit-aadhar').value,
             nomineeName: document.getElementById('edit-nominee-name').value,
@@ -6922,13 +6934,36 @@
             
             // Mask Aadhar for UI
             const rawAadhar = document.getElementById('edit-aadhar').value.replace(/\s/g, '');
-            const maskedAadhar = rawAadhar.length >= 4 ? `XXXX-XXXX-${rawAadhar.slice(-4)}` : 'Invalid';
+            const maskedAadhar = rawAadhar.length >= 4 ? `XXXX-XXXX-${rawAadhar.slice(-4)}` : (rawAadhar ? 'Invalid' : '-');
             
             // Update View Mode DOM
-            document.getElementById('view-pan').textContent = document.getElementById('edit-pan').value;
-            document.getElementById('view-aadhar').innerHTML = `${maskedAadhar} <span style="font-size: 10px; color: #10b981; background: #d1fae5; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">Verified</span>`;
-            document.getElementById('view-nominee-name').innerHTML = `${document.getElementById('edit-nominee-name').value} <span style="color: #64748b; font-weight: 400; font-size: 13px;">(${document.getElementById('edit-nominee-rel').value})</span>`;
-            document.getElementById('view-nominee-phone').textContent = document.getElementById('edit-nominee-phone').value;
+            const newName = document.getElementById('edit-full-name').value || 'Investor';
+            document.getElementById('view-full-name').textContent = newName;
+            
+            // Extract initials
+            const nameParts = newName.trim().split(' ');
+            let initials = 'U';
+            if (nameParts.length > 0 && nameParts[0].length > 0) {
+              initials = nameParts[0][0];
+              if (nameParts.length > 1 && nameParts[nameParts.length - 1].length > 0) {
+                initials += nameParts[nameParts.length - 1][0];
+              }
+            }
+            document.getElementById('view-initials').textContent = initials.toUpperCase();
+            
+            document.getElementById('view-email').textContent = document.getElementById('edit-email').value || 'Email not added';
+            document.getElementById('view-pan').textContent = document.getElementById('edit-pan').value || '-';
+            
+            if (rawAadhar) {
+              document.getElementById('view-aadhar').innerHTML = `${maskedAadhar} <span style="font-size: 10px; color: #10b981; background: #d1fae5; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">Verified</span>`;
+            } else {
+              document.getElementById('view-aadhar').innerHTML = '-';
+            }
+            
+            const nomineeName = document.getElementById('edit-nominee-name').value || '-';
+            const nomineeRel = document.getElementById('edit-nominee-rel').value || '-';
+            document.getElementById('view-nominee-name').innerHTML = `${nomineeName} <span style="color: #64748b; font-weight: 400; font-size: 13px;">(${nomineeRel})</span>`;
+            document.getElementById('view-nominee-phone').textContent = document.getElementById('edit-nominee-phone').value || '-';
             
             const rawAcc = document.getElementById('edit-bank-acc').value;
             const maskedAcc = rawAcc.length >= 4 ? `XXXX XXXX ${rawAcc.slice(-4)}` : rawAcc;
