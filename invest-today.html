@@ -414,7 +414,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const today = new Date();
     today.setFullYear(today.getFullYear() + term);
     currentMaturityDate = today.toISOString().split('T')[0];
-    maturityDateEl.textContent = 'Matures on: ' + today.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+    maturityDateEl.innerHTML = `Matures on: <strong style="color:#0f172a;">${today.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}</strong> &nbsp;|&nbsp; Interest Rate: <strong style="color:#3E8E85;">${rate}% p.a.</strong>`;
   }
 
   sectorEl.addEventListener('change', calculateReturns);
