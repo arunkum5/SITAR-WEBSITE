@@ -159,6 +159,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Fetch real data from Supabase via Cloudflare API
+  let globalInvestments = [];
   let globalLeads = [];
   async function fetchLeads() {
     try {
@@ -256,6 +257,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       data.forEach(inv => {
+        let activeCount = 0;
+        let totalVal = 0;
+        if (inv.transactions && inv.transactions.length > 0) {
+            const activeTxs = inv.transactions.filter(t => t.status === 'Active' || t.status === 'Approved');
+            activeCount = activeTxs.length;
+            totalVal = activeTxs.reduce((sum, t) => sum + parseFloat(t.invested_amount || 0), 0);
+        }
+        
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td><input type="checkbox" class="row-select" data-id="${inv.transaction_id}"></td>
@@ -488,6 +497,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
       
       data.forEach(inv => {
+        let activeCount = 0;
+        let totalVal = 0;
+        if (inv.transactions && inv.transactions.length > 0) {
+            const activeTxs = inv.transactions.filter(t => t.status === 'Active' || t.status === 'Approved');
+            activeCount = activeTxs.length;
+            totalVal = activeTxs.reduce((sum, t) => sum + parseFloat(t.invested_amount || 0), 0);
+        }
+        
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td><input type="checkbox" class="row-select" data-id="${inv.account_id}"></td>
@@ -495,8 +512,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           <td>${inv.name || '-'}</td>
           <td>${inv.account_id || '-'}</td>
           <td style="font-size: 11px;">PAN: ${inv.pan_number || '-'}<br>AAD: ${inv.aadhar_number || '-'}</td>
-          <td>-</td>
-          <td>-</td>
+          <td>${activeCount}</td>
+          <td>₹ ${Math.round(totalVal).toLocaleString('en-IN')}</td>
         `;
         invBody.appendChild(tr);
       });
