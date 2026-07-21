@@ -1,4 +1,16 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+
+  // Auth Check
+  try {
+    const res = await fetch('/api/admin/verify');
+    if (res.status === 401) {
+      window.location.href = '/admin-login.html';
+      return;
+    }
+  } catch (e) {
+    console.error("Auth check failed", e);
+  }
+
   
   // 1. Tab Switching Logic
   const tabBtns = document.querySelectorAll('.tab-btn');
@@ -147,6 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       leadsTbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #64748b;">Loading data...</td></tr>';
       const response = await fetch('/api/admin/getLeads');
+      if (response.status === 401) { window.location.href = '/admin-login.html'; return; }
       const data = await response.json();
       
       if (data.error) {
@@ -222,6 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!invTbody) return;
     try {
       const response = await fetch('/api/admin/getInvestments');
+      if (response.status === 401) { window.location.href = '/admin-login.html'; return; }
       const data = await response.json();
       
       if (data.error) {
