@@ -329,14 +329,59 @@
     <button class="btn" id="btn-back-config" style="background: transparent; border: 1px solid var(--cream-dim); color: var(--cream-dim); margin-top: 12px;">← Back to details</button>
   </div>
 
-  <!-- STEP 3: SUCCESS -->
-  <div id="step-success" style="text-align: center; padding: 40px 0;">
-    <div style="width: 80px; height: 80px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  <!-- STEP 3: SUCCESS (CERTIFICATE) -->
+  <div id="step-success" style="display: none; padding: 40px 0; text-align: center;">
+    
+    <div style="position: relative; max-width: 600px; margin: 0 auto; background: #FAF9F6; border: 8px solid #EBE5D9; border-radius: 12px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); overflow: hidden; text-align: center; color: #2C3E50;">
+      
+      <!-- Watermark Logo -->
+      <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.05; pointer-events: none;">
+        <img src="logo.svg" alt="SITAR" style="width: 400px; filter: grayscale(100%);">
+      </div>
+
+      <!-- Header -->
+      <div style="position: relative; z-index: 2; margin-bottom: 24px;">
+        <img src="logo.svg" alt="SITAR" style="height: 40px; margin-bottom: 12px; filter: invert(0.8) sepia(1) saturate(5) hue-rotate(330deg);">
+        <h2 style="font-family: 'Fraunces', serif; font-size: 24px; color: #B8860B; margin: 0; text-transform: uppercase; letter-spacing: 2px;">Sitar Wealth</h2>
+        <h3 style="font-family: 'Work Sans', sans-serif; font-size: 16px; color: #555; margin: 8px 0 0 0; font-weight: 500;">INVESTMENT BOND</h3>
+      </div>
+
+      <!-- Divider -->
+      <div style="height: 2px; background: linear-gradient(90deg, transparent, #B8860B, transparent); margin: 24px 0; position: relative; z-index: 2;"></div>
+
+      <!-- Dynamic Data -->
+      <div style="position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; margin-bottom: 32px; background: rgba(255,255,255,0.7); padding: 20px; border-radius: 8px; border: 1px solid #EBE5D9;">
+        <div>
+          <div style="font-size: 11px; color: #7f8c8d; text-transform: uppercase; font-weight: 600;">Plan</div>
+          <div id="cert-plan" style="font-size: 18px; font-weight: 700; color: #2c3e50; text-transform: capitalize;">-</div>
+        </div>
+        <div>
+          <div style="font-size: 11px; color: #7f8c8d; text-transform: uppercase; font-weight: 600;">Term</div>
+          <div id="cert-term" style="font-size: 18px; font-weight: 700; color: #2c3e50;">-</div>
+        </div>
+        <div>
+          <div style="font-size: 11px; color: #7f8c8d; text-transform: uppercase; font-weight: 600;">Invested Amount</div>
+          <div id="cert-amount" style="font-size: 20px; font-weight: 800; color: #2980b9;">-</div>
+        </div>
+        <div>
+          <div style="font-size: 11px; color: #7f8c8d; text-transform: uppercase; font-weight: 600;">Guaranteed Maturity</div>
+          <div id="cert-maturity" style="font-size: 20px; font-weight: 800; color: #27ae60;">-</div>
+        </div>
+      </div>
+
+      <!-- Status Banner -->
+      <div style="position: relative; z-index: 2; background: #FFF3CD; border: 1px solid #FFEEBA; color: #856404; padding: 12px; border-radius: 6px; font-weight: 700; font-size: 14px; letter-spacing: 1px; margin-bottom: 24px;">
+        STATUS: PENDING FOR VERIFICATION
+      </div>
+
+      <div style="position: relative; z-index: 2; font-size: 12px; color: #95a5a6; font-style: italic;">
+        This document serves as an acknowledgment of your investment initiation. The final certificate will be generated upon successful verification of funds.
+      </div>
     </div>
-    <h1 style="color: var(--success);">Investment Initiated!</h1>
-    <p class="subtitle" style="margin-bottom: 40px;">Your transaction is being verified. It will appear in your portfolio shortly.</p>
-    <a href="index.html" class="btn">Go to Dashboard</a>
+    
+    <div style="margin-top: 32px;">
+      <a href="index.html" class="btn">Go to Dashboard</a>
+    </div>
   </div>
 
 </div>
@@ -516,6 +561,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
       
       // Success
+      document.getElementById('cert-plan').textContent = payload.sector + ' Plan';
+      document.getElementById('cert-term').textContent = payload.term + ' Years';
+      document.getElementById('cert-amount').textContent = '₹ ' + payload.amount.toLocaleString('en-IN');
+      document.getElementById('cert-maturity').textContent = '₹ ' + payload.maturity_amount.toLocaleString('en-IN');
+
       stepPayment.style.display = 'none';
       stepSuccess.style.display = 'block';
 
