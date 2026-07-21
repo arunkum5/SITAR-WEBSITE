@@ -6895,6 +6895,12 @@
         closeModal(profileModal);
         // Custom logic here later
       });
+      if (btnDashboard) {
+        btnDashboard.addEventListener('click', () => {
+          document.getElementById('tab-portfolio').click();
+        });
+      }
+
       // Profile Edit Logic
       window.toggleProfileEdit = function(showEdit) {
         document.getElementById('profile-view-mode').style.display = showEdit ? 'none' : 'block';
