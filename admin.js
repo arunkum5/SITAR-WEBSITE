@@ -286,6 +286,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
       }
 
+      globalInvestments = data;
       invTbody.innerHTML = '';
       if (data.length === 0) {
         invTbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #64748b;">No investments found.</td></tr>';
