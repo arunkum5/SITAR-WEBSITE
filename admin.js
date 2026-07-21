@@ -561,3 +561,51 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
   });
+
+  // Refresh Dashboard
+  const btnRefresh = document.getElementById('btn-refresh-dashboard');
+  if (btnRefresh) {
+    btnRefresh.addEventListener('click', () => {
+      const origText = btnRefresh.textContent;
+      btnRefresh.textContent = '↻ Refreshing...';
+      btnRefresh.disabled = true;
+      
+      Promise.all([
+        fetchInvestments(),
+        fetchLeads(),
+        fetchInvestors(),
+        fetchUsers(),
+        fetchRates()
+      ]).finally(() => {
+        btnRefresh.textContent = origText;
+        btnRefresh.disabled = false;
+      });
+    });
+  }
+
+  // Populate Default Rates
+  const btnPopulateRates = document.getElementById('btn-populate-rates');
+  if (btnPopulateRates) {
+    btnPopulateRates.addEventListener('click', async () => {
+      if (!confirm("This will overwrite any missing default rates. Are you sure?")) return;
+      
+      const origText = btnPopulateRates.textContent;
+      btnPopulateRates.textContent = 'Populating...';
+      btnPopulateRates.disabled = true;
+      
+      try {
+        const res = await fetch('/api/admin/populateRates', { method: 'POST' });
+        if (res.ok) {
+          alert('Default rates populated successfully!');
+          fetchRates();
+        } else {
+          alert('Failed to populate rates.');
+        }
+      } catch(e) {
+        alert('Connection Error');
+      } finally {
+        btnPopulateRates.textContent = origText;
+        btnPopulateRates.disabled = false;
+      }
+    });
+  }
