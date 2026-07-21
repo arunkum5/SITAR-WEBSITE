@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         if (result.success) {
           alert("Database cleaned successfully.");
-          fetchLeads(); // Refresh table
+          window.location.reload(); // Refresh the entire page to reset all data
         } else {
           alert("Failed to clean database: " + result.error);
         }
