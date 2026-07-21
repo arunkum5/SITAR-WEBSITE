@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SITAR — Invest in Real Assets. Earn Every Month.</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -6605,18 +6607,27 @@
         <div id="portfolio-view" style="display: none;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <h4 style="font-family: 'Work Sans', sans-serif; font-size: 16px; color: #001122; margin: 0;">My Dashboard</h4>
-            <button onclick="downloadPassbook()" style="background: #1A2980; border: none; color: white; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer;">↓ Download Passbook</button>
+            <div style="display: flex; gap: 8px;">
+              <button onclick="downloadPassbookPDF()" style="background: #1A2980; border: none; color: white; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                PDF
+              </button>
+              <button onclick="downloadPassbookCSV()" style="background: #10b981; border: none; color: white; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="8" y1="13" x2="16" y2="13"></line><line x1="8" y1="17" x2="16" y2="17"></line><line x1="12" y1="13" x2="12" y2="17"></line></svg>
+                Excel
+              </button>
+            </div>
           </div>
 
           <div id="portfolio-dashboard" style="display: none; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
             <div style="display: flex; flex-direction: column; gap: 12px;">
               <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px;">
                 <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">Total Invested</div>
-                <div id="user-total-invested" style="font-size: 20px; color: #0f172a; font-weight: 700;">₹ 0</div>
+                <div id="user-total-invested" style="font-size: 16px; color: #0f172a; font-weight: 700;">₹ 0</div>
               </div>
               <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px;">
                 <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">Total Maturity Value</div>
-                <div id="user-total-maturity" style="font-size: 20px; color: #10b981; font-weight: 700;">₹ 0</div>
+                <div id="user-total-maturity" style="font-size: 16px; color: #10b981; font-weight: 700;">₹ 0</div>
               </div>
             </div>
             <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; min-height: 180px;">
@@ -7164,8 +7175,13 @@
                 maintainAspectRatio: false,
                 plugins: {
                   legend: { 
-                    position: 'right',
+                    position: 'bottom',
                     labels: { font: { size: 12 } }
+                  },
+                  title: {
+                    display: true,
+                    text: 'Sector Allocation',
+                    font: { size: 14, weight: 'bold' }
                   }
                 }
               }
@@ -7179,13 +7195,21 @@
         }
       });
 
-      window.downloadPassbook = function() {
+      window.downloadPassbookCSV = function() {
         if (!portfolioData || portfolioData.length === 0) {
           alert('No active investments to download.');
           return;
         }
 
-        let csvContent = "Transaction ID,Sector,Term (Years),Invested Amount,Rate (%),Maturity Value,Maturity Date,Status\n";
+        const userName = portfolioData[0].investors?.name || 'Investor';
+        const userPhone = localStorage.getItem('user_phone') || '';
+        
+        let csvContent = `SITAR Wealth Statement\n`;
+        csvContent += `Name: ${userName}\n`;
+        csvContent += `Phone: ${userPhone}\n`;
+        csvContent += `Date Generated: ${new Date().toLocaleDateString('en-IN')}\n\n`;
+
+        csvContent += "Transaction ID,Sector,Term (Years),Invested Amount,Rate (%),Maturity Value,Maturity Date,Status\n";
         portfolioData.forEach(inv => {
           csvContent += `"${inv.transaction_id}","${inv.sector}","${inv.term_years}","${inv.invested_amount}","${inv.applied_interest_rate}","${inv.maturity_amount}","${inv.maturity_date}","${inv.status}"\n`;
         });
@@ -7193,11 +7217,63 @@
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = `SITAR_Passbook_${localStorage.getItem('user_phone')}.csv`;
+        link.download = `SITAR_Wealth_Statement_${userPhone}.csv`;
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+      };
+
+      window.downloadPassbookPDF = function() {
+        if (!portfolioData || portfolioData.length === 0) {
+          alert('No active investments to download.');
+          return;
+        }
+        
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        const userName = portfolioData[0].investors?.name || 'Investor';
+        const userPhone = localStorage.getItem('user_phone') || '';
+        const today = new Date().toLocaleDateString('en-IN');
+
+        // Header
+        doc.setFontSize(22);
+        doc.setTextColor(26, 41, 128); // #1A2980
+        doc.text("SITAR WEALTH", 14, 20);
+        
+        doc.setFontSize(14);
+        doc.setTextColor(15, 23, 42); // #0f172a
+        doc.text("Portfolio Statement", 14, 30);
+        
+        doc.setFontSize(10);
+        doc.setTextColor(100, 116, 139); // #64748b
+        doc.text(`Name: ${userName}`, 14, 40);
+        doc.text(`Phone: ${userPhone}`, 14, 45);
+        doc.text(`Date: ${today}`, 14, 50);
+
+        // Table
+        const tableBody = portfolioData.map(inv => [
+          inv.transaction_id.substring(0,8),
+          inv.sector,
+          inv.term_years + ' Yrs',
+          'Rs. ' + Math.round(inv.invested_amount || 0).toLocaleString('en-IN'),
+          inv.applied_interest_rate + '%',
+          'Rs. ' + Math.round(inv.maturity_amount || 0).toLocaleString('en-IN'),
+          new Date(inv.maturity_date).toLocaleDateString('en-IN'),
+          inv.status
+        ]);
+
+        doc.autoTable({
+          startY: 60,
+          head: [['Tx ID', 'Sector', 'Term', 'Invested', 'Rate', 'Maturity Val', 'Maturity Date', 'Status']],
+          body: tableBody,
+          theme: 'striped',
+          headStyles: { fillColor: [26, 41, 128] }, // #1A2980
+          styles: { fontSize: 9 }
+        });
+
+        doc.save(`SITAR_Wealth_Statement_${userPhone}.pdf`);
       };
     });
   </script>
