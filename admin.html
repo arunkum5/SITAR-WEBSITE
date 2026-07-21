@@ -66,7 +66,7 @@
     /* Top Metrics (Reduced Size) */
     .metrics-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 16px;
     }
     .metric-card {
@@ -78,9 +78,10 @@
       flex-direction: column;
       gap: 6px;
     }
-    .metric-card .title { font-size: 11px; color: var(--cream-dim); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-    .metric-card .value { font-family: 'IBM Plex Mono', monospace; font-size: 24px; color: var(--cream); font-weight: 500; }
-    .metric-card .change { font-size: 11px; color: #16a34a; font-weight: 500; }
+    .metric-card .title { font-size: 10px; color: var(--cream-dim); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+    .metric-card .value { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--cream); font-weight: 500; }
+    .metric-row { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-top: 4px; }
+    .metric-card .change { font-size: 10px; color: #64748b; font-weight: 500; }
     .metric-card .change.warning { color: #d97706; }
 
     /* Charts Section */
@@ -191,19 +192,39 @@
     <!-- Top Metrics -->
     <div class="metrics-grid">
       <div class="metric-card">
-        <span class="title">Total Active Investors</span>
-        <span class="value" id="metric-investors">0</span>
-        <span class="change">+12% this month</span>
+        <span class="title">Registered Users</span>
+        <div class="metric-row">
+          <span class="value" id="metric-users">0</span>
+          <span class="change">Total signups</span>
+        </div>
       </div>
       <div class="metric-card">
-        <span class="title">Total Capital Invested</span>
-        <span class="value" id="metric-capital">₹ 0</span>
-        <span class="change">+8% this month</span>
+        <span class="title">Verified Investors</span>
+        <div class="metric-row">
+          <span class="value" id="metric-verified">0</span>
+          <span class="change" id="metric-verified-context">0 inv / 0 non</span>
+        </div>
       </div>
       <div class="metric-card">
-        <span class="title">Hot Calculator Leads</span>
-        <span class="value" id="metric-leads">0</span>
-        <span class="change warning">Require follow-up</span>
+        <span class="title">Active Plans</span>
+        <div class="metric-row">
+          <span class="value" id="metric-investors">0</span>
+          <span class="change" style="color: #16a34a">+12% mo</span>
+        </div>
+      </div>
+      <div class="metric-card">
+        <span class="title">Total Capital</span>
+        <div class="metric-row">
+          <span class="value" id="metric-capital">₹ 0</span>
+          <span class="change" style="color: #16a34a">+8% mo</span>
+        </div>
+      </div>
+      <div class="metric-card">
+        <span class="title">Calc Leads</span>
+        <div class="metric-row">
+          <span class="value" id="metric-leads">0</span>
+          <span class="change warning">Pending calls</span>
+        </div>
       </div>
     </div>
 

@@ -1,21 +1,33 @@
 document.addEventListener('DOMContentLoaded', async () => {
 
   // Dashboard Metrics Update
+  let globalUsersCount = 0;
+  let globalVerifiedCount = 0;
+  let globalInvestedVerifiedCount = 0;
+  
   function updateDashboardMetrics() {
-    // Total Capital Invested (Sum of Active/Approved investments)
+    // Registered Users
+    const mUsers = document.getElementById('metric-users');
+    if (mUsers) mUsers.textContent = globalUsersCount;
+
+    let activeInvestments = [];
     if (typeof globalInvestments !== 'undefined') {
-      const activeInvestments = globalInvestments.filter(i => i.status === 'Active' || i.status === 'Approved');
+      activeInvestments = globalInvestments.filter(i => i.status === 'Active' || i.status === 'Approved');
       const totalCapital = activeInvestments.reduce((sum, i) => sum + parseFloat(i.invested_amount || 0), 0);
       const metricCapital = document.getElementById('metric-capital');
       if (metricCapital) metricCapital.textContent = '₹ ' + Math.round(totalCapital).toLocaleString('en-IN');
       
-      // Total Active Investors (Unique accounts with active investments)
       const uniqueInvestors = new Set(activeInvestments.map(i => i.account_id));
       const metricInvestors = document.getElementById('metric-investors');
-      if (metricInvestors) metricInvestors.textContent = uniqueInvestors.size;
+      if (metricInvestors) metricInvestors.textContent = activeInvestments.length;
+      
+      // Update Verified Investor context
+      const metricVerified = document.getElementById('metric-verified');
+      if (metricVerified) metricVerified.textContent = globalVerifiedCount;
+      const mContext = document.getElementById('metric-verified-context');
+      if (mContext) mContext.textContent = `${globalInvestedVerifiedCount} inv / ${globalVerifiedCount - globalInvestedVerifiedCount} non`;
     }
     
-    // Hot Calculator Leads
     if (typeof globalLeads !== 'undefined') {
       const metricLeads = document.getElementById('metric-leads');
       if (metricLeads) metricLeads.textContent = globalLeads.length;
@@ -279,6 +291,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
       }
 
+      globalVerifiedCount = data.length;
+      globalInvestedVerifiedCount = 0;
       data.forEach(inv => {
         let activeCount = 0;
         let totalVal = 0;
@@ -516,9 +530,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       invBody.innerHTML = '';
       if (data.length === 0) {
         invBody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #64748b;">No investors found.</td></tr>';
+        globalVerifiedCount = 0;
+        updateDashboardMetrics();
         return;
       }
       
+      globalVerifiedCount = data.length;
+      globalInvestedVerifiedCount = 0;
       data.forEach(inv => {
         let activeCount = 0;
         let totalVal = 0;
@@ -538,8 +556,10 @@ document.addEventListener('DOMContentLoaded', async () => {
           <td>${activeCount}</td>
           <td>₹ ${Math.round(totalVal).toLocaleString('en-IN')}</td>
         `;
+        if (activeCount > 0) globalInvestedVerifiedCount++;
         invBody.appendChild(tr);
       });
+      updateDashboardMetrics();
     } catch (err) {
       invBody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #ef4444;">Error connecting to server.</td></tr>';
     }
@@ -559,6 +579,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       usersBody.innerHTML = '';
       if (data.length === 0) {
         usersBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #64748b;">No users found.</td></tr>';
+        globalUsersCount = 0;
+        updateDashboardMetrics();
         return;
       }
       
@@ -574,6 +596,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         `;
         usersBody.appendChild(tr);
       });
+      globalUsersCount = data.length;
+      updateDashboardMetrics();
     } catch (err) {
       usersBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #ef4444;">Error connecting to server.</td></tr>';
     }
