@@ -245,9 +245,55 @@ document.addEventListener('DOMContentLoaded', () => {
           <td>₹ ${Math.round(inv.invested_amount || 0).toLocaleString('en-IN')}</td>
           <td>${inv.applied_interest_rate || '0'}%</td>
           <td>${inv.maturity_date || '-'}</td>
-          <td><span class="status-badge status-active">${inv.status || 'Active'}</span></td>
+          <td>
+            <select class="status-select" data-id="${inv.transaction_id}" style="padding: 4px; border-radius: 4px; font-size: 12px; font-weight: 600; border: 1px solid #cbd5e1; outline: none; background: ${inv.status === 'Pending' ? '#fef3c7' : inv.status === 'Rejected' ? '#fef2f2' : '#d1fae5'}; color: ${inv.status === 'Pending' ? '#d97706' : inv.status === 'Rejected' ? '#ef4444' : '#10b981'};">
+              <option value="Pending" ${inv.status === 'Pending' ? 'selected' : ''}>Pending</option>
+              <option value="Approved" ${inv.status === 'Approved' || inv.status === 'Active' ? 'selected' : ''}>Approved</option>
+              <option value="Rejected" ${inv.status === 'Rejected' ? 'selected' : ''}>Rejected</option>
+            </select>
+          </td>
         `;
         invTbody.appendChild(tr);
+      });
+
+      document.querySelectorAll('.status-select').forEach(select => {
+        select.addEventListener('change', async (e) => {
+          const transactionId = e.target.getAttribute('data-id');
+          const newStatus = e.target.value;
+          
+          e.target.style.opacity = '0.5';
+          
+          try {
+            const res = await fetch('/api/admin/updateTransactionStatus', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ transaction_id: transactionId, status: newStatus })
+            });
+            const result = await res.json();
+            
+            if (!result.success) {
+              alert("Failed to update status: " + result.error);
+              fetchInvestments(); // revert
+            } else {
+              // Update colors
+              if (newStatus === 'Pending') {
+                e.target.style.background = '#fef3c7';
+                e.target.style.color = '#d97706';
+              } else if (newStatus === 'Rejected') {
+                e.target.style.background = '#fef2f2';
+                e.target.style.color = '#ef4444';
+              } else {
+                e.target.style.background = '#d1fae5';
+                e.target.style.color = '#10b981';
+              }
+            }
+          } catch (err) {
+            alert("Connection error.");
+            fetchInvestments();
+          } finally {
+            e.target.style.opacity = '1';
+          }
+        });
       });
     } catch (err) {
       invTbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #ef4444;">Connection error.</td></tr>';
@@ -288,6 +334,46 @@ document.addEventListener('DOMContentLoaded', () => {
           <td><span class="status-badge status-active">Active</span></td>
         `;
         ratesTbody.appendChild(tr);
+      });
+
+      document.querySelectorAll('.status-select').forEach(select => {
+        select.addEventListener('change', async (e) => {
+          const transactionId = e.target.getAttribute('data-id');
+          const newStatus = e.target.value;
+          
+          e.target.style.opacity = '0.5';
+          
+          try {
+            const res = await fetch('/api/admin/updateTransactionStatus', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ transaction_id: transactionId, status: newStatus })
+            });
+            const result = await res.json();
+            
+            if (!result.success) {
+              alert("Failed to update status: " + result.error);
+              fetchInvestments(); // revert
+            } else {
+              // Update colors
+              if (newStatus === 'Pending') {
+                e.target.style.background = '#fef3c7';
+                e.target.style.color = '#d97706';
+              } else if (newStatus === 'Rejected') {
+                e.target.style.background = '#fef2f2';
+                e.target.style.color = '#ef4444';
+              } else {
+                e.target.style.background = '#d1fae5';
+                e.target.style.color = '#10b981';
+              }
+            }
+          } catch (err) {
+            alert("Connection error.");
+            fetchInvestments();
+          } finally {
+            e.target.style.opacity = '1';
+          }
+        });
       });
     } catch (err) {
       ratesTbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #ef4444;">Connection error.</td></tr>';
