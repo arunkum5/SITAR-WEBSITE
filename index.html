@@ -6923,21 +6923,6 @@
         btn.disabled = true;
 
         // Call Backend API
-        fetch('/api/updateProfile', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            phone: localStorage.getItem('user_phone') || '', // Optional identifier
-            name: document.getElementById('edit-full-name').value,
-            email: document.getElementById('edit-email').value,
-            pan: document.getElementById('edit-pan').value,
-            aadhar: document.getElementById('edit-aadhar').value,
-            nomineeName: document.getElementById('edit-nominee-name').value,
-            nomineeRel: document.getElementById('edit-nominee-rel').value,
-            nomineePhone: document.getElementById('edit-nominee-phone').value,
-            bankAcc: document.getElementById('edit-bank-acc').value,
-            bankIfsc: document.getElementById('edit-bank-ifsc').value,
-            bankType: document.getElementById('edit-bank-type').value
         try {
           const res = await fetch('/api/updateProfile', {
             method: 'POST',
