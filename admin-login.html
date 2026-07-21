@@ -137,6 +137,12 @@
         if (res.ok) {
           window.location.href = '/admin.html';
         } else {
+          try {
+            const data = await res.json();
+            errorEl.textContent = data.error || 'Invalid passcode. Access Denied.';
+          } catch(e) {
+            errorEl.textContent = 'Invalid passcode. Access Denied.';
+          }
           errorEl.style.display = 'block';
           btn.disabled = false;
           btn.textContent = 'AUTHENTICATE';
