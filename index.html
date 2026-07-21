@@ -6593,7 +6593,6 @@
         <button class="modal-close" id="close-profile-modal" style="color: white; background: rgba(255,255,255,0.2);">&times;</button>
         <div id="view-initials" style="width: 80px; height: 80px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 32px; font-weight: 800; color: #1A2980; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">U</div>
         <h3 id="view-full-name" style="color: white; font-family: 'Work Sans', sans-serif; font-size: 24px; margin: 0;">Investor</h3>
-        <p id="view-email" style="color: rgba(255,255,255,0.8); font-size: 14px; margin: 4px 0 0 0;">Add your email below</p>
       </div>
       
       <div style="padding: 24px;">
@@ -6622,9 +6621,15 @@
           
           <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div style="grid-column: span 2; padding-bottom: 12px; border-bottom: 1px dashed #cbd5e1; margin-bottom: -4px;">
+                <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">Full Name</div>
+                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-details-name">-</div>
+                <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-top: 12px; margin-bottom: 4px;">Email Address</div>
+                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-details-email">-</div>
+              </div>
               <div>
                 <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">PAN Number</div>
-                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-pan">ABCDE1234F</div>
+                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-pan">-</div>
               </div>
               <div>
                 <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">Aadhar Number</div>
@@ -6964,8 +6969,9 @@
               }
             }
             document.getElementById('view-initials').textContent = initials.toUpperCase();
-            
-            document.getElementById('view-email').textContent = document.getElementById('edit-email').value || 'Email not added';
+            document.getElementById('view-full-name').textContent = fullName;
+            document.getElementById('view-details-name').textContent = fullName;
+            document.getElementById('view-details-email').textContent = document.getElementById('edit-email').value || '-';
             document.getElementById('view-pan').textContent = document.getElementById('edit-pan').value || '-';
             
             if (rawAadhar) {

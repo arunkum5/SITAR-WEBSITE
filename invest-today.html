@@ -133,7 +133,7 @@
   }
   .calc-box .date {
     font-size: 14px;
-    color: var(--cream-dim);
+    color: white;
   }
 
   /* Button */
@@ -285,10 +285,10 @@
       <div class="label">Estimated Maturity Amount</div>
       <div class="value" id="maturity-amount">₹ 0</div>
       <div class="date" id="maturity-date">Matures on: -</div>
+      <div style="font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 12px;">*Cancel at any time without penalty</div>
     </div>
 
     <button class="btn" id="btn-proceed">Proceed to Payment →</button>
-    <p style="text-align: center; font-size: 13px; color: #64748b; margin-top: 12px; margin-bottom: 0;">*Cancel at any time</p>
   </div>
 
   <!-- STEP 2: PAYMENT -->
@@ -424,7 +424,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const today = new Date();
     today.setFullYear(today.getFullYear() + term);
     currentMaturityDate = today.toISOString().split('T')[0];
-    maturityDateEl.innerHTML = `Matures on: <strong style="color:#0f172a;">${today.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}</strong> &nbsp;|&nbsp; Interest Rate: <strong style="color:#3E8E85;">${rate}% p.a.</strong>`;
+    maturityDateEl.innerHTML = `Matures on: <strong style="color:white;">${today.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}</strong> &nbsp;|&nbsp; Interest Rate: <strong style="color:white;">${rate}% p.a.</strong>`;
   }
 
   sectorEl.addEventListener('change', calculateReturns);

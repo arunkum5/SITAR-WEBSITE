@@ -29,8 +29,10 @@ export async function onRequestPost({ request, env }) {
       body: JSON.stringify(investorsPayload)
     });
 
-    // If ignoring duplicates fails entirely (unlikely), we just proceed
-    // The foreign key constraint relies on the account_id being present.
+    if (!invResponse.ok) {
+        const errBody = await invResponse.text();
+        return new Response(JSON.stringify({ error: `Investors Upsert Failed: ${errBody}` }), { status: invResponse.status });
+    }
 
     const payload = {
       account_id: phone, // user identifier
