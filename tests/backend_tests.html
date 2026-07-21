@@ -200,6 +200,34 @@
                 await apiPost("/api/admin/updateRates", originalPayload);
                 log("Rates successfully reverted.", "success");
 
+
+                // TEST CASE 9: Save Calculator Lead & Verify
+                log("\n--- TEST CASE 9: Save Calculator Lead ---");
+                const leadPhone = "+917777000001";
+                const leadPayload = {
+                    phone: leadPhone,
+                    sector: "Villas",
+                    termYears: 5,
+                    amount: 5000000,
+                    appliedRate: 15,
+                    projectedProfit: 750000,
+                    maturityValue: 5750000
+                };
+                
+                log(`Simulating a user saving a calculator lead for ${leadPhone}...`);
+                await apiPost("/api/logLead", leadPayload);
+                log("API /api/logLead returned success.", "success");
+                
+                log("Fetching all Calculator Leads from /api/admin/getLeads...");
+                const leads = await apiGet("/api/admin/getLeads");
+                const foundLead = leads.find(l => l.account_id === leadPhone && l.sector === "Villas" && parseFloat(l.amount) === 5000000);
+                
+                if (foundLead) {
+                    log(`Test 9 PASSED: Lead successfully saved and found in profit_calculator_leads DB!`, "success");
+                } else {
+                    throw new Error("Test 9 FAILED: Lead was NOT found in the database.");
+                }
+
                 log('\n🎉 ALL BACKEND TESTS COMPLETED SUCCESSFULLY!', 'success');
 
             } catch(e) {
