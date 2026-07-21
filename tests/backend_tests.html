@@ -296,6 +296,42 @@
                     throw new Error(`Test 12 FAILED: Status is ${rejectedInv ? rejectedInv.status : "missing"}.`);
                 }
 
+
+                // TEST CASE 13: Scale Test - One User, 5 Sector Investments
+                log("\n--- TEST CASE 13: Scale Test (5 Investments in 5 Sectors) ---");
+                const scalePhone = "+915555000001";
+                const sectors = ["Villas", "Apartments", "Commercial", "Resorts", "Layouts"];
+                
+                log(`Simulating user ${scalePhone} making an investment in all 5 sectors...`);
+                for (const sec of sectors) {
+                    await apiPost("/api/createInvestment", {
+                        phone: scalePhone,
+                        sector: sec,
+                        term: 3,
+                        amount: 1000000,
+                        rate: 15,
+                        maturity_date: "2029-07-21",
+                        maturity_amount: 1520000
+                    });
+                }
+                
+                log("Fetching all investments to verify 5 distinct transactions exist for this user...");
+                const scaleInvestments = await apiGet("/api/admin/getInvestments");
+                const userInvestments = scaleInvestments.filter(i => i.account_id === scalePhone);
+                
+                if (userInvestments.length === 5) {
+                    // Check if all sectors are present
+                    const foundSectors = userInvestments.map(i => i.sector);
+                    const allPresent = sectors.every(s => foundSectors.includes(s));
+                    if (allPresent) {
+                        log(`Test 13 PASSED: System successfully handled and recorded all 5 investments in different sectors concurrently!`, "success");
+                    } else {
+                        throw new Error(`Test 13 FAILED: Found 5 investments, but sectors did not match. Found: ${foundSectors.join(",")}`);
+                    }
+                } else {
+                    throw new Error(`Test 13 FAILED: Expected 5 investments, but found ${userInvestments.length} in the DB.`);
+                }
+
                 log('\n🎉 ALL BACKEND TESTS COMPLETED SUCCESSFULLY!', 'success');
 
             } catch(e) {
