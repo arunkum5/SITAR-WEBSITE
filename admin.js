@@ -129,13 +129,12 @@ document.addEventListener('DOMContentLoaded', () => {
     data.forEach(lead => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-      tr.innerHTML = `
         <td>${new Date(lead.created_at).toLocaleDateString() || '-'}</td>
         <td>${lead.account_id || '-'}</td>
         <td>${lead.sector || '-'}</td>
         <td>${lead.term_years || '-'}</td>
-        <td>₹ ${lead.amount || '0'}</td>
-        <td style="color: #4ade80;">+ ₹ ${lead.projected_profit || '0'}</td>
+        <td>₹ ${Math.round(lead.amount || 0).toLocaleString('en-IN')}</td>
+        <td style="color: #4ade80;">+ ₹ ${Math.round(lead.projected_profit || 0).toLocaleString('en-IN')}</td>
         <td><span class="status-badge status-pending">Pending</span></td>
       `;
       leadsTbody.appendChild(tr);
@@ -243,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <td>${inv.account_id || '-'}</td>
           <td style="text-transform: capitalize;">${inv.sector || '-'}</td>
           <td>${inv.term_years || '-'} Yrs</td>
-          <td>₹ ${inv.invested_amount || '0'}</td>
+          <td>₹ ${Math.round(inv.invested_amount || 0).toLocaleString('en-IN')}</td>
           <td>${inv.applied_interest_rate || '0'}%</td>
           <td>${inv.maturity_date || '-'}</td>
           <td><span class="status-badge status-active">${inv.status || 'Active'}</span></td>
