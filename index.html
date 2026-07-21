@@ -4364,13 +4364,13 @@
             Invest <span class="chevron">▼</span>
           </button>
           <div class="nav-dropdown-menu">
-            <a href="invest.html" style="--sub-c: var(--villas);">Villa Project</a>
-            <a href="invest.html" style="--sub-c: var(--apartments);">Apartment Project</a>
-            <a href="invest.html" style="--sub-c: var(--resorts);">Hotels &amp; Resorts</a>
-            <a href="invest.html" style="--sub-c: var(--commercial);">Commercial Complex</a>
-            <a href="invest.html" style="--sub-c: var(--layouts);">Layout Development</a>
+            <a href="invest-today.html" style="--sub-c: var(--villas);">Villa Project</a>
+            <a href="invest-today.html" style="--sub-c: var(--apartments);">Apartment Project</a>
+            <a href="invest-today.html" style="--sub-c: var(--resorts);">Hotels &amp; Resorts</a>
+            <a href="invest-today.html" style="--sub-c: var(--commercial);">Commercial Complex</a>
+            <a href="invest-today.html" style="--sub-c: var(--layouts);">Layout Development</a>
             <div class="dropdown-divider"></div>
-            <a href="invest.html" class="highlight-link" style="--sub-c: var(--gold);">Investment Plans</a>
+            <a href="invest-today.html" class="highlight-link" style="--sub-c: var(--gold);">Investment Plans</a>
           </div>
         </div>
 
@@ -4395,7 +4395,7 @@
           style="--nav-c: var(--resorts); --nav-bg: rgba(62, 142, 133, 0.12); --nav-border: rgba(62, 142, 133, 0.3);">Contact</a>
       </div>
       <div class="mobile-nav-links">
-        <a href="invest.html">Invest</a>
+        <a href="invest-today.html">Invest</a>
         <a href="services.html">Loans</a>
         <a href="#how">How it works</a>
         <a href="#contact">Contact</a>
@@ -4541,7 +4541,7 @@
             <!-- Item 1: Invest -->
             <div class="bnc-item bnc-item-invest">
               🌴 Discover Our Premium Resort Projects — Secure Guaranteed Monthly Returns Today!
-              <a href="invest.html" class="bnc-btn">Invest Now</a>
+              <a href="invest-today.html" class="bnc-btn">Invest Now</a>
             </div>
             <!-- Item 2: Loan -->
             <div class="bnc-item bnc-item-loan">
@@ -4665,7 +4665,7 @@
               <!-- Service Highlights -->
               <div class="service-highlights"
                 style="display:flex; gap:12px; margin-top:28px; flex-wrap:nowrap; align-items:center;">
-                <a href="invest.html"
+                <a href="invest-today.html"
                   style="display:flex; align-items:center; gap:7px; text-decoration:none;">
                   <div
                     style="width:30px;height:30px;border-radius:50%;background:rgba(184,134,11,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
@@ -4704,7 +4704,7 @@
               <!-- Primary CTAs -->
               <div class="hero-cta" style="margin-top:36px; display:flex; gap:14px; flex-wrap:wrap;">
                 <div style="display:flex; align-items:center; gap:8px;">
-                  <a href="invest.html"
+                  <a href="invest-today.html"
                     style="display:inline-flex; align-items:center; gap:7px; padding:11px 24px; background:linear-gradient(135deg,#c9a227,#8a6d0c); color:#fff; border-radius:8px; font-weight:700; font-size:13.5px; text-decoration:none; border:1px solid rgba(255,255,255,0.15); animation:glowGold 2.5s ease-in-out infinite 1.25s;"
                     onmouseover="this.style.animation='none';this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(201,162,39,0.7)'"
                     onmouseout="this.style.animation='glowGold 2.5s ease-in-out infinite 1.25s';this.style.transform='';this.style.boxShadow=''">
@@ -6518,7 +6518,7 @@
           if (value === 'invest_now') {
             showTyping(() => {
               addMessage('Awesome! Redirecting you to our investment page...', 'bot');
-              setTimeout(() => { window.location.href = "invest.html"; }, 1500);
+              setTimeout(() => { window.location.href = "invest-today.html"; }, 1500);
             });
           } else if (value === 'calculator') {
             state = 'menu_returned';
@@ -6890,11 +6890,7 @@
         updateNavState();
       });
 
-      // Dashboard
-      btnDashboard.addEventListener('click', () => {
-        closeModal(profileModal);
-        // Custom logic here later
-      });
+      // Dashboard logic moved to the main listener below
       if (btnDashboard) {
         btnDashboard.addEventListener('click', () => {
           document.getElementById('tab-portfolio').click();

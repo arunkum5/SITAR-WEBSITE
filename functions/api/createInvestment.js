@@ -8,9 +8,32 @@ export async function onRequestPost({ request, env }) {
 
   try {
     const data = await request.json();
+    const phone = data.phone || "Unknown";
+
+    // Upsert into investors to prevent foreign key constraint violations
+    const investorsPayload = {
+      account_id: phone,
+      name: "Investor",
+      pan_number: `TEMP-${phone}`,
+      aadhar_number: `TEMP-${phone}`,
+    };
+
+    const invResponse = await fetch(`${supabaseUrl}/rest/v1/investors?on_conflict=account_id`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': supabaseKey,
+        'Authorization': `Bearer ${supabaseKey}`,
+        'Prefer': 'resolution=ignore-duplicates'
+      },
+      body: JSON.stringify(investorsPayload)
+    });
+
+    // If ignoring duplicates fails entirely (unlikely), we just proceed
+    // The foreign key constraint relies on the account_id being present.
 
     const payload = {
-      account_id: data.phone, // user identifier
+      account_id: phone, // user identifier
       sector: data.sector,
       term_years: data.term,
       invested_amount: data.amount,
