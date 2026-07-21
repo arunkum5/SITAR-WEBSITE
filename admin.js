@@ -45,6 +45,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         sectorChart.data.datasets[0].data = [
           sectorTotals['villas'], sectorTotals['apartments'], sectorTotals['layouts'], sectorTotals['commercial'], sectorTotals['resorts']
         ];
+        sectorChart.data.labels = [
+          `Villas: ₹ ${Math.round(sectorTotals['villas']).toLocaleString('en-IN')}`,
+          `Apartments: ₹ ${Math.round(sectorTotals['apartments']).toLocaleString('en-IN')}`,
+          `Layouts: ₹ ${Math.round(sectorTotals['layouts']).toLocaleString('en-IN')}`,
+          `Commercial: ₹ ${Math.round(sectorTotals['commercial']).toLocaleString('en-IN')}`,
+          `Resorts: ₹ ${Math.round(sectorTotals['resorts']).toLocaleString('en-IN')}`
+        ];
         sectorChart.update();
       }
     }
@@ -162,7 +169,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { position: 'right' }
+        legend: { 
+          position: 'right',
+          labels: {
+            font: { size: 16 }
+          }
+        }
       }
     }
   });
