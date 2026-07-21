@@ -17,6 +17,7 @@ export async function onRequestPost({ request, env }) {
       const investorsPayload = {
         account_id: phone, // Using phone as the primary account_id
         name: data.name || '-',
+        email: data.email || null,
         pan_number: data.pan || `T${phone.replace(/\\D/g, "").slice(-9)}`.padEnd(10, "0"),
         aadhar_number: data.aadhar || `T0${phone.replace(/\\D/g, "").slice(-10)}`.padEnd(12, "0"),
         nominee_name: data.nomineeName || null,
@@ -54,6 +55,7 @@ export async function onRequestPost({ request, env }) {
       const bankPayload = {
         account_id: phone,
         account_name: data.name || '-',
+        email: data.email || null,
         account_type: 'Savings', // Frontend doesn't explicitly send type, defaulting to Savings
         account_number: data.bankAcc || '-',
         ifsc_code: data.bankIfsc || '-'
