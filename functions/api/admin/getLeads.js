@@ -7,7 +7,7 @@ export async function onRequestGet({ env }) {
   }
 
   try {
-    const response = await fetch(`${supabaseUrl}/rest/v1/profit_calculator_leads?select=*,investors(folio_number)`, {
+    const response = await fetch(`${supabaseUrl}/rest/v1/profit_calculator_leads?select=*`, {
       headers: {
         'apikey': supabaseKey,
         'Authorization': `Bearer ${supabaseKey}`,

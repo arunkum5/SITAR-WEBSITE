@@ -12,7 +12,7 @@ export async function onRequestPost({ request, env }) {
       return new Response(JSON.stringify({ error: "Invalid payload: requires table, ids array, and id_column" }), { status: 400 });
     }
 
-    const idsString = data.ids.join(',');
+    const idsString = data.ids.map(id => encodeURIComponent(id)).join(',');
 
     const response = await fetch(`${supabaseUrl}/rest/v1/${data.table}?${data.id_column}=in.(${idsString})`, {
       method: 'DELETE',
