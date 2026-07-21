@@ -114,7 +114,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         label: 'Capital Invested (₹)',
         data: [2000000, 3500000, 1500000, 5000000, 4200000, 8000000],
         backgroundColor: '#2563eb', // blue 600
-        borderRadius: 4
+        borderRadius: 4,
+        barPercentage: 0.5,
+        maxBarThickness: 40
       }]
     },
     options: {
