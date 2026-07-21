@@ -232,13 +232,17 @@
 
       <!-- Tab: Investments -->
       <div id="investments" class="tab-content active">
-        <div class="filter-bar" style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 16px;">
+        <div class="filter-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <button class="btn-delete-selected" data-table="transactions" data-idcol="transaction_id" style="background: #ef4444; color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;">Delete Selected</button>
+          </div>
           <button onclick="downloadTableCSV('table-investments-body', 'investments.csv')" style="background: #0f172a; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; cursor: pointer;">↓ Download CSV</button>
         </div>
         <div class="table-wrapper">
           <table>
             <thead>
               <tr>
+                <th style="width: 40px;"><input type="checkbox" class="select-all"></th>
                 <th>Tx ID</th>
                 <th>Investor (Phone)</th>
                 <th>Sector</th>
@@ -299,14 +303,16 @@
 
       <!-- Tab: Investors -->
       <div id="investors" class="tab-content">
-        <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+          <button class="btn-delete-selected" data-table="investors" data-idcol="account_id" style="background: #ef4444; color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;">Delete Selected</button>
           <button onclick="downloadTableCSV('table-investors-body', 'verified_investors.csv')" style="background: #0f172a; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='#0f172a'">↓ Download CSV</button>
         </div>
         <div class="table-wrapper">
           <table>
             <thead>
               <tr>
-                <th>Account ID</th>
+                <th style="width: 40px;"><input type="checkbox" class="select-all"></th>
+                <th>Folio Number</th>
                 <th>Name</th>
                 <th>Phone Number</th>
                 <th>PAN / Aadhar</th>
@@ -323,13 +329,15 @@
 
       <!-- Tab: Users -->
       <div id="users" class="tab-content">
-        <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+          <button class="btn-delete-selected" data-table="registered_users" data-idcol="id" style="background: #ef4444; color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;">Delete Selected</button>
           <button onclick="downloadTableCSV('table-users-body', 'registered_users.csv')" style="background: #0f172a; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='#0f172a'">↓ Download CSV</button>
         </div>
         <div class="table-wrapper">
           <table>
             <thead>
               <tr>
+                <th style="width: 40px;"><input type="checkbox" class="select-all"></th>
                 <th>Registration Date</th>
                 <th>Phone Number</th>
                 <th>Last Login</th>
