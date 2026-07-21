@@ -236,7 +236,10 @@
     
     <div class="auth-modal" id="auth-step-1">
       <h3 style="margin: 0 0 16px 0; font-family: 'Work Sans', sans-serif;">Enter Phone Number</h3>
-      <input type="text" id="auth-phone-input" class="auth-input" placeholder="+91 99999 99999">
+      <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+        <div style="background: #f8fafc; border: 1px solid #cbd5e1; padding: 12px; border-radius: 8px; color: #334155; font-weight: 500; font-size: 16px; display: flex; align-items: center;">+91</div>
+        <input type="tel" id="auth-phone-input" placeholder="Phone Number" style="flex: 1; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 16px; outline: none; color: black; background: white;" oninput="this.value = this.value.replace(/[^0-9]/g, ''); document.getElementById('auth-phone-error').style.display='none';" maxlength="10">
+      </div>
       <div id="auth-phone-error" style="color: #ef4444; font-size: 12px; margin-top: -12px; margin-bottom: 12px; display: none;">Invalid phone number</div>
       <button class="auth-btn" id="auth-send-otp">Send OTP</button>
     </div>
