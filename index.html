@@ -6588,7 +6588,7 @@
 
   <!-- Profile/Dashboard Modal -->
   <div class="modal-overlay" id="profile-modal" style="display: none;">
-    <div class="modal-card" style="max-width: 480px; padding: 0; overflow: hidden;">
+    <div class="modal-card" style="max-width: 480px; padding: 0; overflow: hidden; max-height: 90vh; overflow-y: auto;">
       <div style="background: linear-gradient(135deg, #1A2980 0%, #26D0CE 100%); padding: 32px 24px; text-align: center; position: relative;">
         <button class="modal-close" id="close-profile-modal" style="color: white; background: rgba(255,255,255,0.2);">&times;</button>
         <div style="width: 80px; height: 80px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 32px; font-weight: 800; color: #1A2980; box-shadow: 0 8px 24px rgba(0,0,0,0.1);">AK</div>
@@ -6597,29 +6597,111 @@
       </div>
       
       <div style="padding: 24px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-          <h4 style="font-family: 'Work Sans', sans-serif; font-size: 16px; color: #001122; margin: 0;">Payout Bank Account</h4>
-          <button style="background: none; border: none; color: #3E8E85; font-size: 12px; font-weight: 700; cursor: pointer;">Edit details</button>
+        <div id="profile-view-mode">
+          <!-- Identity Details -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h4 style="font-family: 'Work Sans', sans-serif; font-size: 16px; color: #001122; margin: 0;">Identity & Nominee</h4>
+            <button onclick="toggleProfileEdit(true)" style="background: none; border: none; color: #3E8E85; font-size: 12px; font-weight: 700; cursor: pointer;">Edit details</button>
+          </div>
+          
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div>
+                <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">PAN Number</div>
+                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-pan">ABCDE1234F</div>
+              </div>
+              <div>
+                <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">Aadhar Number</div>
+                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-aadhar">XXXX-XXXX-9012 <span style="font-size: 10px; color: #10b981; background: #d1fae5; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">Verified</span></div>
+              </div>
+              <div style="grid-column: span 2; border-top: 1px dashed #cbd5e1; padding-top: 12px; margin-top: -4px;">
+                <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">Nominee Details</div>
+                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-nominee-name">Priya Kumar <span style="color: #64748b; font-weight: 400; font-size: 13px;">(Wife)</span></div>
+                <div style="font-size: 13px; color: #64748b; margin-top: 2px;" id="view-nominee-phone">+91 98765 43210</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bank Details -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h4 style="font-family: 'Work Sans', sans-serif; font-size: 16px; color: #001122; margin: 0;">Payout Bank Account</h4>
+          </div>
+          
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div>
+                <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">Account Name</div>
+                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-bank-name">Aravind Kumar</div>
+              </div>
+              <div>
+                <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">Account Type</div>
+                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-bank-type">Savings</div>
+              </div>
+              <div>
+                <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">Account No.</div>
+                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-bank-acc">XXXX XXXX 9012</div>
+              </div>
+              <div>
+                <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">IFSC Code</div>
+                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-bank-ifsc">HDFC0001234</div>
+              </div>
+            </div>
+          </div>
         </div>
-        
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 24px;">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-            <div>
-              <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">Account Name</div>
-              <div style="font-size: 14px; color: #0f172a; font-weight: 600;">Aravind Kumar</div>
+
+        <div id="profile-edit-mode" style="display: none;">
+          <h4 style="font-family: 'Work Sans', sans-serif; font-size: 16px; color: #001122; margin: 0 0 12px 0;">Update Details</h4>
+          
+          <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+            <div style="font-size: 12px; font-weight: 700; color: #0f172a; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Identity</div>
+            
+            <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">PAN Number</label>
+            <input type="text" id="edit-pan" value="ABCDE1234F" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
+            
+            <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">Aadhar Number <span style="font-size: 10px; color: #ef4444;">(Will be masked after save)</span></label>
+            <input type="text" id="edit-aadhar" placeholder="12-digit Aadhar" value="1234 5678 9012" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
+            
+            <div style="border-top: 1px dashed #e2e8f0; margin: 12px 0; padding-top: 12px;"></div>
+            
+            <div style="font-size: 12px; font-weight: 700; color: #0f172a; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Nominee</div>
+            <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">Full Name</label>
+            <input type="text" id="edit-nominee-name" value="Priya Kumar" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+              <div>
+                <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">Relation</label>
+                <input type="text" id="edit-nominee-rel" value="Wife" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
+              </div>
+              <div>
+                <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">Phone</label>
+                <input type="text" id="edit-nominee-phone" value="+91 98765 43210" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
+              </div>
             </div>
-            <div>
-              <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">Account Type</div>
-              <div style="font-size: 14px; color: #0f172a; font-weight: 600;">Savings</div>
+
+            <div style="border-top: 1px dashed #e2e8f0; margin: 12px 0; padding-top: 12px;"></div>
+            
+            <div style="font-size: 12px; font-weight: 700; color: #0f172a; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Bank Account</div>
+            <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">Account Number</label>
+            <input type="text" id="edit-bank-acc" value="501002345679012" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div>
+                <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">IFSC Code</label>
+                <input type="text" id="edit-bank-ifsc" value="HDFC0001234" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
+              </div>
+              <div>
+                <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">Account Type</label>
+                <select id="edit-bank-type" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; background: white;">
+                  <option value="Savings">Savings</option>
+                  <option value="Current">Current</option>
+                </select>
+              </div>
             </div>
-            <div>
-              <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">Account No.</div>
-              <div style="font-size: 14px; color: #0f172a; font-weight: 600;">XXXX XXXX 9012</div>
-            </div>
-            <div>
-              <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">IFSC Code</div>
-              <div style="font-size: 14px; color: #0f172a; font-weight: 600;">HDFC0001234</div>
-            </div>
+          </div>
+          
+          <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+            <button onclick="toggleProfileEdit(false)" style="flex: 1; padding: 12px; background: white; color: #64748b; border: 1px solid #cbd5e1; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer;">Cancel</button>
+            <button onclick="saveProfileDetails()" id="save-profile-btn" style="flex: 2; padding: 12px; background: #3E8E85; color: white; border: none; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">Save Changes</button>
           </div>
         </div>
 
@@ -6630,6 +6712,12 @@
   </div>
 
   <style>
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .animate-spin {
+      animation: spin 1s linear infinite;
+    }
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -6781,6 +6869,42 @@
         closeModal(profileModal);
         // Custom logic here later
       });
+      // Profile Edit Logic
+      window.toggleProfileEdit = function(showEdit) {
+        document.getElementById('profile-view-mode').style.display = showEdit ? 'none' : 'block';
+        document.getElementById('profile-edit-mode').style.display = showEdit ? 'block' : 'none';
+        document.getElementById('view-dashboard-btn').style.display = showEdit ? 'none' : 'block';
+        document.getElementById('auth-logout-btn').style.display = showEdit ? 'none' : 'block';
+      };
+
+      window.saveProfileDetails = function() {
+        const btn = document.getElementById('save-profile-btn');
+        btn.innerHTML = `<svg class="animate-spin" style="width: 18px; height: 18px; margin-right: 8px; color: white;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Saving...`;
+        btn.disabled = true;
+
+        // Simulate API call and network delay
+        setTimeout(() => {
+          // Mask Aadhar
+          const rawAadhar = document.getElementById('edit-aadhar').value.replace(/\s/g, '');
+          const maskedAadhar = rawAadhar.length >= 4 ? `XXXX-XXXX-${rawAadhar.slice(-4)}` : 'Invalid';
+          
+          // Update View Mode DOM
+          document.getElementById('view-pan').textContent = document.getElementById('edit-pan').value;
+          document.getElementById('view-aadhar').innerHTML = `${maskedAadhar} <span style="font-size: 10px; color: #10b981; background: #d1fae5; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">Verified</span>`;
+          document.getElementById('view-nominee-name').innerHTML = `${document.getElementById('edit-nominee-name').value} <span style="color: #64748b; font-weight: 400; font-size: 13px;">(${document.getElementById('edit-nominee-rel').value})</span>`;
+          document.getElementById('view-nominee-phone').textContent = document.getElementById('edit-nominee-phone').value;
+          
+          const rawAcc = document.getElementById('edit-bank-acc').value;
+          const maskedAcc = rawAcc.length >= 4 ? `XXXX XXXX ${rawAcc.slice(-4)}` : rawAcc;
+          document.getElementById('view-bank-acc').textContent = maskedAcc;
+          document.getElementById('view-bank-ifsc').textContent = document.getElementById('edit-bank-ifsc').value;
+          document.getElementById('view-bank-type').textContent = document.getElementById('edit-bank-type').value;
+
+          btn.innerHTML = 'Save Changes';
+          btn.disabled = false;
+          toggleProfileEdit(false);
+        }, 1200);
+      };
     });
   </script>
 
