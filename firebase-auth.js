@@ -109,13 +109,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Log user in backend
                     try {
-                        await fetch("/api/loginUser", {
+                        const loginRes = await fetch("/api/loginUser", {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ phone: user.phoneNumber || phoneInput.value })
                         });
+                        const loginData = await loginRes.json();
+                        if (!loginData.success) {
+                            alert("Backend API Error (Login): " + JSON.stringify(loginData));
+                        }
                     } catch(e) {
-                        console.error("Backend login tracking failed:", e);
+                        alert("Backend network error: " + e.message);
                     }
 
                     

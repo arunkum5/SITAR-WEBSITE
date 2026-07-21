@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   async function fetchLeads() {
     try {
       leadsTbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #64748b;">Loading data...</td></tr>';
-      const response = await fetch('/api/admin/getLeads');
+      const response = await fetch(`/api/admin/getLeads?_t=${Date.now()}`);
       if (response.status === 401) { window.location.href = '/admin-login.html'; return; }
       const data = await response.json();
       
@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   async function fetchInvestments() {
     if (!invTbody) return;
     try {
-      const response = await fetch('/api/admin/getInvestments');
+      const response = await fetch(`/api/admin/getInvestments?_t=${Date.now()}`);
       if (response.status === 401) { window.location.href = '/admin-login.html'; return; }
       const data = await response.json();
       
@@ -326,7 +326,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   async function fetchRates() {
     if (!ratesTbody) return;
     try {
-      const response = await fetch('/api/getRates');
+      const response = await fetch(`/api/getRates?_t=${Date.now()}`);
       currentRates = await response.json();
       
       if (currentRates.error) {
@@ -469,7 +469,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!invBody) return;
     try {
       invBody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #64748b;">Loading data...</td></tr>';
-      const res = await fetch('/api/admin/getInvestors');
+      const res = await fetch(`/api/admin/getInvestors?_t=${Date.now()}`);
       const data = await res.json();
       if (data.error) throw new Error(data.error);
       
@@ -504,7 +504,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!usersBody) return;
     try {
       usersBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #64748b;">Loading data...</td></tr>';
-      const res = await fetch('/api/admin/getUsers');
+      const res = await fetch(`/api/admin/getUsers?_t=${Date.now()}`);
       const data = await res.json();
       if (data.error) throw new Error(data.error);
       
