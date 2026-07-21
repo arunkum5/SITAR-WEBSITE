@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Tests - SITAR</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 40px; background: #f8fafc; color: #0f172a; }
+        .test-box { background: white; padding: 24px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 24px; }
+        h1 { font-size: 24px; margin-bottom: 16px; }
+        h3 { margin-bottom: 8px; color: #334155; }
+        button { background: #1A2980; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #132060; }
+        .log { background: #1e293b; color: #4ade80; padding: 16px; border-radius: 8px; font-family: monospace; white-space: pre-wrap; margin-top: 16px; min-height: 100px; max-height: 400px; overflow-y: auto; }
+        .success { color: #4ade80; font-weight: bold; }
+        .error { color: #ef4444; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="test-box">
+        <h1>SITAR Backend Verification</h1>
+        <p>Run these tests to verify the backend database API directly, bypassing Firebase OTP SMS.</p>
+        <button id="btn-run">▶ Run All Tests</button>
+        <div class="log" id="log-output">Awaiting test execution...</div>
+    </div>
+
+    <script>
+        const logOutput = document.getElementById('log-output');
+
+        function log(msg, type = 'info') {
+            const color = type === 'success' ? '#4ade80' : type === 'error' ? '#ef4444' : '#e2e8f0';
+            logOutput.innerHTML += `<span style="color: ${color}">> ${msg}</span>\n`;
+            logOutput.scrollTop = logOutput.scrollHeight;
+        }
+
+        async function apiPost(endpoint, payload) {
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (!res.ok) throw new Error(await res.text());
+            return res.json();
+        }
+
+        async function apiGet(endpoint) {
+            const res = await fetch(endpoint + `?_t=${Date.now()}`);
+            if (!res.ok) throw new Error(await res.text());
+            return res.json();
+        }
+
+        async function runTests() {
+            logOutput.innerHTML = '';
+            document.getElementById('btn-run').disabled = true;
+            
+            try {
+                // TEST CASE 1: Single User Login
+                log('\n--- TEST CASE 1: Single User Login ---');
+                const testPhone1 = '+919999000001';
+                log(`Simulating login for ${testPhone1}...`);
+                await apiPost('/api/loginUser', { phone: testPhone1 });
+                log('API /api/loginUser returned success.', 'success');
+
+                log('Fetching all users from /api/admin/getUsers...');
+                let users = await apiGet('/api/admin/getUsers');
+                let found1 = users.find(u => u.phone_number === testPhone1);
+                if (found1) {
+                    log(`Test 1 PASSED: User ${testPhone1} successfully found in registered_users table!`, 'success');
+                } else {
+                    throw new Error(`Test 1 FAILED: User ${testPhone1} was NOT found in the database.`);
+                }
+
+                // TEST CASE 2: Multiple User Login
+                log('\n--- TEST CASE 2: Multiple Users Login ---');
+                const multiPhones = ['+919999000002', '+919999000003', '+919999000004'];
+                for (const p of multiPhones) {
+                    log(`Simulating login for ${p}...`);
+                    await apiPost('/api/loginUser', { phone: p });
+                }
+                log('API /api/loginUser returned success for all multiple users.', 'success');
+
+                log('Fetching all users from /api/admin/getUsers to verify...');
+                users = await apiGet('/api/admin/getUsers');
+                
+                let allFound = true;
+                for (const p of multiPhones) {
+                    if (!users.find(u => u.phone_number === p)) {
+                        allFound = false;
+                        log(`Error: Missing user ${p}`, 'error');
+                    }
+                }
+
+                if (allFound) {
+                    log(`Test 2 PASSED: All ${multiPhones.length} users successfully found in the database!`, 'success');
+                } else {
+                    throw new Error(`Test 2 FAILED: Not all users were found.`);
+                }
+
+                log('\n🎉 ALL TESTS COMPLETED SUCCESSFULLY!', 'success');
+
+            } catch(e) {
+                log(`\n❌ TEST FAILED: ${e.message}`, 'error');
+            } finally {
+                document.getElementById('btn-run').disabled = false;
+            }
+        }
+
+        document.getElementById('btn-run').addEventListener('click', runTests);
+    </script>
+</body>
+</html>
