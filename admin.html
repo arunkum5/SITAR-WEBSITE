@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SITAR — Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500;1,9..144,600&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <style>
+    :root {
+      --ink: #0B0906;
+      --bg: #12100D;
+      --bg-panel: #1B1712;
+      --bg-panel-2: #211C15;
+      --line: rgba(243, 236, 221, 0.10);
+      --line-strong: rgba(243, 236, 221, 0.18);
+      --cream: #F3ECDD;
+      --cream-dim: rgba(243, 236, 221, 0.62);
+      --gold: #B8860B;
+      
+      --villas: #C1694A;
+      --apartments: #6E86A6;
+      --layouts: #C9A227;
+      --commercial: #A370A1;
+      --resorts: #3E8E85;
+      
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--cream);
+      font-family: 'Work Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    header {
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--line);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo { font-family: 'Fraunces', serif; font-size: 24px; color: var(--gold); font-weight: 600; text-decoration: none; }
+    .admin-badge { background: rgba(184, 134, 11, 0.15); color: var(--gold); padding: 4px 12px; border-radius: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+
+    /* Layout */
+    .dashboard-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 32px;
+      display: grid;
+      gap: 32px;
+    }
+
+    /* Top Metrics */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .metric-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .metric-card .title { font-size: 13px; color: var(--cream-dim); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+    .metric-card .value { font-family: 'IBM Plex Mono', monospace; font-size: 32px; color: var(--cream); font-weight: 500; }
+    .metric-card .change { font-size: 12px; color: #4ade80; }
+
+    /* Charts Section */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 24px;
+    }
+    .chart-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .chart-card h3 { margin: 0 0 20px 0; font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; }
+
+    /* Tabs & Tables */
+    .tabs-container { margin-top: 16px; }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--cream-dim);
+      padding: 12px 24px;
+      font-family: 'Work Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover { color: var(--cream); }
+    .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Table Styles */
+    .table-wrapper {
+      background: var(--bg-panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    th, td { padding: 16px 24px; border-bottom: 1px solid var(--line); }
+    th {
+      font-family: 'Outfit', sans-serif;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--cream-dim);
+      background: var(--bg-panel-2);
+    }
+    td { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--cream); }
+    tr:last-child td { border-bottom: none; }
+    
+    .status-badge {
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .status-active { background: rgba(74, 222, 128, 0.1); color: #4ade80; }
+    .status-pending { background: rgba(234, 179, 8, 0.1); color: #eab308; }
+
+    /* Filters */
+    .filter-bar {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .filter-select {
+      background: var(--bg-panel-2);
+      border: 1px solid var(--line);
+      color: var(--cream);
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-family: inherit;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo">SITAR.</a>
+    <div class="admin-badge">ADMIN CONSOLE</div>
+  </header>
+
+  <div class="dashboard-container">
+    
+    <!-- Top Metrics -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <span class="title">Total Active Investors</span>
+        <span class="value" id="metric-investors">0</span>
+        <span class="change">+12% this month</span>
+      </div>
+      <div class="metric-card">
+        <span class="title">Total Capital Invested</span>
+        <span class="value" id="metric-capital">₹ 0</span>
+        <span class="change">+8% this month</span>
+      </div>
+      <div class="metric-card">
+        <span class="title">Hot Calculator Leads</span>
+        <span class="value" id="metric-leads">0</span>
+        <span class="change">Require follow-up</span>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3>Capital by Sector</h3>
+        <div style="position: relative; height: 350px; width: 100%;">
+          <canvas id="sectorChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>Investment Trends (Monthly)</h3>
+        <div style="position: relative; height: 350px; width: 100%;">
+          <canvas id="trendChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tables -->
+    <div class="tabs-container">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="leads">Calculator Leads</button>
+        <button class="tab-btn" data-tab="investors">Verified Investors</button>
+        <button class="tab-btn" data-tab="users">Registered Users</button>
+      </div>
+
+      <!-- Tab: Leads -->
+      <div id="leads" class="tab-content active">
+        <div class="filter-bar">
+          <select id="filter-sector" class="filter-select">
+            <option value="all">All Sectors</option>
+            <option value="villas">Villas</option>
+            <option value="apartments">Apartments</option>
+            <option value="commercial">Commercial</option>
+            <option value="resorts">Resorts</option>
+            <option value="layouts">Layouts</option>
+          </select>
+          <select id="filter-term" class="filter-select">
+            <option value="all">All Terms</option>
+            <option value="1">1 Year</option>
+            <option value="3">3 Years</option>
+            <option value="5">5 Years</option>
+          </select>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Phone Number</th>
+                <th>Sector</th>
+                <th>Term</th>
+                <th>Amount (₹)</th>
+                <th>Projected Profit</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="table-leads-body">
+              <!-- JS Populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab: Investors -->
+      <div id="investors" class="tab-content">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Account ID</th>
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th>PAN / Aadhar</th>
+                <th>Active Plans</th>
+                <th>Total Value</th>
+              </tr>
+            </thead>
+            <tbody id="table-investors-body">
+              <!-- JS Populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab: Users -->
+      <div id="users" class="tab-content">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Registration Date</th>
+                <th>Phone Number</th>
+                <th>Last Login</th>
+              </tr>
+            </thead>
+            <tbody id="table-users-body">
+              <!-- JS Populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

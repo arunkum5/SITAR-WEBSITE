@@ -6574,6 +6574,7 @@
         </div>
         <div id="auth-phone-error" style="color: #ef4444; font-size: 13px; margin-top: -16px; margin-bottom: 16px; display: none;">Please enter a valid 10-digit Indian mobile number.</div>
         <button id="auth-send-otp" style="width: 100%; padding: 12px; background: #0f172a; color: white; border: none; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.1), 0 2px 4px -1px rgba(15, 23, 42, 0.06);" onmouseover="this.style.backgroundColor='#1e293b'; this.style.transform='translateY(-1px)'" onmouseout="this.style.backgroundColor='#0f172a'; this.style.transform='translateY(0)'">Continue</button>
+        <div id="recaptcha-container"></div>
       </div>
 
       <div id="auth-step-2" style="display: none;">
@@ -6762,30 +6763,10 @@
       document.getElementById('close-auth-modal').addEventListener('click', () => closeModal(authModal));
       document.getElementById('close-profile-modal').addEventListener('click', () => closeModal(profileModal));
 
-      // Mock OTP Flow
-      btnSendOtp.addEventListener('click', () => {
-        const phone = document.getElementById('auth-phone-input').value;
-        // Validate Indian phone number: 10 digits starting with 6, 7, 8, or 9
-        const isValid = /^[6-9]\d{9}$/.test(phone);
-        if (isValid) {
-          document.getElementById('auth-phone-error').style.display = 'none';
-          step1.style.display = 'none';
-          step2.style.display = 'block';
-        } else {
-          document.getElementById('auth-phone-error').style.display = 'block';
-        }
-      });
-
-      btnVerifyOtp.addEventListener('click', () => {
-        const otp = document.getElementById('auth-otp-input').value;
-        if (otp.length > 0) {
-          // Success
-          localStorage.setItem('sitar_logged_in', 'true');
-          closeModal(authModal);
-          updateNavState();
-        } else {
-          alert('Please enter the OTP.');
-        }
+      // Listen for successful auth from Firebase
+      window.addEventListener('auth-success', () => {
+        updateNavState();
+        closeModal(authModal);
       });
 
       // Logout
@@ -6804,5 +6785,6 @@
   </script>
 
 </body>
-
+  <!-- Firebase Auth Logic -->
+  <script type="module" src="firebase-auth.js"></script>
 </html>
