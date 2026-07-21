@@ -30,6 +30,23 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (metricVerified) metricVerified.textContent = globalVerifiedCount;
       const mContext = document.getElementById('metric-verified-context');
       if (mContext) mContext.textContent = `${globalInvestedVerifiedCount} Invested / ${globalVerifiedCount - globalInvestedVerifiedCount} Uninvested`;
+
+      // Update sector chart
+      if (typeof sectorChart !== 'undefined') {
+        let sectorTotals = {
+          'villas': 0, 'apartments': 0, 'layouts': 0, 'commercial': 0, 'resorts': 0
+        };
+        activeInvestments.forEach(inv => {
+          const s = (inv.sector || '').toLowerCase();
+          if (sectorTotals[s] !== undefined) {
+             sectorTotals[s] += parseFloat(inv.invested_amount || 0);
+          }
+        });
+        sectorChart.data.datasets[0].data = [
+          sectorTotals['villas'], sectorTotals['apartments'], sectorTotals['layouts'], sectorTotals['commercial'], sectorTotals['resorts']
+        ];
+        sectorChart.update();
+      }
     }
     
     if (typeof globalLeads !== 'undefined') {
@@ -281,6 +298,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // INVESTMENTS LOGIC
   const invTbody = document.getElementById('table-investments-body');
+  const searchInv = document.getElementById('search-investments');
+  if (searchInv) {
+    searchInv.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      if (!invTbody) return;
+      const rows = invTbody.querySelectorAll('tr');
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(term) ? '' : 'none';
+      });
+    });
+  }
   async function fetchInvestments() {
     if (!invTbody) return;
     try {
@@ -316,7 +345,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         tr.innerHTML = `
           <td><input type="checkbox" class="row-select" data-id="${inv.transaction_id}"></td>
           <td style="font-size: 11px;">${inv.transaction_id.substring(0,8)}</td>
-          <td>${(inv.investors && inv.investors.folio_number) ? inv.investors.folio_number : (inv.account_id || '-')}</td>
+          <td>
+            <div style="font-weight: 600; color: #0f172a; text-transform: capitalize;">${inv.investors?.name || 'Unknown'}</div>
+            <div style="font-size: 11px; color: #64748b;">${inv.account_id || '-'}</div>
+            ${inv.investors?.folio_number ? `<div style="font-size: 10px; color: #d97706; margin-top: 2px; font-weight: 600;">Folio: ${inv.investors.folio_number}</div>` : ''}
+          </td>
           <td style="text-transform: capitalize;">${inv.sector || '-'}</td>
           <td>${inv.term_years || '-'} Yrs</td>
           <td>₹ ${Math.round(inv.invested_amount || 0).toLocaleString('en-IN')}</td>

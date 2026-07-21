@@ -14,7 +14,14 @@ export async function onRequestGet({ request, env }) {
   }
 
   try {
-    const response = await fetch(`${supabaseUrl}/rest/v1/transactions?account_id=eq.${encodeURIComponent(phone)}&select=*&order=transaction_date.desc`, {
+    let searchPhone = phone;
+    if (searchPhone.length === 10) {
+      searchPhone = `+91${searchPhone}`;
+    } else if (searchPhone.length > 10 && !searchPhone.startsWith('+')) {
+       searchPhone = `+${searchPhone}`;
+    }
+
+    const response = await fetch(`${supabaseUrl}/rest/v1/transactions?account_id=eq.${encodeURIComponent(searchPhone)}&select=*&order=transaction_date.desc`, {
       headers: {
         'apikey': supabaseKey,
         'Authorization': `Bearer ${supabaseKey}`,

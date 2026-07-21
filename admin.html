@@ -87,7 +87,7 @@
     /* Charts Section */
     .charts-grid {
       display: grid;
-      grid-template-columns: 1fr 2fr;
+      grid-template-columns: 1fr 1fr;
       gap: 24px;
     }
     .chart-card {
@@ -256,9 +256,10 @@
 
       <!-- Tab: Investments -->
       <div id="investments" class="tab-content active">
-        <div class="filter-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-          <div>
+        <div class="filter-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 16px;">
+          <div style="display: flex; gap: 16px; align-items: center; flex: 1;">
             <button class="btn-delete-selected" data-table="transactions" data-idcol="transaction_id" style="background: #ef4444; color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: 600;">🗑️ Delete</button>
+            <input type="text" id="search-investments" placeholder="Search by Name / Phone / Folio..." style="padding: 10px 16px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--cream); flex: 1; max-width: 400px; font-size: 14px; outline: none;">
           </div>
           <button onclick="downloadTableCSV('table-investments-body', 'investments.csv')" style="background: #0f172a; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; cursor: pointer;">↓ Download CSV</button>
         </div>
@@ -268,7 +269,7 @@
               <tr>
                 <th style="width: 40px;"><input type="checkbox" class="select-all"></th>
                 <th>Tx ID</th>
-                <th>Investor (Phone)</th>
+                <th>Name / Phone</th>
                 <th>Sector</th>
                 <th>Term</th>
                 <th>Amount (₹)</th>
