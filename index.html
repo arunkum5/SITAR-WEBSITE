@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SITAR — Invest in Real Assets. Earn Every Month.</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -6603,9 +6604,27 @@
 
         <div id="portfolio-view" style="display: none;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <h4 style="font-family: 'Work Sans', sans-serif; font-size: 16px; color: #001122; margin: 0;">Active Investments</h4>
+            <h4 style="font-family: 'Work Sans', sans-serif; font-size: 16px; color: #001122; margin: 0;">My Dashboard</h4>
             <button onclick="downloadPassbook()" style="background: #1A2980; border: none; color: white; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer;">↓ Download Passbook</button>
           </div>
+
+          <div id="portfolio-dashboard" style="display: none; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px;">
+                <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">Total Invested</div>
+                <div id="user-total-invested" style="font-size: 20px; color: #0f172a; font-weight: 700;">₹ 0</div>
+              </div>
+              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px;">
+                <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">Total Maturity Value</div>
+                <div id="user-total-maturity" style="font-size: 20px; color: #10b981; font-weight: 700;">₹ 0</div>
+              </div>
+            </div>
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; min-height: 180px;">
+              <canvas id="userSectorChart"></canvas>
+            </div>
+          </div>
+
+          <h4 style="font-family: 'Work Sans', sans-serif; font-size: 16px; color: #001122; margin: 0 0 12px 0;">Statements</h4>
           
           <div id="portfolio-list" style="display: flex; flex-direction: column; gap: 12px;">
             <div style="text-align: center; color: #64748b; padding: 24px; background: #f8fafc; border-radius: 12px;">Loading portfolio...</div>
@@ -7056,7 +7075,22 @@
           }
 
           listEl.innerHTML = '';
+          
+          let totalInvested = 0;
+          let totalMaturity = 0;
+          let sectorTotals = { 'villas': 0, 'apartments': 0, 'layouts': 0, 'commercial': 0, 'resorts': 0 };
+          let hasActive = false;
+
           portfolioData.forEach(inv => {
+            if (inv.status === 'Active' || inv.status === 'Approved') {
+              hasActive = true;
+              totalInvested += parseFloat(inv.invested_amount || 0);
+              totalMaturity += parseFloat(inv.maturity_amount || 0);
+              const s = (inv.sector || '').toLowerCase();
+              if (sectorTotals[s] !== undefined) {
+                sectorTotals[s] += parseFloat(inv.invested_amount || 0);
+              }
+            }
             const el = document.createElement('div');
             el.style = 'background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 12px;';
             el.innerHTML = `
@@ -7094,6 +7128,52 @@
             `;
             listEl.appendChild(el);
           });
+
+          if (hasActive) {
+            document.getElementById('portfolio-dashboard').style.display = 'grid';
+            document.getElementById('user-total-invested').textContent = `₹ ${Math.round(totalInvested).toLocaleString('en-IN')}`;
+            document.getElementById('user-total-maturity').textContent = `₹ ${Math.round(totalMaturity).toLocaleString('en-IN')}`;
+
+            Chart.defaults.color = '#64748b';
+            Chart.defaults.font.family = "'Work Sans', sans-serif";
+            const ctxSector = document.getElementById('userSectorChart').getContext('2d');
+            
+            if (window.userPieChart) window.userPieChart.destroy();
+            
+            window.userPieChart = new Chart(ctxSector, {
+              type: 'doughnut',
+              data: {
+                labels: [
+                  `Villas: ₹ ${Math.round(sectorTotals['villas']).toLocaleString('en-IN')}`,
+                  `Apartments: ₹ ${Math.round(sectorTotals['apartments']).toLocaleString('en-IN')}`,
+                  `Layouts: ₹ ${Math.round(sectorTotals['layouts']).toLocaleString('en-IN')}`,
+                  `Commercial: ₹ ${Math.round(sectorTotals['commercial']).toLocaleString('en-IN')}`,
+                  `Resorts: ₹ ${Math.round(sectorTotals['resorts']).toLocaleString('en-IN')}`
+                ],
+                datasets: [{
+                  data: [
+                    sectorTotals['villas'], sectorTotals['apartments'], sectorTotals['layouts'], sectorTotals['commercial'], sectorTotals['resorts']
+                  ],
+                  backgroundColor: ['#C1694A', '#6E86A6', '#C9A227', '#A370A1', '#3E8E85'],
+                  borderWidth: 0,
+                  hoverOffset: 4
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: { 
+                    position: 'right',
+                    labels: { font: { size: 12 } }
+                  }
+                }
+              }
+            });
+          } else {
+            document.getElementById('portfolio-dashboard').style.display = 'none';
+          }
+
         } catch (err) {
           listEl.innerHTML = '<div style="text-align: center; color: #ef4444; padding: 24px; background: #fef2f2; border-radius: 12px;">Failed to load portfolio.</div>';
         }
