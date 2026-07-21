@@ -517,8 +517,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-});
-
   // VERIFIED INVESTORS
   const invBody = document.getElementById('table-investors-body');
   async function fetchInvestors() {
@@ -701,3 +699,5 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
   }
+
+});
