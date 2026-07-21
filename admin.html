@@ -174,9 +174,12 @@
 </head>
 <body>
 
-  <header>
-    <a href="index.html" class="logo">SITAR.</a>
-    <div class="admin-badge">ADMIN CONSOLE</div>
+  <header style="display: flex; justify-content: space-between; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <a href="index.html" class="logo">SITAR.</a>
+      <div class="admin-badge">ADMIN CONSOLE</div>
+    </div>
+    <button id="cleanup-db-btn" style="background: #ef4444; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-family: 'Work Sans', sans-serif; font-weight: 600; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">Clean Database</button>
   </header>
 
   <div class="dashboard-container">
@@ -226,21 +229,24 @@
 
       <!-- Tab: Leads -->
       <div id="leads" class="tab-content active">
-        <div class="filter-bar">
-          <select id="filter-sector" class="filter-select">
-            <option value="all">All Sectors</option>
-            <option value="villas">Villas</option>
-            <option value="apartments">Apartments</option>
-            <option value="commercial">Commercial</option>
-            <option value="resorts">Resorts</option>
-            <option value="layouts">Layouts</option>
-          </select>
-          <select id="filter-term" class="filter-select">
-            <option value="all">All Terms</option>
-            <option value="1">1 Year</option>
-            <option value="3">3 Years</option>
-            <option value="5">5 Years</option>
-          </select>
+        <div class="filter-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <select id="filter-sector" class="filter-select">
+              <option value="all">All Sectors</option>
+              <option value="villas">Villas</option>
+              <option value="apartments">Apartments</option>
+              <option value="commercial">Commercial</option>
+              <option value="resorts">Resorts</option>
+              <option value="layouts">Layouts</option>
+            </select>
+            <select id="filter-term" class="filter-select">
+              <option value="all">All Terms</option>
+              <option value="1">1 Year</option>
+              <option value="3">3 Years</option>
+              <option value="5">5 Years</option>
+            </select>
+          </div>
+          <button onclick="downloadTableCSV('table-leads-body', 'calculator_leads.csv')" style="background: #0f172a; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='#0f172a'">↓ Download CSV</button>
         </div>
         <div class="table-wrapper">
           <table>
@@ -264,6 +270,9 @@
 
       <!-- Tab: Investors -->
       <div id="investors" class="tab-content">
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+          <button onclick="downloadTableCSV('table-investors-body', 'verified_investors.csv')" style="background: #0f172a; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='#0f172a'">↓ Download CSV</button>
+        </div>
         <div class="table-wrapper">
           <table>
             <thead>
@@ -285,6 +294,9 @@
 
       <!-- Tab: Users -->
       <div id="users" class="tab-content">
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+          <button onclick="downloadTableCSV('table-users-body', 'registered_users.csv')" style="background: #0f172a; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='#0f172a'">↓ Download CSV</button>
+        </div>
         <div class="table-wrapper">
           <table>
             <thead>

@@ -17,6 +17,49 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Table CSV Download Logic
+  window.downloadTableCSV = function(tbodyId, filename) {
+    const tbody = document.getElementById(tbodyId);
+    if (!tbody) return;
+    
+    // Find the corresponding thead for headers
+    const table = tbody.closest('table');
+    const thead = table.querySelector('thead');
+    
+    let csvContent = "";
+    
+    // Extract headers
+    if (thead) {
+      const headers = Array.from(thead.querySelectorAll('th')).map(th => `"${th.innerText.replace(/"/g, '""')}"`);
+      csvContent += headers.join(",") + "\n";
+    }
+    
+    // Extract rows
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    rows.forEach(row => {
+      // Ignore placeholder loading rows
+      if (row.cells.length === 1 && row.cells[0].colSpan > 1) return;
+      
+      const rowData = Array.from(row.querySelectorAll('td')).map(td => {
+        let text = td.innerText.replace(/"/g, '""');
+        // Clean up ₹ symbols or newlines if needed, but standard quotes work best
+        return `"${text}"`;
+      });
+      csvContent += rowData.join(",") + "\n";
+    });
+    
+    // Trigger download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   // 2. Initialize Charts (Chart.js)
   Chart.defaults.color = 'rgba(243, 236, 221, 0.62)';
   Chart.defaults.font.family = "'Work Sans', sans-serif";
@@ -76,28 +119,80 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Render Leads
   const leadsTbody = document.getElementById('table-leads-body');
-  const mockLeads = [
-    { date: '2023-10-24', phone: '+91 9876543210', sector: 'Villas', term: '3 Years', amount: '50,00,000', profit: '22,50,000', status: 'Pending' },
-    { date: '2023-10-23', phone: '+91 9123456789', sector: 'Layouts', term: '5 Years', amount: '25,00,000', profit: '18,75,000', status: 'Contacted' },
-  ];
 
   function renderLeads(data) {
     leadsTbody.innerHTML = '';
+    if (!data || data.length === 0) {
+      leadsTbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #64748b;">No leads found.</td></tr>';
+      return;
+    }
     data.forEach(lead => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td>${lead.date}</td>
-        <td>${lead.phone}</td>
-        <td>${lead.sector}</td>
-        <td>${lead.term}</td>
-        <td>₹ ${lead.amount}</td>
-        <td style="color: #4ade80;">+ ₹ ${lead.profit}</td>
-        <td><span class="status-badge status-pending">${lead.status}</span></td>
+        <td>${lead.date || '-'}</td>
+        <td>${lead.phone || '-'}</td>
+        <td>${lead.sector || '-'}</td>
+        <td>${lead.term || '-'}</td>
+        <td>₹ ${lead.amount || '0'}</td>
+        <td style="color: #4ade80;">+ ₹ ${lead.profit || '0'}</td>
+        <td><span class="status-badge status-pending">${lead.status || 'Pending'}</span></td>
       `;
       leadsTbody.appendChild(tr);
     });
   }
-  renderLeads(mockLeads);
+
+  // Fetch real data from Supabase via Cloudflare API
+  async function fetchLeads() {
+    try {
+      leadsTbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #64748b;">Loading data...</td></tr>';
+      const response = await fetch('/api/admin/getLeads');
+      const data = await response.json();
+      
+      if (data.error) {
+        console.error("Failed to fetch leads:", data.error);
+        leadsTbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #ef4444;">Error loading data.</td></tr>';
+        return;
+      }
+      
+      renderLeads(data);
+    } catch (err) {
+      console.error(err);
+      leadsTbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #ef4444;">Error connecting to server.</td></tr>';
+    }
+  }
+
+  // Initial fetch
+  fetchLeads();
+
+  // DB Cleanup Logic
+  const cleanupBtn = document.getElementById('cleanup-db-btn');
+  if (cleanupBtn) {
+    cleanupBtn.addEventListener('click', async () => {
+      const confirmed = confirm("Are you sure you really want to cleanup? It will delete all data permanently.");
+      if (!confirmed) return;
+
+      const originalText = cleanupBtn.textContent;
+      cleanupBtn.textContent = 'Cleaning...';
+      cleanupBtn.disabled = true;
+
+      try {
+        const response = await fetch('/api/admin/cleanup', { method: 'POST' });
+        const result = await response.json();
+        
+        if (result.success) {
+          alert("Database cleaned successfully.");
+          fetchLeads(); // Refresh table
+        } else {
+          alert("Failed to clean database: " + result.error);
+        }
+      } catch (err) {
+        alert("Error connecting to server.");
+      } finally {
+        cleanupBtn.textContent = originalText;
+        cleanupBtn.disabled = false;
+      }
+    });
+  }
 
   // 4. Filtering Logic
   const filterSector = document.getElementById('filter-sector');

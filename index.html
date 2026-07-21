@@ -6882,28 +6882,56 @@
         btn.innerHTML = `<svg class="animate-spin" style="width: 18px; height: 18px; margin-right: 8px; color: white;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Saving...`;
         btn.disabled = true;
 
-        // Simulate API call and network delay
-        setTimeout(() => {
-          // Mask Aadhar
-          const rawAadhar = document.getElementById('edit-aadhar').value.replace(/\s/g, '');
-          const maskedAadhar = rawAadhar.length >= 4 ? `XXXX-XXXX-${rawAadhar.slice(-4)}` : 'Invalid';
-          
-          // Update View Mode DOM
-          document.getElementById('view-pan').textContent = document.getElementById('edit-pan').value;
-          document.getElementById('view-aadhar').innerHTML = `${maskedAadhar} <span style="font-size: 10px; color: #10b981; background: #d1fae5; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">Verified</span>`;
-          document.getElementById('view-nominee-name').innerHTML = `${document.getElementById('edit-nominee-name').value} <span style="color: #64748b; font-weight: 400; font-size: 13px;">(${document.getElementById('edit-nominee-rel').value})</span>`;
-          document.getElementById('view-nominee-phone').textContent = document.getElementById('edit-nominee-phone').value;
-          
-          const rawAcc = document.getElementById('edit-bank-acc').value;
-          const maskedAcc = rawAcc.length >= 4 ? `XXXX XXXX ${rawAcc.slice(-4)}` : rawAcc;
-          document.getElementById('view-bank-acc').textContent = maskedAcc;
-          document.getElementById('view-bank-ifsc').textContent = document.getElementById('edit-bank-ifsc').value;
-          document.getElementById('view-bank-type').textContent = document.getElementById('edit-bank-type').value;
+        // Call Backend API
+        fetch('/api/updateProfile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            phone: localStorage.getItem('user_phone') || '', // Optional identifier
+            pan: document.getElementById('edit-pan').value,
+            aadhar: document.getElementById('edit-aadhar').value,
+            nomineeName: document.getElementById('edit-nominee-name').value,
+            nomineeRel: document.getElementById('edit-nominee-rel').value,
+            nomineePhone: document.getElementById('edit-nominee-phone').value,
+            bankAcc: document.getElementById('edit-bank-acc').value,
+            bankIfsc: document.getElementById('edit-bank-ifsc').value,
+            bankType: document.getElementById('edit-bank-type').value
+          })
+        }).then(response => response.json())
+          .then(result => {
+            if(result.error) {
+              alert("Failed to save: " + result.error);
+              btn.innerHTML = 'Save Changes';
+              btn.disabled = false;
+              return;
+            }
+            
+            // Mask Aadhar for UI
+            const rawAadhar = document.getElementById('edit-aadhar').value.replace(/\s/g, '');
+            const maskedAadhar = rawAadhar.length >= 4 ? `XXXX-XXXX-${rawAadhar.slice(-4)}` : 'Invalid';
+            
+            // Update View Mode DOM
+            document.getElementById('view-pan').textContent = document.getElementById('edit-pan').value;
+            document.getElementById('view-aadhar').innerHTML = `${maskedAadhar} <span style="font-size: 10px; color: #10b981; background: #d1fae5; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">Verified</span>`;
+            document.getElementById('view-nominee-name').innerHTML = `${document.getElementById('edit-nominee-name').value} <span style="color: #64748b; font-weight: 400; font-size: 13px;">(${document.getElementById('edit-nominee-rel').value})</span>`;
+            document.getElementById('view-nominee-phone').textContent = document.getElementById('edit-nominee-phone').value;
+            
+            const rawAcc = document.getElementById('edit-bank-acc').value;
+            const maskedAcc = rawAcc.length >= 4 ? `XXXX XXXX ${rawAcc.slice(-4)}` : rawAcc;
+            document.getElementById('view-bank-acc').textContent = maskedAcc;
+            document.getElementById('view-bank-ifsc').textContent = document.getElementById('edit-bank-ifsc').value;
+            document.getElementById('view-bank-type').textContent = document.getElementById('edit-bank-type').value;
 
-          btn.innerHTML = 'Save Changes';
-          btn.disabled = false;
-          toggleProfileEdit(false);
-        }, 1200);
+            btn.innerHTML = 'Save Changes';
+            btn.disabled = false;
+            toggleProfileEdit(false);
+          })
+          .catch(err => {
+            console.error(err);
+            alert("Error saving profile");
+            btn.innerHTML = 'Save Changes';
+            btn.disabled = false;
+          });
       };
     });
   </script>
