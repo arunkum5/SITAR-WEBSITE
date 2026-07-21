@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const metricVerified = document.getElementById('metric-verified');
       if (metricVerified) metricVerified.textContent = globalVerifiedCount;
       const mContext = document.getElementById('metric-verified-context');
-      if (mContext) mContext.textContent = `${globalInvestedVerifiedCount} inv / ${globalVerifiedCount - globalInvestedVerifiedCount} non`;
+      if (mContext) mContext.textContent = `${globalInvestedVerifiedCount} Invested / ${globalVerifiedCount - globalInvestedVerifiedCount} Uninvested`;
     }
     
     if (typeof globalLeads !== 'undefined') {
