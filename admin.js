@@ -342,16 +342,40 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Sort by sector then term
       currentRates.sort((a, b) => a.sector.localeCompare(b.sector) || a.term_years - b.term_years);
 
-      currentRates.forEach(rate => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td style="text-transform: capitalize;">${rate.sector}</td>
-          <td>${rate.term_years}</td>
-          <td><input type="number" step="0.1" value="${rate.interest_rate_pa}" data-id="${rate.id}" class="rate-input" style="width: 80px; padding: 4px; border: 1px solid #cbd5e1; color: #0f172a; border-radius: 4px;"></td>
-          <td><span class="status-badge status-active">Active</span></td>
-        `;
-        ratesTbody.appendChild(tr);
+      const groupedRates = {};
+      currentRates.forEach(r => {
+        if(!groupedRates[r.sector]) groupedRates[r.sector] = [];
+        groupedRates[r.sector].push(r);
       });
+
+      for (const [sector, rates] of Object.entries(groupedRates)) {
+        // Render Header
+        const headerTr = document.createElement('tr');
+        headerTr.style.cursor = 'pointer';
+        headerTr.style.background = 'rgba(255, 255, 255, 0.03)';
+        headerTr.innerHTML = `<td colspan="4" style="font-weight: 600; text-transform: capitalize;">${sector} <span style="font-size: 10px; float: right; margin-top: 4px; color: var(--gold);">▼ Click to expand</span></td>`;
+        ratesTbody.appendChild(headerTr);
+
+        const rowElements = [];
+        rates.forEach(rate => {
+          const tr = document.createElement('tr');
+          tr.style.display = 'none'; // hidden by default
+          tr.innerHTML = `
+            <td style="text-transform: capitalize; padding-left: 32px; border-left: 2px solid var(--gold);">${rate.sector}</td>
+            <td>${rate.term_years} Year</td>
+            <td><input type="number" step="0.1" value="${rate.interest_rate_pa}" data-id="${rate.id}" class="rate-input" style="width: 80px; padding: 4px; border: 1px solid #cbd5e1; color: #0f172a; border-radius: 4px;"></td>
+            <td><span class="status-badge status-active">Active</span></td>
+          `;
+          ratesTbody.appendChild(tr);
+          rowElements.push(tr);
+        });
+
+        headerTr.addEventListener('click', () => {
+          const isHidden = rowElements[0].style.display === 'none';
+          rowElements.forEach(r => r.style.display = isHidden ? 'table-row' : 'none');
+          headerTr.querySelector('span').textContent = isHidden ? '▲ Click to collapse' : '▼ Click to expand';
+        });
+      }
 
       document.querySelectorAll('.status-select').forEach(select => {
         select.addEventListener('change', async (e) => {
@@ -601,10 +625,11 @@ document.addEventListener('DOMContentLoaded', async () => {
           alert('Default rates populated successfully!');
           fetchRates();
         } else {
-          alert('Failed to populate rates.');
+          const errText = await res.text();
+          alert('Failed to populate rates. Server says: ' + errText);
         }
       } catch(e) {
-        alert('Connection Error');
+        alert('Network Request Error: ' + e.message);
       } finally {
         btnPopulateRates.textContent = origText;
         btnPopulateRates.disabled = false;
