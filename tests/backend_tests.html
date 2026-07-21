@@ -156,6 +156,50 @@
                     throw new Error(`Test 7 FAILED.`);
                 }
 
+
+                // TEST CASE 8: Bulk Update Investment Rates Configuration
+                log("\n--- TEST CASE 8: Update Rates Configuration (All 5 Sectors) ---");
+                log("Fetching current rates from /api/getRates...");
+                const currentRates = await apiGet("/api/getRates");
+                if (currentRates.length < 5) {
+                    throw new Error("Expected at least 5 rate configurations, found " + currentRates.length);
+                }
+                
+                // Keep track of originals to restore later
+                const originalPayload = currentRates.map(r => ({ id: r.id, interest_rate_pa: r.interest_rate_pa }));
+                
+                // Add 0.5% to all rates to test
+                const updatedPayload = currentRates.map(r => ({
+                    id: r.id,
+                    interest_rate_pa: parseFloat(r.interest_rate_pa) + 0.5
+                }));
+                
+                log(`Simulating Admin saving new rates (+0.5%)...`);
+                await apiPost("/api/admin/updateRates", updatedPayload);
+                
+                log("Fetching rates again to verify...");
+                const newRates = await apiGet("/api/getRates");
+                
+                let allUpdated = true;
+                for (const old of updatedPayload) {
+                    const found = newRates.find(r => r.id === old.id);
+                    if (!found || parseFloat(found.interest_rate_pa) !== old.interest_rate_pa) {
+                        allUpdated = false;
+                        log(`Error: Rate ID ${old.id} did not update to ${old.interest_rate_pa}`, "error");
+                    }
+                }
+                
+                if (allUpdated) {
+                    log("Test 8 PASSED: All 5 sector rates successfully updated in backend!", "success");
+                } else {
+                    throw new Error("Test 8 FAILED: Backend did not return updated rates.");
+                }
+                
+                // Revert back to normal
+                log("Reverting rates back to original values to keep DB clean...");
+                await apiPost("/api/admin/updateRates", originalPayload);
+                log("Rates successfully reverted.", "success");
+
                 log('\n🎉 ALL BACKEND TESTS COMPLETED SUCCESSFULLY!', 'success');
 
             } catch(e) {
