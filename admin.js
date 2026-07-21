@@ -357,11 +357,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         tr.innerHTML = `
           <td><input type="checkbox" class="row-select" data-id="${inv.transaction_id}"></td>
           <td style="font-size: 11px;">${inv.transaction_id.substring(0,8)}</td>
+          <td><div style="font-weight: 700; color: #d97706; font-size: 13px;">${inv.investors?.folio_number || '-'}</div></td>
           <td>
-            <div style="font-weight: 600; color: #0f172a; text-transform: capitalize;">${inv.investors?.name || 'Unknown'}</div>
+            <div style="font-weight: 600; color: #1A2980; text-transform: capitalize;">${inv.investors?.name || 'Unknown'}</div>
             <div style="font-size: 11px; color: #64748b;">${inv.account_id || '-'}</div>
-            ${inv.investors?.folio_number ? `<div style="font-size: 10px; color: #d97706; margin-top: 2px; font-weight: 600;">Folio: ${inv.investors.folio_number}</div>` : ''}
           </td>
+          <td style="font-size: 11px; color: #64748b; white-space: nowrap;">${new Date(inv.transaction_date).toLocaleString('en-IN', {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'})}</td>
           <td style="text-transform: capitalize;">${inv.sector || '-'}</td>
           <td>${inv.term_years || '-'} Yrs</td>
           <td>₹ ${Math.round(inv.invested_amount || 0).toLocaleString('en-IN')}</td>
