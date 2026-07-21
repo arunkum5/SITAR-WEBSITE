@@ -7,6 +7,10 @@ CREATE TABLE public.investors (
   pan_number character varying NOT NULL UNIQUE,
   aadhar_number character varying NOT NULL UNIQUE,
   nominee_name character varying,
+  nominee_relation character varying,
+  nominee_dob date,
+  email character varying,
+  folio_number character varying UNIQUE,
   nominee_contact character varying,
   created_at timestamp with time zone NOT NULL DEFAULT timezone('utc'::text, now()),
   CONSTRAINT investors_pkey PRIMARY KEY (account_id)
@@ -69,3 +73,21 @@ CREATE TABLE public.registered_users (
   created_at timestamp with time zone NOT NULL DEFAULT timezone('utc'::text, now()),
   CONSTRAINT registered_users_pkey PRIMARY KEY (id)
 );
+
+
+-- Folio Number Sequence and Trigger
+CREATE SEQUENCE IF NOT EXISTS folio_seq START 1;
+
+CREATE OR REPLACE FUNCTION generate_folio_number()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.folio_number IS NULL THEN
+    NEW.folio_number := lpad(nextval('folio_seq')::text, 3, '0') || '/2026-27';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_generate_folio
+BEFORE INSERT ON public.investors
+FOR EACH ROW EXECUTE FUNCTION generate_folio_number();
