@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', async () => {
 
+  // Global Data State
+  let globalInvestments = [];
+  let globalLeads = [];
+  
   // Dashboard Metrics Update
   let globalUsersCount = 0;
   let globalVerifiedCount = 0;
@@ -194,8 +198,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Fetch real data from Supabase via Cloudflare API
-  let globalInvestments = [];
-  let globalLeads = [];
   async function fetchLeads() {
     try {
       leadsTbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #64748b;">Loading data...</td></tr>';
