@@ -63,24 +63,24 @@
       gap: 32px;
     }
 
-    /* Top Metrics */
+    /* Top Metrics (Reduced Size) */
     .metrics-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
     }
     .metric-card {
       background: var(--bg-panel);
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      padding: 24px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
-    .metric-card .title { font-size: 13px; color: var(--cream-dim); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-    .metric-card .value { font-family: 'IBM Plex Mono', monospace; font-size: 32px; color: var(--cream); font-weight: 500; }
-    .metric-card .change { font-size: 12px; color: #16a34a; font-weight: 500; }
+    .metric-card .title { font-size: 11px; color: var(--cream-dim); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+    .metric-card .value { font-family: 'IBM Plex Mono', monospace; font-size: 24px; color: var(--cream); font-weight: 500; }
+    .metric-card .change { font-size: 11px; color: #16a34a; font-weight: 500; }
     .metric-card .change.warning { color: #d97706; }
 
     /* Charts Section */
