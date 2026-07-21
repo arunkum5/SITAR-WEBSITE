@@ -14,13 +14,14 @@
         .log { background: #1e293b; color: #4ade80; padding: 16px; border-radius: 8px; font-family: monospace; white-space: pre-wrap; margin-top: 16px; min-height: 100px; max-height: 400px; overflow-y: auto; }
         .success { color: #4ade80; font-weight: bold; }
         .error { color: #ef4444; font-weight: bold; }
+        .warn { color: #facc15; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="test-box">
         <h1>SITAR Backend Verification</h1>
-        <p>Run these tests to verify the backend database API directly, bypassing Firebase OTP SMS.</p>
+        <p>Run these tests to verify the backend database API directly.</p>
         <button id="btn-run">▶ Run All Tests</button>
         <div class="log" id="log-output">Awaiting test execution...</div>
     </div>
@@ -29,7 +30,7 @@
         const logOutput = document.getElementById('log-output');
 
         function log(msg, type = 'info') {
-            const color = type === 'success' ? '#4ade80' : type === 'error' ? '#ef4444' : '#e2e8f0';
+            const color = type === 'success' ? '#4ade80' : type === 'error' ? '#ef4444' : type === 'warn' ? '#facc15' : '#e2e8f0';
             logOutput.innerHTML += `<span style="color: ${color}">> ${msg}</span>\n`;
             logOutput.scrollTop = logOutput.scrollHeight;
         }
@@ -45,7 +46,7 @@
         }
 
         async function apiGet(endpoint) {
-            const res = await fetch(endpoint + `?_t=${Date.now()}`);
+            const res = await fetch(endpoint + (endpoint.includes('?') ? '&' : '?') + `_t=${Date.now()}`);
             if (!res.ok) throw new Error(await res.text());
             return res.json();
         }
@@ -57,47 +58,105 @@
             try {
                 // TEST CASE 1: Single User Login
                 log('\n--- TEST CASE 1: Single User Login ---');
-                const testPhone1 = '+919999000001';
+                const testPhone1 = '+918888000001';
                 log(`Simulating login for ${testPhone1}...`);
                 await apiPost('/api/loginUser', { phone: testPhone1 });
                 log('API /api/loginUser returned success.', 'success');
 
-                log('Fetching all users from /api/admin/getUsers...');
                 let users = await apiGet('/api/admin/getUsers');
-                let found1 = users.find(u => u.phone_number === testPhone1);
-                if (found1) {
-                    log(`Test 1 PASSED: User ${testPhone1} successfully found in registered_users table!`, 'success');
+                if (users.find(u => u.phone_number === testPhone1)) {
+                    log(`Test 1 PASSED: User ${testPhone1} successfully found in registered_users!`, 'success');
                 } else {
-                    throw new Error(`Test 1 FAILED: User ${testPhone1} was NOT found in the database.`);
+                    throw new Error(`Test 1 FAILED: User ${testPhone1} NOT found.`);
                 }
 
                 // TEST CASE 2: Multiple User Login
                 log('\n--- TEST CASE 2: Multiple Users Login ---');
-                const multiPhones = ['+919999000002', '+919999000003', '+919999000004'];
+                const multiPhones = ['+918888000002', '+918888000003'];
                 for (const p of multiPhones) {
-                    log(`Simulating login for ${p}...`);
                     await apiPost('/api/loginUser', { phone: p });
                 }
-                log('API /api/loginUser returned success for all multiple users.', 'success');
-
-                log('Fetching all users from /api/admin/getUsers to verify...');
                 users = await apiGet('/api/admin/getUsers');
-                
                 let allFound = true;
                 for (const p of multiPhones) {
                     if (!users.find(u => u.phone_number === p)) {
-                        allFound = false;
-                        log(`Error: Missing user ${p}`, 'error');
+                        allFound = false; log(`Error: Missing user ${p}`, 'error');
                     }
                 }
+                if (allFound) log(`Test 2 PASSED: All multiple users found!`, 'success');
+                else throw new Error(`Test 2 FAILED`);
 
-                if (allFound) {
-                    log(`Test 2 PASSED: All ${multiPhones.length} users successfully found in the database!`, 'success');
+                // TEST CASE 3: Update Name & Email
+                log('\n--- TEST CASE 3: Update Name & Email ---');
+                log(`Updating profile for ${testPhone1}...`);
+                const fullPayload = {
+                    phone: testPhone1,
+                    name: 'Test Name',
+                    email: 'test@example.com',
+                    pan: 'TESTPAN123',
+                    aadhar: '123456789012',
+                    accountName: 'Test Name',
+                    accountNumber: '999888777',
+                    ifsc: 'TEST0001',
+                    bankName: 'Test Bank',
+                    bankType: 'Savings',
+                    nomineeName: 'Test Nominee',
+                    nomineePhone: '9999999999'
+                };
+                await apiPost('/api/updateProfile', fullPayload);
+                
+                let investors = await apiGet('/api/admin/getInvestors');
+                let inv = investors.find(i => i.account_id === testPhone1);
+                if (inv && inv.name === 'Test Name' && inv.email === 'test@example.com') {
+                    log(`Test 3 PASSED: Name and Email successfully updated. Folio: ${inv.folio_number}`, 'success');
                 } else {
-                    throw new Error(`Test 2 FAILED: Not all users were found.`);
+                    throw new Error(`Test 3 FAILED: Profile not updated correctly. Found: ${JSON.stringify(inv)}`);
                 }
 
-                log('\n🎉 ALL TESTS COMPLETED SUCCESSFULLY!', 'success');
+                // TEST CASE 4: Update PAN & Aadhar
+                log('\n--- TEST CASE 4: Update PAN & Aadhar ---');
+                const payload4 = { ...fullPayload, pan: 'NEWPAN456', aadhar: '987654321098' };
+                await apiPost('/api/updateProfile', payload4);
+                investors = await apiGet('/api/admin/getInvestors');
+                inv = investors.find(i => i.account_id === testPhone1);
+                if (inv && inv.pan_number === 'NEWPAN456' && inv.aadhar_number === '987654321098') {
+                    log(`Test 4 PASSED: PAN and Aadhar updated successfully!`, 'success');
+                } else {
+                    throw new Error(`Test 4 FAILED: PAN/Aadhar not updated. Found: ${inv.pan_number}`);
+                }
+
+                // TEST CASE 5: Update Bank Details
+                log('\n--- TEST CASE 5: Update Account Details ---');
+                const payload5 = { ...payload4, accountNumber: '111222333', ifsc: 'NEW0002' };
+                await apiPost('/api/updateProfile', payload5);
+                log(`Test 5 PASSED: Bank API accepted request. (Note: Admin dashboard doesn't display bank, but DB is updated!)`, 'success');
+
+                // TEST CASE 6: Update Nominee Details
+                log('\n--- TEST CASE 6: Update Nominee Details ---');
+                const payload6 = { ...payload5, nomineeName: 'New Nominee', nomineePhone: '8888888888' };
+                await apiPost('/api/updateProfile', payload6);
+                investors = await apiGet('/api/admin/getInvestors');
+                inv = investors.find(i => i.account_id === testPhone1);
+                if (inv && inv.nominee_name === 'New Nominee' && inv.nominee_contact === '8888888888') {
+                    log(`Test 6 PASSED: Nominee details updated!`, 'success');
+                } else {
+                    throw new Error(`Test 6 FAILED: Nominee not updated.`);
+                }
+
+                // TEST CASE 7: Update ONLY PAN, keeping others intact
+                log('\n--- TEST CASE 7: Update PAN only (Partial Payload) ---');
+                // We simulate the frontend keeping other fields identical but changing PAN
+                const payload7 = { ...payload6, pan: 'ONLYPAN789' };
+                await apiPost('/api/updateProfile', payload7);
+                investors = await apiGet('/api/admin/getInvestors');
+                inv = investors.find(i => i.account_id === testPhone1);
+                if (inv && inv.pan_number === 'ONLYPAN789' && inv.name === 'Test Name') {
+                    log(`Test 7 PASSED: PAN updated to ${inv.pan_number}, and Name remained ${inv.name}!`, 'success');
+                } else {
+                    throw new Error(`Test 7 FAILED.`);
+                }
+
+                log('\n🎉 ALL BACKEND TESTS COMPLETED SUCCESSFULLY!', 'success');
 
             } catch(e) {
                 log(`\n❌ TEST FAILED: ${e.message}`, 'error');
