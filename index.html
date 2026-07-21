@@ -6949,6 +6949,13 @@
             })
           });
 
+          if (!res.ok) {
+            const errText = await res.text();
+            alert("Failed to save profile (HTTP " + res.status + "): " + errText);
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            return;
+          }
           const result = await res.json();
           
           if (result.error) {
@@ -6997,7 +7004,7 @@
           btn.innerHTML = originalText;
           btn.disabled = false;
         } catch (err) {
-          alert("Connection error while saving profile.");
+          alert("Connection error while saving profile: " + err.message);
           btn.innerHTML = "Save Changes";
           btn.disabled = false;
         }

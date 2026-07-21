@@ -341,12 +341,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       // Sort by sector then term
-      currentRates.sort((a, b) => a.sector.localeCompare(b.sector) || a.term_years - b.term_years);
+      currentRates.sort((a, b) => (a.sector || '').localeCompare(b.sector || '') || a.term_years - b.term_years);
 
       const groupedRates = {};
       currentRates.forEach(r => {
-        if(!groupedRates[r.sector]) groupedRates[r.sector] = [];
-        groupedRates[r.sector].push(r);
+        const sec = r.sector || 'unknown';
+        if(!groupedRates[sec]) groupedRates[sec] = [];
+        groupedRates[sec].push(r);
       });
 
       for (const [sector, rates] of Object.entries(groupedRates)) {
