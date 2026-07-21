@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       renderLeads(data);
     } catch (err) {
       console.error(err);
-      leadsTbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #ef4444;">Error: ${err.message}</td></tr>';
+      leadsTbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #ef4444;">Error: ${err.message}</td></tr>`;
     }
   }
 
@@ -563,7 +563,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
       updateDashboardMetrics();
     } catch (err) {
-      invBody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #ef4444;">Error: ${err.message}</td></tr>';
+      invBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #ef4444;">Error: ${err.message}</td></tr>`;
     }
   }
   fetchInvestors();
@@ -601,7 +601,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       globalUsersCount = data.length;
       updateDashboardMetrics();
     } catch (err) {
-      usersBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #ef4444;">Error: ${err.message}</td></tr>';
+      usersBody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #ef4444;">Error: ${err.message}</td></tr>`;
     }
   }
   fetchUsers();
