@@ -356,7 +356,9 @@
                             amount: amount,
                             rate: 14.5,
                             sector: sec,
-                            term_years: 3
+                            term: 3,
+                            maturity_date: "2029-07-21",
+                            maturity_amount: Math.round(amount * Math.pow(1 + (14.5 / 100), 3))
                         };
                         const invRes = await fetch('/api/createInvestment', {
                             method: 'POST',
@@ -367,7 +369,7 @@
                         if (invRes.ok) {
                             passbookTxIds.push(invData.transaction_id);
                         } else {
-                            throw new Error(`Test 14 FAILED: Could not create investment in ${sec}.`);
+                            throw new Error(`Test 14 FAILED: Could not create investment in ${sec}. API said: ${invData.error || invData.message || 'Unknown'}`);
                         }
                     }
                 }
