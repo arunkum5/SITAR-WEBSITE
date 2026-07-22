@@ -6,14 +6,13 @@
 <title>Invest Today — SITAR Wealth</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap\" rel=\"stylesheet\">
 <style>
   :root {
-    --ink: #0B0906;
-    --bg: #12100D;
-    --bg-panel: #1B1712;
-    --cream: #F3ECDD;
-    --cream-dim: rgba(243,236,221,0.62);
+    --ink: #001122;
+    --bg: #F4F1EA;
+    --card: #FFFFFF;
+    --muted: #666666;
     --gold: #E6C37C;
     --villas: #C1694A;
     --apartments: #6E86A6;
@@ -28,8 +27,8 @@
   body {
     margin: 0;
     background: var(--bg);
-    color: var(--cream);
-    font-family: 'Work Sans', sans-serif;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -42,11 +41,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(243,236,221,0.1);
+    border-bottom: 1px solid rgba(0,17,34,0.1);
   }
 
   .logo {
-    font-family: 'Fraunces', serif;
+    font-family: 'Inter', sans-serif;
     font-size: 24px;
     font-weight: 600;
     color: var(--gold);
@@ -57,23 +56,23 @@
     max-width: 600px;
     margin: 40px auto;
     padding: 32px;
-    background: var(--bg-panel);
+    background: var(--card);
     border-radius: 16px;
-    border: 1px solid rgba(243,236,221,0.1);
+    border: 1px solid rgba(0,17,34,0.1);
     box-shadow: 0 24px 48px rgba(0,0,0,0.4);
     position: relative;
     overflow: hidden;
   }
 
   h1 {
-    font-family: 'Fraunces', serif;
+    font-family: 'Inter', sans-serif;
     font-size: 32px;
     margin: 0 0 8px 0;
-    color: var(--cream);
+    color: var(--ink);
   }
 
   p.subtitle {
-    color: var(--cream-dim);
+    color: var(--muted);
     margin: 0 0 32px 0;
   }
 
@@ -85,26 +84,26 @@
     display: block;
     font-size: 14px;
     font-weight: 500;
-    color: var(--cream-dim);
+    color: var(--muted);
     margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
   select, input {
     width: 100%;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(243,236,221,0.2);
-    color: var(--cream);
+    background: var(--card);
+    border: 1px solid rgba(0,17,34,0.2);
+    color: var(--ink);
     padding: 14px 16px;
     border-radius: 8px;
     font-size: 16px;
-    font-family: 'Work Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     outline: none;
     transition: all 0.2s;
   }
   select:focus, input:focus {
     border-color: var(--gold);
-    background: rgba(255,255,255,0.08);
+    background: rgba(0,17,34,0.03);
   }
 
   /* Calculation Box */
@@ -127,8 +126,8 @@
   .calc-box .value {
     font-size: 36px;
     font-weight: 700;
-    color: var(--cream);
-    font-family: 'Fraunces', serif;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
     margin-bottom: 4px;
   }
   .calc-box .date {
@@ -140,8 +139,8 @@
   .btn {
     display: block;
     width: 100%;
-    background: var(--gold);
-    color: var(--ink);
+    background: var(--ink);
+    color: var(--bg);
     border: none;
     padding: 16px;
     border-radius: 8px;
@@ -166,8 +165,8 @@
 
   /* Payment Details */
   .payment-details {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(243,236,221,0.1);
+    background: var(--card);
+    border: 1px solid rgba(0,17,34,0.1);
     border-radius: 12px;
     padding: 24px;
     margin-bottom: 24px;
@@ -221,7 +220,7 @@
 
 <header>
   <a href="index.html" class="logo">SITAR.</a>
-  <a href="index.html" style="font-size: 14px; font-weight: 500; color: var(--cream-dim);">← Back to Dashboard</a>
+  <a href="index.html" style="font-size: 14px; font-weight: 500; color: var(--muted);">← Back to Dashboard</a>
 </header>
 
 <div class="container">
@@ -231,11 +230,11 @@
     <div style="margin-bottom: 24px;">
       <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
     </div>
-    <h2 style="font-family: 'Fraunces', serif; font-size: 28px; margin: 0 0 12px 0;">Secure Login Required</h2>
-    <p style="color: var(--cream-dim); margin: 0 0 32px 0;">Please log in or create an account to securely process your investment.</p>
+    <h2 style="font-family: 'Inter', sans-serif; font-size: 28px; margin: 0 0 12px 0;">Secure Login Required</h2>
+    <p style="color: var(--muted); margin: 0 0 32px 0;">Please log in or create an account to securely process your investment.</p>
     
     <div class="auth-modal" id="auth-step-1">
-      <h3 style="margin: 0 0 16px 0; font-family: 'Work Sans', sans-serif;">Enter Phone Number</h3>
+      <h3 style="margin: 0 0 16px 0; font-family: 'Inter', sans-serif;">Enter Phone Number</h3>
       <div style="display: flex; gap: 8px; margin-bottom: 16px;">
         <div style="background: #f8fafc; border: 1px solid #cbd5e1; padding: 12px; border-radius: 8px; color: #334155; font-weight: 500; font-size: 16px; display: flex; align-items: center;">+91</div>
         <input type="tel" id="auth-phone-input" placeholder="Phone Number" style="flex: 1; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 16px; outline: none; color: black; background: white;" oninput="this.value = this.value.replace(/[^0-9]/g, ''); document.getElementById('auth-phone-error').style.display='none';" maxlength="10">
@@ -245,7 +244,7 @@
     </div>
 
     <div class="auth-modal" id="auth-step-2" style="display: none;">
-      <h3 style="margin: 0 0 16px 0; font-family: 'Work Sans', sans-serif;">Enter OTP</h3>
+      <h3 style="margin: 0 0 16px 0; font-family: 'Inter', sans-serif;">Enter OTP</h3>
       <p style="font-size: 13px; color: #64748b; margin-top: -12px; margin-bottom: 16px;">Sent to your number</p>
       <input type="text" id="auth-otp-input" class="auth-input" placeholder="123456">
       <button class="auth-btn" id="auth-verify-otp">Verify & Login</button>
@@ -306,36 +305,36 @@
         <div style="font-size: 12px; color: #666; margin-top: 4px;" id="qr-amount">₹ 5,00,000</div>
       </div>
 
-      <div style="border-top: 1px solid rgba(243,236,221,0.1); margin: 24px 0;"></div>
+      <div style="border-top: 1px solid rgba(0,17,34,0.1); margin: 24px 0;"></div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
         <div>
-          <div style="font-size: 12px; color: var(--cream-dim);">Account Name</div>
+          <div style="font-size: 12px; color: var(--muted);">Account Name</div>
           <div style="font-weight: 600;">SITAR Wealth Mgmt</div>
         </div>
         <div>
-          <div style="font-size: 12px; color: var(--cream-dim);">Account Number</div>
+          <div style="font-size: 12px; color: var(--muted);">Account Number</div>
           <div style="font-weight: 600;">50100445566778</div>
         </div>
         <div>
-          <div style="font-size: 12px; color: var(--cream-dim);">IFSC Code</div>
+          <div style="font-size: 12px; color: var(--muted);">IFSC Code</div>
           <div style="font-weight: 600;">HDFC0001234</div>
         </div>
         <div>
-          <div style="font-size: 12px; color: var(--cream-dim);">Bank Name</div>
+          <div style="font-size: 12px; color: var(--muted);">Bank Name</div>
           <div style="font-weight: 600;">HDFC Bank</div>
         </div>
       </div>
     </div>
 
     <button class="btn" id="btn-confirm-payment">I have completed the payment</button>
-    <button class="btn" id="btn-back-config" style="background: transparent; border: 1px solid var(--cream-dim); color: var(--cream-dim); margin-top: 12px;">← Back to details</button>
+    <button class="btn" id="btn-back-config" style="background: transparent; border: 1px solid var(--cream-dim); color: var(--muted); margin-top: 12px;">← Back to details</button>
   </div>
 
   <!-- STEP 3: SUCCESS (CERTIFICATE) -->
   <div id="step-success" style="display: none; padding: 40px 16px; text-align: center; background: radial-gradient(circle at center, rgba(184,134,11,0.05) 0%, transparent 70%);">
     
-    <div style="position: relative; max-width: 700px; margin: 0 auto; background: #fffdf5; border: 2px solid #B8860B; outline: 10px solid #fffdf5; box-shadow: 0 0 0 12px #B8860B, 0 30px 60px rgba(0,0,0,0.5); padding: 50px; text-align: center; color: #1a1a1a; font-family: 'Fraunces', serif; overflow: hidden;">
+    <div style="position: relative; max-width: 700px; margin: 0 auto; background: #fffdf5; border: 2px solid #B8860B; outline: 10px solid #fffdf5; box-shadow: 0 0 0 12px #B8860B, 0 30px 60px rgba(0,0,0,0.5); padding: 50px; text-align: center; color: #1a1a1a; font-family: 'Inter', sans-serif; overflow: hidden;">
       
       <!-- Guilloche/Ornate Corner Accents -->
       <div style="position: absolute; top: 10px; left: 10px; width: 40px; height: 40px; border-top: 2px solid #B8860B; border-left: 2px solid #B8860B;"></div>
@@ -354,40 +353,40 @@
         <h2 style="font-size: 32px; color: #B8860B; margin: 0; text-transform: uppercase; letter-spacing: 4px; font-weight: 600; text-shadow: 1px 1px 0px rgba(184,134,11,0.2);">Sitar Wealth</h2>
         <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 16px;">
           <div style="height: 1px; flex: 1; background: #B8860B;"></div>
-          <h3 style="font-family: 'Work Sans', sans-serif; font-size: 14px; color: #333; margin: 0; font-weight: 600; letter-spacing: 6px;">OFFICIAL INVESTMENT BOND</h3>
+          <h3 style="font-family: 'Inter', sans-serif; font-size: 14px; color: #333; margin: 0; font-weight: 600; letter-spacing: 6px;">OFFICIAL INVESTMENT BOND</h3>
           <div style="height: 1px; flex: 1; background: #B8860B;"></div>
         </div>
       </div>
 
       <!-- Introductory Text -->
-      <div style="position: relative; z-index: 2; font-family: 'Work Sans', sans-serif; font-size: 14px; color: #555; margin-bottom: 30px; font-style: italic;">
+      <div style="position: relative; z-index: 2; font-family: 'Inter', sans-serif; font-size: 14px; color: #555; margin-bottom: 30px; font-style: italic;">
         This document certifies that the bearer has initiated an investment into the following SITAR Wealth portfolio, subject to final verification and realization of funds.
       </div>
 
       <!-- Dynamic Data Grid -->
       <div style="position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; text-align: center; margin-bottom: 40px; background: rgba(255,253,245,0.9); padding: 30px; border: 1px dashed #B8860B;">
         <div style="border-right: 1px solid rgba(184,134,11,0.2);">
-          <div style="font-family: 'Work Sans', sans-serif; font-size: 10px; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Investment Portfolio</div>
+          <div style="font-family: 'Inter', sans-serif; font-size: 10px; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Investment Portfolio</div>
           <div id="cert-plan" style="font-size: 16px; font-weight: 600; color: #1a1a1a; text-transform: capitalize; margin-top: 4px;">-</div>
         </div>
         <div style="border-right: 1px solid rgba(184,134,11,0.2);">
-          <div style="font-family: 'Work Sans', sans-serif; font-size: 10px; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Lock-in Term</div>
+          <div style="font-family: 'Inter', sans-serif; font-size: 10px; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Lock-in Term</div>
           <div id="cert-term" style="font-size: 16px; font-weight: 600; color: #1a1a1a; margin-top: 4px;">-</div>
         </div>
         <div>
-          <div style="font-family: 'Work Sans', sans-serif; font-size: 10px; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Issue Date</div>
+          <div style="font-family: 'Inter', sans-serif; font-size: 10px; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Issue Date</div>
           <div id="cert-issue-date" style="font-size: 16px; font-weight: 600; color: #1a1a1a; margin-top: 4px;">-</div>
         </div>
         <div style="border-right: 1px solid rgba(184,134,11,0.2); border-top: 1px solid rgba(184,134,11,0.2); padding-top: 24px;">
-          <div style="font-family: 'Work Sans', sans-serif; font-size: 10px; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Principal Amount</div>
+          <div style="font-family: 'Inter', sans-serif; font-size: 10px; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Principal Amount</div>
           <div id="cert-amount" style="font-size: 20px; font-weight: 700; color: #1a1a1a; margin-top: 4px;">-</div>
         </div>
         <div style="border-right: 1px solid rgba(184,134,11,0.2); border-top: 1px solid rgba(184,134,11,0.2); padding-top: 24px;">
-          <div style="font-family: 'Work Sans', sans-serif; font-size: 10px; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Maturity Date</div>
+          <div style="font-family: 'Inter', sans-serif; font-size: 10px; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Maturity Date</div>
           <div id="cert-maturity-date" style="font-size: 16px; font-weight: 700; color: #1a1a1a; margin-top: 4px;">-</div>
         </div>
         <div style="border-top: 1px solid rgba(184,134,11,0.2); padding-top: 24px;">
-          <div style="font-family: 'Work Sans', sans-serif; font-size: 10px; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Guaranteed Maturity</div>
+          <div style="font-family: 'Inter', sans-serif; font-size: 10px; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Guaranteed Maturity</div>
           <div id="cert-maturity" style="font-size: 20px; font-weight: 700; color: #1a1a1a; margin-top: 4px;">-</div>
         </div>
       </div>
@@ -395,14 +394,14 @@
       <!-- Seal & Signature Area -->
       <div style="position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 20px;">
         <!-- Status Banner -->
-        <div style="background: #fff; border: 2px solid #d4af37; color: #B8860B; padding: 10px 20px; font-family: 'Work Sans', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 2px; transform: rotate(-2deg); box-shadow: 2px 2px 5px rgba(0,0,0,0.1);">
+        <div style="background: #fff; border: 2px solid #d4af37; color: #B8860B; padding: 10px 20px; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 2px; transform: rotate(-2deg); box-shadow: 2px 2px 5px rgba(0,0,0,0.1);">
           PENDING VERIFICATION
         </div>
 
         <!-- Signature Line -->
         <div style="text-align: center; width: 150px;">
           <div style="border-bottom: 1px solid #1a1a1a; margin-bottom: 8px;"></div>
-          <div style="font-family: 'Work Sans', sans-serif; font-size: 10px; color: #555; text-transform: uppercase;">Authorized Signatory</div>
+          <div style="font-family: 'Inter', sans-serif; font-size: 10px; color: #555; text-transform: uppercase;">Authorized Signatory</div>
         </div>
       </div>
 
