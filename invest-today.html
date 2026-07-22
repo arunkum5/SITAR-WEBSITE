@@ -332,29 +332,33 @@
   </div>
 
   <!-- STEP 3: SUCCESS (CERTIFICATE) -->
-  <div id="step-success" style="display: none; padding: 40px 16px; text-align: center; background: radial-gradient(circle at center, rgba(184,134,11,0.05) 0%, transparent 70%);">
-    
-    <div style="position: relative; max-width: 700px; margin: 0 auto; background: #fffdf5; border: 2px solid #B8860B; outline: 10px solid #fffdf5; box-shadow: 0 0 0 12px #B8860B, 0 30px 60px rgba(0,0,0,0.5); padding: 50px; text-align: center; color: #1a1a1a; font-family: 'Inter', sans-serif; overflow: hidden;">
+  <div id="step-success" style="display: none; padding: 40px 16px; text-align: center; position: relative;">
+    <!-- Background Gradient similar to index.html -->
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80vw; height: 80vw; max-width: 800px; max-height: 800px; background: radial-gradient(circle, rgba(37, 211, 102, 0.3) 0%, rgba(37, 211, 102, 0.1) 40%, rgba(244, 241, 234, 0) 70%); border-radius: 50%; z-index: 0; filter: blur(60px); pointer-events: none;"></div>
+
+    <div style="position: relative; max-width: 700px; margin: 0 auto; background: var(--card); border: 2px solid rgba(0, 17, 34, 0.1); outline: 10px solid var(--card); box-shadow: 0 0 0 12px rgba(0, 17, 34, 0.05), 0 30px 60px rgba(0,0,0,0.1); padding: 50px; text-align: center; color: var(--ink); font-family: 'Inter', sans-serif; overflow: hidden; z-index: 1;">
       
       <!-- Guilloche/Ornate Corner Accents -->
-      <div style="position: absolute; top: 10px; left: 10px; width: 40px; height: 40px; border-top: 2px solid #B8860B; border-left: 2px solid #B8860B;"></div>
-      <div style="position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; border-top: 2px solid #B8860B; border-right: 2px solid #B8860B;"></div>
-      <div style="position: absolute; bottom: 10px; left: 10px; width: 40px; height: 40px; border-bottom: 2px solid #B8860B; border-left: 2px solid #B8860B;"></div>
-      <div style="position: absolute; bottom: 10px; right: 10px; width: 40px; height: 40px; border-bottom: 2px solid #B8860B; border-right: 2px solid #B8860B;"></div>
+      <div style="position: absolute; top: 10px; left: 10px; width: 40px; height: 40px; border-top: 2px solid rgba(0, 17, 34, 0.2); border-left: 2px solid rgba(0, 17, 34, 0.2);"></div>
+      <div style="position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; border-top: 2px solid rgba(0, 17, 34, 0.2); border-right: 2px solid rgba(0, 17, 34, 0.2);"></div>
+      <div style="position: absolute; bottom: 10px; left: 10px; width: 40px; height: 40px; border-bottom: 2px solid rgba(0, 17, 34, 0.2); border-left: 2px solid rgba(0, 17, 34, 0.2);"></div>
+      <div style="position: absolute; bottom: 10px; right: 10px; width: 40px; height: 40px; border-bottom: 2px solid rgba(0, 17, 34, 0.2); border-right: 2px solid rgba(0, 17, 34, 0.2);"></div>
 
       <!-- Huge Watermark Logo -->
-      <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.1; pointer-events: none;">
-        <img src="logo.svg" alt="SITAR" style="width: 550px;">
+      <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.03; pointer-events: none;">
+        <img src="nlogo.svg" alt="SITAR" style="width: 550px;">
       </div>
 
       <!-- Header -->
-      <div style="position: relative; z-index: 2; margin-bottom: 30px;">
-        <img src="logo.svg" alt="SITAR" style="height: 50px; margin-bottom: 16px; filter: invert(0.8) sepia(1) saturate(5) hue-rotate(330deg);">
-        <h2 style="font-size: 32px; color: #B8860B; margin: 0; text-transform: uppercase; letter-spacing: 4px; font-weight: 600; text-shadow: 1px 1px 0px rgba(184,134,11,0.2);">Sitar Wealth</h2>
-        <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 16px;">
-          <div style="height: 1px; flex: 1; background: #B8860B;"></div>
-          <h3 style="font-family: 'Inter', sans-serif; font-size: 14px; color: #333; margin: 0; font-weight: 600; letter-spacing: 6px;">OFFICIAL INVESTMENT BOND</h3>
-          <div style="height: 1px; flex: 1; background: #B8860B;"></div>
+      <div style="position: relative; z-index: 2; margin-bottom: 30px; display: flex; flex-direction: column; align-items: center;">
+        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+          <img src="nlogo.svg" alt="SITAR Wealth logo" style="height: 48px; width: 48px; object-fit: contain;">
+          <span style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; color: var(--ink); margin-left: 12px;">SITAR Wealth</span>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 8px; width: 100%;">
+          <div style="height: 1px; flex: 1; background: rgba(0, 17, 34, 0.1);"></div>
+          <h3 style="font-family: 'Inter', sans-serif; font-size: 14px; color: var(--muted); margin: 0; font-weight: 600; letter-spacing: 6px;">OFFICIAL INVESTMENT BOND</h3>
+          <div style="height: 1px; flex: 1; background: rgba(0, 17, 34, 0.1);"></div>
         </div>
       </div>
 
