@@ -102,7 +102,7 @@
 
   .hero-text {
     max-width: 640px;
-    margin-top: -2vh;
+    margin-top: -4vh;
     animation: riseIn 0.8s ease-out 0.05s both;
   }
   .hero-text h1 {
@@ -241,7 +241,7 @@
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 6vw;
+      padding: 10px 6vw;
     }
     .brand-name { font-size: 1.05rem; }
     
@@ -253,33 +253,42 @@
       display: none;
       flex-direction: column;
       position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
+      top: calc(100% + 4px);
+      right: 6vw;
+      left: auto;
+      width: 210px;
       background: #FFFFFF;
-      padding: 18px 6vw;
-      gap: 12px;
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 14px 18px;
+      gap: 8px;
+      border-radius: 16px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+      border: 1px solid rgba(0, 0, 0, 0.08);
       z-index: 99;
       align-items: flex-start;
     }
     nav.nav-links.active {
       display: flex;
-      animation: riseIn 0.3s ease-out both;
+      animation: riseIn 0.25s ease-out both;
     }
     nav.nav-links a {
-      font-size: 1rem;
-      padding: 8px 0;
+      font-size: 0.92rem;
+      padding: 6px 0;
       width: 100%;
-      border-bottom: 1px solid #f2f0eb;
+      border-bottom: 1px solid #f4f2ee;
     }
     nav.nav-links a:last-child {
       border-bottom: none;
     }
 
-    main { gap: 4px; }
-    .hero-text { margin-top: 0; }
+    main {
+      justify-content: flex-start;
+      padding-top: max(4px, 1vh);
+      gap: 4px;
+    }
+    .hero-text {
+      margin-top: 0;
+      transform: translateY(-2px);
+    }
     .hero-image-slot { width: min(90vw, 378px); max-height: 36vh; }
     .timer-icon-outside { height: 84px; }
     .btn { padding: 10px 22px; font-size: 0.85rem; }
