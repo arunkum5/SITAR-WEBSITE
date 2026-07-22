@@ -241,7 +241,8 @@
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 6vw;
+      padding: 16px 6vw 8px 6vw;
+      z-index: 1000;
     }
     .brand-name { font-size: 1.05rem; }
     
@@ -253,41 +254,45 @@
       display: none;
       flex-direction: column;
       position: absolute;
-      top: calc(100% + 4px);
+      top: calc(100% + 8px);
       right: 6vw;
       left: auto;
-      width: 210px;
-      background: #FFFFFF;
-      padding: 14px 18px;
-      gap: 8px;
+      width: 220px;
+      background-color: #FFFFFF !important;
+      opacity: 1 !important;
+      padding: 16px 20px;
+      gap: 10px;
       border-radius: 16px;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      z-index: 99;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.08);
+      border: 1.5px solid #E5E0D6;
+      z-index: 99999 !important;
       align-items: flex-start;
     }
     nav.nav-links.active {
       display: flex;
-      animation: riseIn 0.25s ease-out both;
     }
     nav.nav-links a {
-      font-size: 0.92rem;
-      padding: 6px 0;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--ink);
+      padding: 8px 0;
       width: 100%;
-      border-bottom: 1px solid #f4f2ee;
+      border-bottom: 1px solid #F0ECE3;
+      background: transparent;
+      opacity: 1 !important;
     }
     nav.nav-links a:last-child {
       border-bottom: none;
     }
 
     main {
-      justify-content: flex-start;
-      padding-top: max(4px, 1vh);
-      gap: 4px;
+      justify-content: center;
+      padding: 12px 6vw 0 6vw;
+      gap: 6px;
     }
     .hero-text {
       margin-top: 0;
-      transform: translateY(-2px);
+      transform: none;
     }
     .hero-image-slot { width: min(90vw, 378px); max-height: 36vh; }
     .timer-icon-outside { height: 84px; }
