@@ -679,7 +679,7 @@
       <a href="#about" onclick="document.getElementById('navLinks').classList.remove('active'); document.getElementById('mobileToggle').classList.remove('active');">About Us</a>
       <a href="#services" onclick="document.getElementById('navLinks').classList.remove('active'); document.getElementById('mobileToggle').classList.remove('active');">Invest</a>
       <a href="#contact" onclick="document.getElementById('navLinks').classList.remove('active'); document.getElementById('mobileToggle').classList.remove('active');">Contact</a>
-      <a href="#login" id="nav-login-btn">Login / Signup</a>
+      <a href="#login" id="nav-login-btn">Get Started</a>
       <a href="#profile" id="nav-profile-btn" class="nav-profile-trigger" style="display: none; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--ink); border-radius: 50%; color: var(--bg); font-weight: 700; font-size: 16px; margin-left: 12px; text-decoration: none;">U</a>
     </nav>
     <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu" onclick="document.getElementById('navLinks').classList.toggle('active'); this.classList.toggle('active');">
@@ -815,7 +815,7 @@
               </div>
 
               <div style="margin-top: 4px;">
-                <a href="page-1.html" class="btn btn-primary" style="display: block; text-align: center; width: 100%; font-size: 0.85rem; padding: 10px;">Invest Today</a>
+                <a href="#" id="invest-today-btn" class="btn btn-primary" style="display: block; text-align: center; width: 100%; font-size: 0.85rem; padding: 10px;">Invest Today</a>
               </div>
             </div>
             
@@ -1318,7 +1318,27 @@
       window.addEventListener('auth-success', () => {
         updateNavState();
         closeModal(authModal);
+        
+        // Handle pending redirect intent if any
+        if (sessionStorage.getItem('intent_invest') === 'true') {
+          sessionStorage.removeItem('intent_invest');
+          window.location.href = 'invest-today.html';
+        }
       });
+
+      // Handle Invest Today / Invest Now button click
+      const btnInvest = document.getElementById('invest-today-btn');
+      if (btnInvest) {
+        btnInvest.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (localStorage.getItem('sitar_logged_in') === 'true') {
+            window.location.href = 'invest-today.html';
+          } else {
+            sessionStorage.setItem('intent_invest', 'true');
+            openModal(authModal);
+          }
+        });
+      }
 
       // Logout
       btnLogout.addEventListener('click', () => {
