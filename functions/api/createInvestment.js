@@ -18,31 +18,43 @@ export async function onRequestPost({ request, env }) {
       phone = `+${phone}`;
     }
 
-    // Upsert into investors to prevent foreign key constraint violations
-    const investorsPayload = {
-      account_id: phone,
-      name: "Investor",
-      pan_number: `T${phone.replace(/\D/g, '').slice(-9)}`.padEnd(10, '0'),
-      aadhar_number: `T0${phone.replace(/\D/g, '').slice(-10)}`.padEnd(12, '0'),
-    };
-
-    const invResponse = await fetch(`${supabaseUrl}/rest/v1/investors?on_conflict=account_id`, {
-      method: 'POST',
+    // Check if investor already exists to prevent overwriting their real profile data with defaults
+    let invResponse = await fetch(`${supabaseUrl}/rest/v1/investors?account_id=eq.${encodeURIComponent(phone)}&select=*`, {
       headers: {
-        'Content-Type': 'application/json',
         'apikey': supabaseKey,
         'Authorization': `Bearer ${supabaseKey}`,
-        'Prefer': 'resolution=merge-duplicates,return=representation'
-      },
-      body: JSON.stringify(investorsPayload)
+        'Content-Type': 'application/json'
+      }
     });
 
-    if (!invResponse.ok) {
-        const errBody = await invResponse.text();
-        return new Response(JSON.stringify({ error: `Investors Upsert Failed: ${errBody}` }), { status: invResponse.status });
+    let invData = await invResponse.json();
+
+    // If investor doesn't exist, create a default profile for them
+    if (!invData || invData.length === 0) {
+      const investorsPayload = {
+        account_id: phone,
+        name: "Investor",
+        pan_number: `T${phone.replace(/\D/g, '').slice(-9)}`.padEnd(10, '0'),
+        aadhar_number: `T0${phone.replace(/\D/g, '').slice(-10)}`.padEnd(12, '0'),
+      };
+
+      const insertRes = await fetch(`${supabaseUrl}/rest/v1/investors`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify(investorsPayload)
+      });
+
+      if (!insertRes.ok) {
+          const errBody = await insertRes.text();
+          return new Response(JSON.stringify({ error: `Investors Insert Failed: ${errBody}` }), { status: insertRes.status });
+      }
+      invData = await insertRes.json();
     }
-    
-    const invData = await invResponse.json();
     const folioNumber = invData && invData.length > 0 ? invData[0].folio_number : 'SWB' + Math.floor(100000 + Math.random() * 900000);
     const investorName = invData && invData.length > 0 ? invData[0].name : 'Valued Investor';
 
