@@ -3,7 +3,14 @@ export async function onRequestPost({ request, env }) {
     const data = await request.json();
     
     // Default phone for testing if none provided
-    const phone = data.phone || "+919999999999";
+    let phone = data.phone || "+919999999999";
+
+    // Normalize phone to prevent duplicate accounts (e.g. 9999999999 vs +919999999999)
+    if (phone.length === 10 && !phone.startsWith('+')) {
+      phone = `+91${phone}`;
+    } else if (phone.length > 10 && !phone.startsWith('+')) {
+      phone = `+${phone}`;
+    }
 
     const supabaseUrl = env.SUPABASE_URL;
     const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_ANON_KEY;
@@ -18,10 +25,11 @@ export async function onRequestPost({ request, env }) {
         account_id: phone, // Using phone as the primary account_id
         name: data.name || '-',
         email: data.email || null,
-        pan_number: data.pan || `T${phone.replace(/\\D/g, "").slice(-9)}`.padEnd(10, "0"),
-        aadhar_number: data.aadhar || `T0${phone.replace(/\\D/g, "").slice(-10)}`.padEnd(12, "0"),
+        pan_number: data.pan || `T${phone.replace(/\D/g, "").slice(-9)}`.padEnd(10, "0"),
+        aadhar_number: data.aadhar || `T0${phone.replace(/\D/g, "").slice(-10)}`.padEnd(12, "0"),
         nominee_name: data.nomineeName || null,
         nominee_contact: data.nomineePhone || null,
+        profile_photo_base64: data.profilePhotoBase64 || null,
       };
 
       const invResponse = await fetch(`${supabaseUrl}/rest/v1/investors?on_conflict=account_id`, {

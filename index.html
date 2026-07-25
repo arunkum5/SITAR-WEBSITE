@@ -1051,6 +1051,16 @@
             <button onclick="toggleProfileEdit(true)" style="background: none; border: none; color: #3E8E85; font-size: 12px; font-weight: 700; cursor: pointer;">Edit details</button>
           </div>
           
+          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+            <div style="width: 64px; height: 64px; border-radius: 50%; background: #f1f5f9; overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border: 2px solid #e2e8f0;">
+              <img id="view-profile-photo" src="" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+              <span id="view-profile-photo-placeholder" style="color: #94a3b8; font-size: 28px;">👤</span>
+            </div>
+            <div>
+              <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Profile Photo</div>
+            </div>
+          </div>
+          
           <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
               <div style="grid-column: span 2; padding-bottom: 12px; border-bottom: 1px dashed #cbd5e1; margin-bottom: -4px;">
@@ -1108,6 +1118,19 @@
           <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
             <div style="font-size: 12px; font-weight: 700; color: #0f172a; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Personal Details</div>
             
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+              <div style="width: 60px; height: 60px; border-radius: 50%; background: #f1f5f9; overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border: 2px solid #e2e8f0;">
+                <img id="edit-profile-photo-preview" src="" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                <span id="edit-profile-photo-placeholder" style="color: #94a3b8; font-size: 24px;">👤</span>
+              </div>
+              <div style="flex: 1;">
+                <label style="display: block; font-size: 12px; color: #0f172a; font-weight: 600; margin-bottom: 4px;">Profile Photo</label>
+                <input type="file" id="edit-profile-photo" accept="image/*" style="font-size: 12px; color: #64748b; width: 100%;">
+                <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">Max size: 2MB. Square image recommended.</div>
+                <input type="hidden" id="edit-profile-photo-base64">
+              </div>
+            </div>
+            
             <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">Full Name</label>
             <input type="text" id="edit-full-name" placeholder="Your Name" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
             
@@ -1122,7 +1145,7 @@
             <input type="text" id="edit-pan" value="ABCDE1234F" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
             
             <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">Aadhar Number <span style="font-size: 10px; color: #ef4444;">(Will be masked after save)</span></label>
-            <input type="text" id="edit-aadhar" placeholder="12-digit Aadhar" value="1234 5678 9012" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
+            <input type="text" id="edit-aadhar" placeholder="12-digit Aadhar" value="1234 5678 9012" maxlength="14" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'" oninput="this.value = this.value.replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, '$1 ').substring(0, 14);">
             
             <div style="border-top: 1px dashed #e2e8f0; margin: 12px 0; padding-top: 12px;"></div>
             
@@ -1137,7 +1160,7 @@
               </div>
               <div>
                 <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">Phone</label>
-                <input type="text" id="edit-nominee-phone" value="+91 98765 43210" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
+                <input type="text" id="edit-nominee-phone" value="+91 98765 43210" maxlength="15" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'" oninput="this.value = this.value.replace(/[^\d+\s-]/g, '');">
               </div>
             </div>
 
@@ -1362,6 +1385,56 @@
         document.getElementById('auth-logout-btn').style.display = showEdit ? 'none' : 'block';
       };
 
+      // Profile Photo Handling
+      const photoInput = document.getElementById('edit-profile-photo');
+      if (photoInput) {
+        photoInput.addEventListener('change', function(e) {
+          const file = e.target.files[0];
+          if (!file) return;
+          
+          if (file.size > 2 * 1024 * 1024) {
+            alert("File is too large. Please select an image under 2MB.");
+            this.value = "";
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            const img = new Image();
+            img.onload = function() {
+              const canvas = document.createElement('canvas');
+              const MAX_SIZE = 400; // compress to max 400x400
+              let width = img.width;
+              let height = img.height;
+
+              if (width > height) {
+                if (width > MAX_SIZE) {
+                  height *= MAX_SIZE / width;
+                  width = MAX_SIZE;
+                }
+              } else {
+                if (height > MAX_SIZE) {
+                  width *= MAX_SIZE / height;
+                  height = MAX_SIZE;
+                }
+              }
+              canvas.width = width;
+              canvas.height = height;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, width, height);
+              const dataUrl = canvas.toDataURL('image/jpeg', 0.85); // 85% quality JPEG
+              
+              document.getElementById('edit-profile-photo-base64').value = dataUrl;
+              document.getElementById('edit-profile-photo-preview').src = dataUrl;
+              document.getElementById('edit-profile-photo-preview').style.display = 'block';
+              document.getElementById('edit-profile-photo-placeholder').style.display = 'none';
+            };
+            img.src = event.target.result;
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
       window.saveProfileDetails = async function() {
         const aadharInput = document.getElementById('edit-aadhar').value;
         const aadharClean = aadharInput.replace(/\s/g, '');
@@ -1398,7 +1471,8 @@
               nomineePhone: document.getElementById('edit-nominee-phone').value,
               bankAcc: document.getElementById('edit-bank-acc').value,
               bankIfsc: document.getElementById('edit-bank-ifsc').value,
-              bankType: document.getElementById('edit-bank-type').value
+              bankType: document.getElementById('edit-bank-type').value,
+              profilePhotoBase64: document.getElementById('edit-profile-photo-base64').value || null
             })
           });
 
@@ -1433,6 +1507,13 @@
             document.getElementById('view-details-name').textContent = newName;
             document.getElementById('view-details-email').textContent = document.getElementById('edit-email').value || '-';
             document.getElementById('view-pan').textContent = document.getElementById('edit-pan').value || '-';
+            
+            const photoBase64 = document.getElementById('edit-profile-photo-base64').value;
+            if (photoBase64) {
+              document.getElementById('view-profile-photo').src = photoBase64;
+              document.getElementById('view-profile-photo').style.display = 'block';
+              document.getElementById('view-profile-photo-placeholder').style.display = 'none';
+            }
             
             if (rawAadhar) {
               document.getElementById('view-aadhar').innerHTML = `${maskedAadhar} <span style="font-size: 10px; color: #10b981; background: #d1fae5; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">Verified</span>`;
