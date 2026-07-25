@@ -432,7 +432,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   async function fetchInvestments() {
     if (!invTbody) return;
     try {
-      const response = await fetch(\`/api/admin/getInvestments?_t=\${Date.now()}\`);
+      const response = await fetch(`/api/admin/getInvestments?_t=${Date.now()}`);
       if (response.status === 401) { window.location.href = '/admin-login.html'; return; }
       const data = await response.json();
       
