@@ -1048,7 +1048,10 @@
           <!-- Identity Details -->
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <h4 style="font-family: 'Work Sans', sans-serif; font-size: 16px; color: #001122; margin: 0;">Identity & Nominee</h4>
-            <button onclick="toggleProfileEdit(true)" style="background: none; border: none; color: #3E8E85; font-size: 12px; font-weight: 700; cursor: pointer;">Edit details</button>
+            <div>
+              <button onclick="loadUserProfile()" style="background: none; border: none; color: #64748b; font-size: 12px; font-weight: 600; cursor: pointer; margin-right: 12px;">🔄 Refresh</button>
+              <button onclick="toggleProfileEdit(true)" style="background: none; border: none; color: #3E8E85; font-size: 12px; font-weight: 700; cursor: pointer;">Edit details</button>
+            </div>
           </div>
           
           <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
@@ -1142,7 +1145,7 @@
             <div style="font-size: 12px; font-weight: 700; color: #0f172a; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Identity (Optional)</div>
             
             <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">PAN Number</label>
-            <input type="text" id="edit-pan" value="ABCDE1234F" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
+            <input type="text" id="edit-pan" placeholder="ABCDE1234F" maxlength="10" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; text-transform: uppercase; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '').substring(0, 10);">
             
             <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">Aadhar Number <span style="font-size: 10px; color: #ef4444;">(Will be masked after save)</span></label>
             <input type="text" id="edit-aadhar" placeholder="12-digit Aadhar" value="1234 5678 9012" maxlength="14" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'" oninput="this.value = this.value.replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, '$1 ').substring(0, 14);">
@@ -1341,6 +1344,7 @@
       window.addEventListener('auth-success', () => {
         updateNavState();
         closeModal(authModal);
+        if (window.loadUserProfile) window.loadUserProfile();
         
         // Handle pending redirect intent if any
         if (sessionStorage.getItem('intent_invest') === 'true') {
@@ -1433,6 +1437,86 @@
           };
           reader.readAsDataURL(file);
         });
+      }
+
+      window.loadUserProfile = async function() {
+        const phone = localStorage.getItem('user_phone');
+        if (!phone) return;
+        
+        try {
+          const res = await fetch(`/api/getProfile?phone=${encodeURIComponent(phone)}`);
+          if (!res.ok) throw new Error("Failed to fetch profile");
+          
+          const data = await res.json();
+          if (data.investor) {
+            const inv = data.investor;
+            document.getElementById('edit-full-name').value = inv.name !== 'Investor' ? inv.name : '';
+            document.getElementById('edit-email').value = inv.email || '';
+            document.getElementById('edit-pan').value = inv.pan_number && inv.pan_number.indexOf('T') !== 0 ? inv.pan_number : '';
+            document.getElementById('edit-aadhar').value = inv.aadhar_number && inv.aadhar_number.indexOf('T0') !== 0 ? inv.aadhar_number.replace(/(\d{4})(?=\d)/g, '$1 ') : '';
+            document.getElementById('edit-nominee-name').value = inv.nominee_name || '';
+            document.getElementById('edit-nominee-phone').value = inv.nominee_contact || '';
+            
+            // Populate photo
+            if (inv.profile_photo_base64) {
+              document.getElementById('edit-profile-photo-base64').value = inv.profile_photo_base64;
+              document.getElementById('edit-profile-photo-preview').src = inv.profile_photo_base64;
+              document.getElementById('edit-profile-photo-preview').style.display = 'block';
+              document.getElementById('edit-profile-photo-placeholder').style.display = 'none';
+              
+              document.getElementById('view-profile-photo').src = inv.profile_photo_base64;
+              document.getElementById('view-profile-photo').style.display = 'block';
+              document.getElementById('view-profile-photo-placeholder').style.display = 'none';
+            }
+            
+            // Re-trigger the manual DOM update script logic
+            const newName = inv.name !== 'Investor' && inv.name ? inv.name : 'Investor';
+            document.getElementById('view-details-name').textContent = newName;
+            document.getElementById('view-details-email').textContent = inv.email || '-';
+            document.getElementById('view-pan').textContent = inv.pan_number && inv.pan_number.indexOf('T') !== 0 ? inv.pan_number : '-';
+            
+            if (inv.aadhar_number && inv.aadhar_number.indexOf('T0') !== 0) {
+              const rawAadhar = inv.aadhar_number;
+              const maskedAadhar = rawAadhar.length >= 4 ? `XXXX-XXXX-${rawAadhar.slice(-4)}` : rawAadhar;
+              document.getElementById('view-aadhar').innerHTML = `${maskedAadhar} <span style="font-size: 10px; color: #10b981; background: #d1fae5; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">Verified</span>`;
+            } else {
+              document.getElementById('view-aadhar').innerHTML = '-';
+            }
+            
+            document.getElementById('view-nominee-name').innerHTML = `${inv.nominee_name || '-'} <span style="color: #64748b; font-weight: 400; font-size: 13px;"></span>`;
+            document.getElementById('view-nominee-phone').textContent = inv.nominee_contact || '-';
+
+            // Top Header Logic
+            const nameParts = newName.trim().split(' ');
+            let initials = 'U';
+            if (nameParts.length > 0 && nameParts[0].length > 0) {
+              initials = nameParts[0][0];
+              if (nameParts.length > 1 && nameParts[nameParts.length - 1].length > 0) {
+                initials += nameParts[nameParts.length - 1][0];
+              }
+            }
+            document.getElementById('view-initials').textContent = initials.toUpperCase();
+            document.getElementById('view-full-name').textContent = newName;
+          }
+          
+          if (data.bank) {
+            const bank = data.bank;
+            document.getElementById('edit-bank-acc').value = bank.account_number || '';
+            document.getElementById('edit-bank-ifsc').value = bank.ifsc_code || '';
+            
+            const rawAcc = bank.account_number || '';
+            const maskedAcc = rawAcc.length >= 4 ? `XXXX XXXX ${rawAcc.slice(-4)}` : rawAcc;
+            document.getElementById('view-bank-acc').textContent = maskedAcc || '-';
+            document.getElementById('view-bank-ifsc').textContent = bank.ifsc_code || '-';
+          }
+        } catch (err) {
+          console.error("Error loading profile:", err);
+        }
+      };
+      
+      // Auto-load if already logged in on page load
+      if (localStorage.getItem('sitar_logged_in') === 'true') {
+        loadUserProfile();
       }
 
       window.saveProfileDetails = async function() {
