@@ -1497,16 +1497,6 @@
             }
             document.getElementById('view-initials').textContent = initials.toUpperCase();
             document.getElementById('view-full-name').textContent = newName;
-            
-            // Also update main nav profile icon
-            const navBtn = document.getElementById('nav-profile-btn');
-            if (navBtn) {
-              if (inv.profile_photo_base64) {
-                navBtn.innerHTML = `<img src="${inv.profile_photo_base64}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.2);">`;
-              } else {
-                navBtn.innerHTML = initials.toUpperCase();
-              }
-            }
           }
           
           if (data.bank) {
@@ -1599,16 +1589,6 @@
             document.getElementById('view-initials').textContent = initials.toUpperCase();
             document.getElementById('view-full-name').textContent = newName;
             document.getElementById('view-details-name').textContent = newName;
-            
-            const photoBase64 = document.getElementById('edit-profile-photo-base64').value;
-            const navBtn = document.getElementById('nav-profile-btn');
-            if (navBtn) {
-              if (photoBase64) {
-                navBtn.innerHTML = `<img src="${photoBase64}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.2);">`;
-              } else {
-                navBtn.innerHTML = initials.toUpperCase();
-              }
-            }
             document.getElementById('view-details-email').textContent = document.getElementById('edit-email').value || '-';
             document.getElementById('view-pan').textContent = document.getElementById('edit-pan').value || '-';
             
