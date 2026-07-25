@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap\" rel=\"stylesheet\">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+39+Text&display=swap" rel="stylesheet">
 <style>
   :root {
     --ink: #001122;
@@ -367,6 +368,19 @@
         This document certifies that the bearer has initiated an investment into the following SITAR Wealth portfolio, subject to final verification and realization of funds.
       </div>
 
+      <!-- Investor Details & Barcode -->
+      <div style="position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(184,134,11,0.2); text-align: left;">
+        <div>
+           <div style="font-family: 'Inter', sans-serif; font-size: 10px; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Investor Name</div>
+           <div id="cert-investor-name" style="font-size: 18px; font-weight: 700; color: #1a1a1a; margin-top: 4px; text-transform: uppercase;">Valued Investor</div>
+           <div style="font-family: 'Inter', sans-serif; font-size: 10px; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; margin-top: 12px;">Bond Account Number</div>
+           <div id="cert-account-number" style="font-size: 16px; font-weight: 600; color: #1a1a1a; margin-top: 4px; letter-spacing: 1px;">-</div>
+        </div>
+        <div style="text-align: right;">
+           <div id="cert-barcode" style="font-family: 'Libre Barcode 39 Text', cursive; font-size: 52px; color: #1a1a1a; line-height: 1;">-</div>
+        </div>
+      </div>
+
       <!-- Dynamic Data Grid -->
       <div style="position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; text-align: center; margin-bottom: 40px; background: rgba(255,253,245,0.9); padding: 30px; border: 1px dashed #B8860B;">
         <div style="border-right: 1px solid rgba(184,134,11,0.2);">
@@ -593,6 +607,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
       
       // Success
+      const folioAcc = result.folio_number || ('SWB' + Math.floor(100000000 + Math.random() * 900000000));
+      const investorName = result.name || 'Valued Investor';
+      document.getElementById('cert-investor-name').textContent = investorName.toUpperCase();
+      document.getElementById('cert-account-number').textContent = folioAcc;
+      document.getElementById('cert-barcode').textContent = '*' + folioAcc + '*';
+
       document.getElementById('cert-plan').textContent = payload.sector + ' Plan';
       document.getElementById('cert-term').textContent = payload.term + ' Years';
       

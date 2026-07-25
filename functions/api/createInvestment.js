@@ -32,7 +32,7 @@ export async function onRequestPost({ request, env }) {
         'Content-Type': 'application/json',
         'apikey': supabaseKey,
         'Authorization': `Bearer ${supabaseKey}`,
-        'Prefer': 'resolution=merge-duplicates'
+        'Prefer': 'resolution=merge-duplicates,return=representation'
       },
       body: JSON.stringify(investorsPayload)
     });
@@ -41,6 +41,10 @@ export async function onRequestPost({ request, env }) {
         const errBody = await invResponse.text();
         return new Response(JSON.stringify({ error: `Investors Upsert Failed: ${errBody}` }), { status: invResponse.status });
     }
+    
+    const invData = await invResponse.json();
+    const folioNumber = invData && invData.length > 0 ? invData[0].folio_number : 'SWB' + Math.floor(100000 + Math.random() * 900000);
+    const investorName = invData && invData.length > 0 ? invData[0].name : 'Valued Investor';
 
     const payload = {
       account_id: phone, // user identifier
@@ -68,7 +72,7 @@ export async function onRequestPost({ request, env }) {
         return new Response(JSON.stringify({ error: `Supabase Error: ${errBody}` }), { status: response.status });
     }
 
-    return new Response(JSON.stringify({ success: true }), {
+    return new Response(JSON.stringify({ success: true, folio_number: folioNumber, name: investorName }), {
       headers: { 'Content-Type': 'application/json' }
     });
 

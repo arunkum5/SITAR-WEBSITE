@@ -322,104 +322,148 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     });
   }
+  let globalInvestments = [];
+  let sortColInvestments = null;
+  let sortAscInvestments = true;
+
+  function renderInvestmentsTable(data) {
+    if (!invTbody) return;
+    invTbody.innerHTML = '';
+    if (data.length === 0) {
+      invTbody.innerHTML = '<tr><td colspan="11" style="text-align: center; color: #64748b;">No investments found.</td></tr>';
+      return;
+    }
+
+    data.forEach(inv => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><input type="checkbox" class="row-select" data-id="${inv.transaction_id}"></td>
+        <td style="font-size: 11px;">${inv.transaction_id.substring(0,8)}</td>
+        <td><div style="font-weight: 700; color: #d97706; font-size: 13px;">${inv.investors?.folio_number || '-'}</div></td>
+        <td>
+          <div style="font-weight: 600; color: #1A2980; text-transform: capitalize;">${inv.investors?.name || 'Unknown'}</div>
+          <div style="font-size: 11px; color: #64748b;">${inv.account_id || '-'}</div>
+        </td>
+        <td style="font-size: 11px; color: #64748b; white-space: nowrap;">${new Date(inv.transaction_date).toLocaleString('en-IN', {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'})}</td>
+        <td style="text-transform: capitalize;">${inv.sector || '-'}</td>
+        <td>${inv.term_years || '-'} Yrs</td>
+        <td>
+          <div style="font-weight: 600; color: #0f172a;">₹ ${Math.round(inv.invested_amount || 0).toLocaleString('en-IN')}</div>
+          <div style="font-size: 11px; color: #16a34a; font-weight: 600; margin-top: 2px;">(Mat: ₹ ${Math.round(inv.maturity_amount || 0).toLocaleString('en-IN')})</div>
+        </td>
+        <td>${inv.applied_interest_rate || '0'}%</td>
+        <td>${inv.maturity_date || '-'}</td>
+        <td>
+          <select class="status-select" data-id="${inv.transaction_id}" style="padding: 4px; border-radius: 4px; font-size: 12px; font-weight: 600; border: 1px solid #cbd5e1; outline: none; background: ${inv.status === 'Pending' ? '#fef3c7' : inv.status === 'Rejected' ? '#fef2f2' : '#d1fae5'}; color: ${inv.status === 'Pending' ? '#d97706' : inv.status === 'Rejected' ? '#ef4444' : '#10b981'};">
+            <option value="Pending" ${inv.status === 'Pending' ? 'selected' : ''}>Pending</option>
+            <option value="Approved" ${inv.status === 'Approved' || inv.status === 'Active' ? 'selected' : ''}>Approved</option>
+            <option value="Rejected" ${inv.status === 'Rejected' ? 'selected' : ''}>Rejected</option>
+          </select>
+        </td>
+      `;
+      invTbody.appendChild(tr);
+    });
+
+    document.querySelectorAll('.status-select').forEach(select => {
+      select.addEventListener('change', async (e) => {
+        const transactionId = e.target.getAttribute('data-id');
+        const newStatus = e.target.value;
+        
+        e.target.style.opacity = '0.5';
+        
+        try {
+          const res = await fetch('/api/admin/updateTransactionStatus', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ transaction_id: transactionId, status: newStatus })
+          });
+          const result = await res.json();
+          
+          if (!result.success) {
+            alert("Failed to update status: " + result.error);
+            fetchInvestments(); // revert
+          } else {
+            if (newStatus === 'Pending') {
+              e.target.style.background = '#fef3c7';
+              e.target.style.color = '#d97706';
+            } else if (newStatus === 'Rejected') {
+              e.target.style.background = '#fef2f2';
+              e.target.style.color = '#ef4444';
+            } else {
+              e.target.style.background = '#d1fae5';
+              e.target.style.color = '#10b981';
+            }
+          }
+        } catch (err) {
+          alert("Connection error.");
+          fetchInvestments();
+        } finally {
+          e.target.style.opacity = '1';
+        }
+      });
+    });
+  }
+
+  document.querySelectorAll('#investments th.sortable').forEach(th => {
+    th.addEventListener('click', () => {
+      const col = th.dataset.sort;
+      if (sortColInvestments === col) {
+        sortAscInvestments = !sortAscInvestments;
+      } else {
+        sortColInvestments = col;
+        sortAscInvestments = true;
+      }
+      
+      const sortedData = [...globalInvestments].sort((a, b) => {
+        let valA, valB;
+        if (col === 'amount') {
+          valA = parseFloat(a.invested_amount || 0);
+          valB = parseFloat(b.invested_amount || 0);
+        } else if (col === 'maturity') {
+          valA = new Date(a.maturity_date || '9999-12-31').getTime();
+          valB = new Date(b.maturity_date || '9999-12-31').getTime();
+        }
+        return sortAscInvestments ? (valA - valB) : (valB - valA);
+      });
+      renderInvestmentsTable(sortedData);
+    });
+  });
+
   async function fetchInvestments() {
     if (!invTbody) return;
     try {
-      const response = await fetch(`/api/admin/getInvestments?_t=${Date.now()}`);
+      const response = await fetch(\`/api/admin/getInvestments?_t=\${Date.now()}\`);
       if (response.status === 401) { window.location.href = '/admin-login.html'; return; }
       const data = await response.json();
       
       if (data.error) {
-        invTbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #ef4444;">Error loading investments.</td></tr>';
+        invTbody.innerHTML = '<tr><td colspan="11" style="text-align: center; color: #ef4444;">Error loading investments.</td></tr>';
         return;
       }
 
       globalInvestments = data;
-      invTbody.innerHTML = '';
-      if (data.length === 0) {
-        invTbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #64748b;">No investments found.</td></tr>';
-        updateDashboardMetrics();
-        return;
-      }
-
       globalVerifiedCount = data.length;
       globalInvestedVerifiedCount = 0;
-      data.forEach(inv => {
-        let activeCount = 0;
-        let totalVal = 0;
-        if (inv.transactions && inv.transactions.length > 0) {
-            const activeTxs = inv.transactions.filter(t => t.status === 'Active' || t.status === 'Approved');
-            activeCount = activeTxs.length;
-            totalVal = activeTxs.reduce((sum, t) => sum + parseFloat(t.invested_amount || 0), 0);
-        }
-        
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><input type="checkbox" class="row-select" data-id="${inv.transaction_id}"></td>
-          <td style="font-size: 11px;">${inv.transaction_id.substring(0,8)}</td>
-          <td><div style="font-weight: 700; color: #d97706; font-size: 13px;">${inv.investors?.folio_number || '-'}</div></td>
-          <td>
-            <div style="font-weight: 600; color: #1A2980; text-transform: capitalize;">${inv.investors?.name || 'Unknown'}</div>
-            <div style="font-size: 11px; color: #64748b;">${inv.account_id || '-'}</div>
-          </td>
-          <td style="font-size: 11px; color: #64748b; white-space: nowrap;">${new Date(inv.transaction_date).toLocaleString('en-IN', {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'})}</td>
-          <td style="text-transform: capitalize;">${inv.sector || '-'}</td>
-          <td>${inv.term_years || '-'} Yrs</td>
-          <td>₹ ${Math.round(inv.invested_amount || 0).toLocaleString('en-IN')}</td>
-          <td>${inv.applied_interest_rate || '0'}%</td>
-          <td>${inv.maturity_date || '-'}</td>
-          <td>
-            <select class="status-select" data-id="${inv.transaction_id}" style="padding: 4px; border-radius: 4px; font-size: 12px; font-weight: 600; border: 1px solid #cbd5e1; outline: none; background: ${inv.status === 'Pending' ? '#fef3c7' : inv.status === 'Rejected' ? '#fef2f2' : '#d1fae5'}; color: ${inv.status === 'Pending' ? '#d97706' : inv.status === 'Rejected' ? '#ef4444' : '#10b981'};">
-              <option value="Pending" ${inv.status === 'Pending' ? 'selected' : ''}>Pending</option>
-              <option value="Approved" ${inv.status === 'Approved' || inv.status === 'Active' ? 'selected' : ''}>Approved</option>
-              <option value="Rejected" ${inv.status === 'Rejected' ? 'selected' : ''}>Rejected</option>
-            </select>
-          </td>
-        `;
-        invTbody.appendChild(tr);
-      });
-
-      document.querySelectorAll('.status-select').forEach(select => {
-        select.addEventListener('change', async (e) => {
-          const transactionId = e.target.getAttribute('data-id');
-          const newStatus = e.target.value;
-          
-          e.target.style.opacity = '0.5';
-          
-          try {
-            const res = await fetch('/api/admin/updateTransactionStatus', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ transaction_id: transactionId, status: newStatus })
-            });
-            const result = await res.json();
-            
-            if (!result.success) {
-              alert("Failed to update status: " + result.error);
-              fetchInvestments(); // revert
-            } else {
-              // Update colors
-              if (newStatus === 'Pending') {
-                e.target.style.background = '#fef3c7';
-                e.target.style.color = '#d97706';
-              } else if (newStatus === 'Rejected') {
-                e.target.style.background = '#fef2f2';
-                e.target.style.color = '#ef4444';
-              } else {
-                e.target.style.background = '#d1fae5';
-                e.target.style.color = '#10b981';
-              }
-            }
-          } catch (err) {
-            alert("Connection error.");
-            fetchInvestments();
-          } finally {
-            e.target.style.opacity = '1';
+      
+      let initialData = [...globalInvestments];
+      if (sortColInvestments) {
+        initialData.sort((a, b) => {
+          let valA, valB;
+          if (sortColInvestments === 'amount') {
+            valA = parseFloat(a.invested_amount || 0);
+            valB = parseFloat(b.invested_amount || 0);
+          } else if (sortColInvestments === 'maturity') {
+            valA = new Date(a.maturity_date || '9999-12-31').getTime();
+            valB = new Date(b.maturity_date || '9999-12-31').getTime();
           }
+          return sortAscInvestments ? (valA - valB) : (valB - valA);
         });
-      });
+      }
+
+      renderInvestmentsTable(initialData);
+      updateDashboardMetrics();
     } catch (err) {
-      invTbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #ef4444;">Connection error.</td></tr>';
+      invTbody.innerHTML = '<tr><td colspan="11" style="text-align: center; color: #ef4444;">Connection error.</td></tr>';
     }
   }
   fetchInvestments();
