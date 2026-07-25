@@ -322,7 +322,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     });
   }
-  let globalInvestments = [];
+
   let sortColInvestments = null;
   let sortAscInvestments = true;
 
