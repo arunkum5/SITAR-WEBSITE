@@ -1078,12 +1078,12 @@
               </div>
               <div>
                 <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">Aadhar Number</div>
-                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-aadhar">XXXX-XXXX-9012 <span style="font-size: 10px; color: #10b981; background: #d1fae5; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">Verified</span></div>
+                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-aadhar">-</div>
               </div>
               <div style="grid-column: span 2; border-top: 1px dashed #cbd5e1; padding-top: 12px; margin-top: -4px;">
                 <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">Nominee Details</div>
-                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-nominee-name">Priya Kumar <span style="color: #64748b; font-weight: 400; font-size: 13px;">(Wife)</span></div>
-                <div style="font-size: 13px; color: #64748b; margin-top: 2px;" id="view-nominee-phone">+91 98765 43210</div>
+                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-nominee-name">-</div>
+                <div style="font-size: 13px; color: #64748b; margin-top: 2px;" id="view-nominee-phone">-</div>
               </div>
             </div>
           </div>
@@ -1097,19 +1097,19 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
               <div>
                 <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">Account Name</div>
-                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-bank-name">Aravind Kumar</div>
+                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-bank-name">-</div>
               </div>
               <div>
                 <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">Account Type</div>
-                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-bank-type">Savings</div>
+                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-bank-type">-</div>
               </div>
               <div>
                 <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">Account No.</div>
-                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-bank-acc">XXXX XXXX 9012</div>
+                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-bank-acc">-</div>
               </div>
               <div>
                 <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">IFSC Code</div>
-                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-bank-ifsc">HDFC0001234</div>
+                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-bank-ifsc">-</div>
               </div>
             </div>
           </div>
@@ -1148,22 +1148,22 @@
             <input type="text" id="edit-pan" placeholder="ABCDE1234F" maxlength="10" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; text-transform: uppercase; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '').substring(0, 10);">
             
             <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">Aadhar Number <span style="font-size: 10px; color: #ef4444;">(Will be masked after save)</span></label>
-            <input type="text" id="edit-aadhar" placeholder="12-digit Aadhar" value="1234 5678 9012" maxlength="14" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'" oninput="this.value = this.value.replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, '$1 ').substring(0, 14);">
+            <input type="text" id="edit-aadhar" placeholder="12-digit Aadhar" maxlength="14" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'" oninput="this.value = this.value.replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, '$1 ').substring(0, 14);">
             
             <div style="border-top: 1px dashed #e2e8f0; margin: 12px 0; padding-top: 12px;"></div>
             
             <div style="font-size: 12px; font-weight: 700; color: #0f172a; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Nominee</div>
             <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">Full Name</label>
-            <input type="text" id="edit-nominee-name" value="Priya Kumar" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
+            <input type="text" id="edit-nominee-name" placeholder="Nominee Full Name" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
               <div>
                 <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">Relation</label>
-                <input type="text" id="edit-nominee-rel" value="Wife" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
+                <input type="text" id="edit-nominee-rel" placeholder="e.g. Spouse, Parent" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
               </div>
               <div>
                 <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">Phone</label>
-                <input type="text" id="edit-nominee-phone" value="+91 98765 43210" maxlength="15" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'" oninput="this.value = this.value.replace(/[^\d+\s-]/g, '');">
+                <input type="text" id="edit-nominee-phone" placeholder="Nominee Phone" maxlength="15" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'" oninput="this.value = this.value.replace(/[^\d+\s-]/g, '');">  
               </div>
             </div>
 
