@@ -65,9 +65,20 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 6vw;
+    padding: 8px 6vw;
     flex-shrink: 0;
     animation: riseIn 0.7s ease-out both;
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 1000;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 0 0 16px 16px; /* slightly round the bottom corners since it doesn't span full width */
   }
 
   .brand {
@@ -78,8 +89,8 @@
 
   .logo-slot {
     /* Drop your logo <img> in here. Sized box keeps layout stable while you add it. */
-    width: 80px;
-    height: 80px;
+    width: 68px;
+    height: 68px;
     display: flex;
     align-items: center;
     flex-shrink: 0;
@@ -509,12 +520,21 @@
   /* ---------- Responsive ---------- */
   @media (max-width: 640px) {
     header {
-      position: relative;
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      padding: 16px 6vw 8px 6vw;
+      padding: 14px 6vw 7px 6vw;
       z-index: 1000;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+      width: 90%;
+      margin: 0 auto;
+      border-radius: 0 0 16px 16px;
     }
     .brand-name { font-size: 1.05rem; }
     
@@ -703,7 +723,7 @@
       </div>
 
       <div class="hero-image-slot">
-        <img src="home-hand.png" alt="A hand holding a model house, representing home investment">
+        <img src="home-hand-new.png" alt="A hand holding a model house, representing home investment">
       </div>
     </section>
 
