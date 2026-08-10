@@ -47,17 +47,16 @@
   body::before {
     content: '';
     position: absolute;
-    top: -10vw;
-    left: -10vw;
-    width: 46vw;
-    height: 46vw;
-    max-width: 460px;
-    max-height: 460px;
-    background: radial-gradient(circle at 30% 30%, rgba(16, 185, 129, 0.4) 0%, rgba(26, 41, 128, 0.45) 40%, rgba(26, 41, 128, 0.15) 75%, rgba(244, 241, 234, 0) 100%);
-    border-radius: 50%;
+    top: 0;
+    left: 0;
+    width: 30vw;
+    height: 20vw;
+    max-width: 300px;
+    max-height: 200px;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.4) 0%, rgba(26, 41, 128, 0.45) 100%);
+    clip-path: polygon(0 0, 100% 0, 0 100%);
     z-index: -1;
     pointer-events: none;
-    filter: blur(60px);
   }
 
   /* ---------- Header / logo area ---------- */
@@ -65,12 +64,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 6vw;
+    padding: 4px 6vw;
     flex-shrink: 0;
     animation: riseIn 0.7s ease-out both;
     position: sticky;
     top: 0;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(232, 244, 236, 0.9);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     z-index: 1000;
@@ -89,8 +88,8 @@
 
   .logo-slot {
     /* Drop your logo <img> in here. Sized box keeps layout stable while you add it. */
-    width: 68px;
-    height: 68px;
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     flex-shrink: 0;
@@ -266,6 +265,8 @@
     max-width: 900px;
     margin: 0 auto;
     text-align: center;
+    border-top: 1px solid rgba(11, 9, 6, 0.1);
+    border-bottom: 1px solid rgba(11, 9, 6, 0.1);
   }
   .about-section h2 {
     font-size: clamp(2rem, 4vw, 2.75rem);
@@ -346,7 +347,7 @@
 
   .hero-text {
     max-width: 640px;
-    margin-top: -4vh;
+    margin-top: 0;
     animation: riseIn 0.8s ease-out 0.05s both;
   }
   .hero-text h1 {
@@ -430,7 +431,7 @@
     flex-shrink: 0;
     font-size: 0.75rem;
     color: var(--muted);
-    background: #EAE6DD;
+    background: rgba(232, 244, 236, 0.9);
     animation: riseIn 0.8s ease-out 0.4s both;
     display: flex;
     flex-direction: column;
@@ -522,13 +523,13 @@
     header {
       position: sticky;
       top: 0;
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(232, 244, 236, 0.9);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 6vw 7px 6vw;
+      padding: 10px 6vw 6px 6vw;
       z-index: 1000;
       box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
       border-bottom: 1px solid rgba(0, 0, 0, 0.03);
@@ -674,6 +675,11 @@
       <span class="brand-name">SITAR Wealth</span>
     </div>
     <nav class="nav-links" id="navLinks">
+      <a href="#about" onclick="document.getElementById('navLinks').classList.remove('active'); document.getElementById('mobileToggle').classList.remove('active');">About Us</a>
+      <a href="#services" onclick="document.getElementById('navLinks').classList.remove('active'); document.getElementById('mobileToggle').classList.remove('active');">Invest</a>
+      <a href="#contact" onclick="document.getElementById('navLinks').classList.remove('active'); document.getElementById('mobileToggle').classList.remove('active');">Contact</a>
+      <a href="#login" id="nav-login-btn">Get Started</a>
+      <a href="#profile" id="nav-profile-btn" class="nav-profile-trigger" style="display: none; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--ink); border-radius: 50%; color: var(--bg); font-weight: 700; font-size: 16px; margin-left: 12px; text-decoration: none;">U</a>
       <div class="nav-social-follow" style="display: inline-flex; align-items: center; gap: 10px; margin-right: 8px;">
         <div style="display: inline-flex; gap: 10px; align-items: center;">
           <a href="#" aria-label="YouTube" style="transition: transform 0.2s; display: inline-flex;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'">
@@ -696,11 +702,6 @@
           </a>
         </div>
       </div>
-      <a href="#about" onclick="document.getElementById('navLinks').classList.remove('active'); document.getElementById('mobileToggle').classList.remove('active');">About Us</a>
-      <a href="#services" onclick="document.getElementById('navLinks').classList.remove('active'); document.getElementById('mobileToggle').classList.remove('active');">Invest</a>
-      <a href="#contact" onclick="document.getElementById('navLinks').classList.remove('active'); document.getElementById('mobileToggle').classList.remove('active');">Contact</a>
-      <a href="#login" id="nav-login-btn">Get Started</a>
-      <a href="#profile" id="nav-profile-btn" class="nav-profile-trigger" style="display: none; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--ink); border-radius: 50%; color: var(--bg); font-weight: 700; font-size: 16px; margin-left: 12px; text-decoration: none;">U</a>
     </nav>
     <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu" onclick="document.getElementById('navLinks').classList.toggle('active'); this.classList.toggle('active');">
       <span></span>
