@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC5C2uLQ6rwriKfvHPko9Rnn5I7axQA4D4",
@@ -145,4 +145,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Handle logout event from index.html
+    window.addEventListener('auth-logout', async () => {
+        try {
+            await signOut(auth);
+            console.log("Firebase signed out successfully");
+        } catch (error) {
+            console.error("Error signing out from Firebase:", error);
+        }
+    });
 });

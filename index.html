@@ -1402,8 +1402,25 @@
       // Logout
       btnLogout.addEventListener('click', () => {
         localStorage.removeItem('sitar_logged_in');
+        localStorage.removeItem('user_phone');
+        
+        // Reset Profile UI
+        document.getElementById('view-details-name').textContent = 'Investor';
+        document.getElementById('view-details-email').textContent = '-';
+        document.getElementById('view-pan').textContent = '-';
+        document.getElementById('view-aadhar').innerHTML = '-';
+        document.getElementById('view-nominee-name').innerHTML = '-';
+        document.getElementById('view-nominee-phone').textContent = '-';
+        if (document.getElementById('view-greeting-name')) document.getElementById('view-greeting-name').textContent = 'Investor';
+        document.getElementById('view-initials').textContent = 'U';
+        document.getElementById('view-profile-photo').style.display = 'none';
+        document.getElementById('view-profile-photo-placeholder').style.display = 'flex';
+        updateNavIcon('U', null);
+        
         closeModal(profileModal);
         updateNavState();
+        
+        window.dispatchEvent(new Event('auth-logout'));
       });
 
       // Dashboard logic moved to the main listener below
