@@ -736,19 +736,19 @@
     background: var(--accent);
   }
   
-  .sc-villas { background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.75)), url('villa_exterior_1783620295618.webp'); --accent: #FF8B60; }
+  .sc-villas { background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4)), url('villa_exterior_1783620295618.webp'); --accent: #FF8B60; }
   .sc-villas h3, .sc-villas .rate { color: #FF8B60 !important; }
   
-  .sc-apartments { background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.75)), url('modern_apartment_v2.png'); --accent: #A1C4FD; }
+  .sc-apartments { background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4)), url('modern_apartment_v2.png'); --accent: #A1C4FD; }
   .sc-apartments h3, .sc-apartments .rate { color: #A1C4FD !important; }
   
-  .sc-resorts { background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.75)), url('gallery_resort.webp'); --accent: #5CE1E6; }
+  .sc-resorts { background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4)), url('gallery_resort.webp'); --accent: #5CE1E6; }
   .sc-resorts h3, .sc-resorts .rate { color: #5CE1E6 !important; }
   
-  .sc-commercial { background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.75)), url('gallery_invest_2.webp'); --accent: #E8A7EC; }
+  .sc-commercial { background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4)), url('gallery_invest_2.webp'); --accent: #E8A7EC; }
   .sc-commercial h3, .sc-commercial .rate { color: #E8A7EC !important; }
   
-  .sc-layouts { background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.75)), url('gallery_layout.webp'); --accent: #FFD700; }
+  .sc-layouts { background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4)), url('gallery_layout.webp'); --accent: #FFD700; }
   .sc-layouts h3, .sc-layouts .rate { color: #FFD700 !important; }
 
   .sector-card h3{
@@ -761,19 +761,21 @@
   .sector-card p{ font-family: 'Outfit', sans-serif; margin-top:14px; font-size:18px; font-weight:700; line-height:1.45; color:#ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
 
   #plans {
-    background: linear-gradient(rgba(17, 19, 21, 0.85), rgba(17, 19, 21, 0.85)), url('plans.webp') center 55% / cover no-repeat fixed;
+    background: #FFFFFF;
   }
+  #plans .section-head h2 { color: #111111; }
+  #plans .section-head p { color: #444444; }
 
   /* ---------- PLANS TABLE ---------- */
   table.plans{ width:100%; border-collapse:collapse; margin-top:16px; }
   table.plans th, table.plans td{
-    text-align:left; padding:14px 20px; border-bottom:1px solid var(--line);
+    text-align:left; padding:14px 20px; border-bottom:1px solid #e2e8f0;
   }
   table.plans th{
     font-family:'IBM Plex Mono', monospace; font-size:15px; letter-spacing:0.08em;
-    text-transform:uppercase; color:var(--cream); font-weight:600;
+    text-transform:uppercase; color:#64748b; font-weight:600;
   }
-  table.plans td{ font-size:18px; color:var(--cream); font-weight: 500; transition: background-color 0.2s ease, color 0.2s ease; }
+  table.plans td{ font-size:18px; color:#1e293b; font-weight: 500; transition: background-color 0.2s ease, color 0.2s ease; }
   table.plans td.lockin{ font-family:'Fraunces', serif; font-style:normal; color:var(--gold); font-size:24px; font-weight:600; }
   table.plans td.rate-val{ font-family:'IBM Plex Mono', monospace; color: #4B8EE5; font-size: 22px; font-weight:600; }
   table.plans tr:last-child td{ border-bottom:none; }
@@ -1167,38 +1169,8 @@
       <a href="invest.html">Invest</a>
       <a href="index.html#how">How it works</a>
       <a href="index.html#contact">Contact</a>
-      <a href="#login">Login / Signup</a>
     </div>
     <div class="nav-cta">
-      <div style="display: flex; flex-direction: row; align-items: center; gap: clamp(6px, 1vw, 12px);">
-      <a href="#" class="nav-text-link" style="font-size: clamp(10px, 1.1vw, 15.5px);">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-          <circle cx="12" cy="7" r="4"></circle>
-        </svg>
-        Login &nbsp;/&nbsp;
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-          <circle cx="9" cy="7" r="4"></circle>
-          <line x1="19" y1="8" x2="19" y2="14"></line>
-          <line x1="22" y1="11" x2="16" y2="11"></line>
-        </svg>
-        Signup
-      </a>
-      <!-- Talk to Advisor CTA -->
-        <a href="tel:+919480355850" class="advisor-action" style="display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #d4fc79, #96e6a1); padding: 4px 12px 4px 4px; border-radius: 40px; border: none; box-shadow: 0 4px 12px rgba(150, 230, 161, 0.3); text-decoration: none; transition: all 0.3s ease; height: fit-content;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(150, 230, 161, 0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(150, 230, 161, 0.3)';">
-          <div style="width: 24px; height: 24px; border-radius: 50%; background: #ffffff; display: flex; align-items: center; justify-content: center; color: #111;">
-            <svg class="advisor-icon-animated" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
-              <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
-              <path d="M14 21h-2a4 4 0 0 1-4-4"></path>
-            </svg>
-          </div>
-          <div style="display: flex; flex-direction: column;">
-            <span style="font-size: 11px; font-weight: 700; color: #111; line-height: 1;">Talk to Advisor</span>
-          </div>
-        </a>
-      </div>
       <button class="menu-toggle" aria-label="Menu">☰</button>
     </div>
   </nav>
@@ -1214,7 +1186,7 @@
   <!-- Slider Track -->
   <div class="h-slider-track" id="h-slider-track">
     <!-- Slide 0: Villa -->
-    <div class="h-slide-item active" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.5) 100%), url('villa_exterior_1783620295618.webp');">
+    <div class="h-slide-item active" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.0) 60%, rgba(0, 0, 0, 0.2) 100%), url('villa_exterior_1783620295618.webp');">
       <div class="wrap h-slide-content">
         <h1 class="hero-title"><span class="display" style="color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9); font-weight: 600;">Invest in</span> <br><span class="cream" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">Villa Projects</span></h1>
         <p class="hero-sub">Independent villa developments in growing residential corridors. Up to 12% p.a. guaranteed.</p>
@@ -1232,7 +1204,7 @@
     </div>
     
     <!-- Slide 1: Apartment -->
-    <div class="h-slide-item" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.5) 100%), url('modern_apartment_v2.png');">
+    <div class="h-slide-item" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.0) 60%, rgba(0, 0, 0, 0.2) 100%), url('modern_apartment_v2.png');">
       <div class="wrap h-slide-content">
         <h1 class="hero-title"><span class="display" style="color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9); font-weight: 600;">Invest in</span> <br><span class="cream" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">Apartment Projects</span></h1>
         <p class="hero-sub">Multi-unit residential projects built for steady occupancy demand. Up to 11% p.a. guaranteed.</p>
@@ -1250,7 +1222,7 @@
     </div>
     
     <!-- Slide 2: Resorts -->
-    <div class="h-slide-item" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.5) 100%), url('gallery_resort.webp');">
+    <div class="h-slide-item" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.0) 60%, rgba(0, 0, 0, 0.2) 100%), url('gallery_resort.webp');">
       <div class="wrap h-slide-content">
         <h1 class="hero-title"><span class="display" style="color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9); font-weight: 600;">Invest in</span> <br><span class="cream" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">Hotels & Resorts</span></h1>
         <p class="hero-sub">Hospitality and leisure properties in established destinations. Up to 12.5% p.a. guaranteed.</p>
@@ -1268,7 +1240,7 @@
     </div>
     
     <!-- Slide 3: Commercial -->
-    <div class="h-slide-item" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.5) 100%), url('gallery_invest_2.webp');">
+    <div class="h-slide-item" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.0) 60%, rgba(0, 0, 0, 0.2) 100%), url('gallery_invest_2.webp');">
       <div class="wrap h-slide-content">
         <h1 class="hero-title"><span class="display" style="color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9); font-weight: 600;">Invest in</span> <br><span class="cream" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">Commercial Complex</span></h1>
         <p class="hero-sub">High-yield retail spaces, office complexes, and mixed-use developments. Up to 11.5% p.a. guaranteed.</p>
@@ -1286,7 +1258,7 @@
     </div>
     
     <!-- Slide 4: Layouts -->
-    <div class="h-slide-item" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.5) 100%), url('gallery_layout.webp');">
+    <div class="h-slide-item" style="background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.0) 60%, rgba(0, 0, 0, 0.2) 100%), url('gallery_layout.webp');">
       <div class="wrap h-slide-content">
         <h1 class="hero-title"><span class="display" style="color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9); font-weight: 600;">Invest in</span> <br><span class="cream" style="text-shadow: 0 2px 10px rgba(0,0,0,0.9);">Layout Development</span></h1>
         <p class="hero-sub">Land conversion and plotted developments from acquisition to sale. Up to 13% p.a. guaranteed.</p>
@@ -1325,7 +1297,7 @@
     <div class="section-head">
       <span class="eyebrow">Investment plans</span>
       <h2 style="font-size:clamp(24px,3.2vw,35px);">Lock in for longer, <em>earn</em> more.</h2>
-      <p style="margin-top:12px; display:flex; align-items:center; gap:6px; font-size:15px; font-weight:500; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.85); font-weight: 500;">
+      <p style="margin-top:12px; display:flex; align-items:center; gap:6px; font-size:15px; font-weight:500; color: #444; font-weight: 500;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         Your money is always accessible. Cancel anytime.
       </p>
@@ -1496,27 +1468,24 @@
           <img class="foot-logo" src="nlogo.svg" alt="SITAR Emblem">
           <img class="foot-logo-text" src="new-header-text.svg" alt="SITAR">
         </a>
-        <p>Your trusted investment partner.<br>Guaranteed monthly returns on real assets.</p>
+        <p style="color: white;">Your trusted investment partner.<br>Guaranteed monthly returns on real assets.</p>
       </div>
-      <div class="foot-contact">
+      <div class="foot-contact" style="color: white;">
           <div class="contact-item">
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-            <span>SiTAR Wealth, Indranagar, Hassan - 573201</span>
+            <span style="color: white;">SiTAR Wealth, Indranagar, Hassan - 573201</span>
           </div>
           <div class="contact-item">
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-            <a href="tel:+919480355850" class="contact-link" style="margin-left: 0;">+91 9480355850</a>
+            <a href="tel:+919480355850" class="contact-link" style="margin-left: 0; color: white;">+91 9480355850</a>
           </div>
           <div class="contact-item">
-            <a href="mailto:info@sitarwealth.in" class="contact-link"><svg width="15" height="15" fill="none" stroke="var(--layouts)" stroke-width="2" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg> info@sitarwealth.in</a>
+            <a href="mailto:info@sitarwealth.in" class="contact-link" style="color: white;"><svg width="15" height="15" fill="none" stroke="var(--layouts)" stroke-width="2" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg> info@sitarwealth.in</a>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="risk-note">
-      Investments in real-asset-linked instruments are subject to market and business risk. Returns described are indicative of current plan rates and are not a guarantee against loss. Please read all scheme-related documents carefully before investing.
-    </div>
 
     <div class="foot-bottom">
       <span>© 2026 SITAR. All rights reserved.</span>

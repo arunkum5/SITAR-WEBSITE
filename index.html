@@ -43,21 +43,7 @@
     position: relative;
   }
   
-  /* Top-left subtle gradient accent */
-  body::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 30vw;
-    height: 20vw;
-    max-width: 300px;
-    max-height: 200px;
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.4) 0%, rgba(26, 41, 128, 0.45) 100%);
-    clip-path: polygon(0 0, 100% 0, 0 100%);
-    z-index: -1;
-    pointer-events: none;
-  }
+
 
   /* ---------- Header / logo area ---------- */
   header {
@@ -67,17 +53,18 @@
     padding: 4px 6vw;
     flex-shrink: 0;
     animation: riseIn 0.7s ease-out both;
-    position: sticky;
+    position: fixed;
     top: 0;
-    background: rgba(232, 244, 236, 0.9);
+    left: 0;
+    background: rgba(164, 212, 197, 0.95);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     z-index: 1000;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
     border-bottom: 1px solid rgba(0, 0, 0, 0.03);
-    width: 90%;
-    margin: 0 auto;
-    border-radius: 0 0 16px 16px; /* slightly round the bottom corners since it doesn't span full width */
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
   }
 
   .brand {
@@ -196,6 +183,8 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.03);
     border-left: 4px solid var(--accent, var(--ink));
     transition: transform 0.2s ease;
+    text-decoration: none;
+    color: inherit;
   }
   .option-card:hover {
     transform: translateX(8px);
@@ -262,11 +251,13 @@
   /* ---------- About Section ---------- */
   .about-section {
     padding: 10vh 6vw;
-    max-width: 900px;
-    margin: 0 auto;
     text-align: center;
     border-top: 1px solid rgba(11, 9, 6, 0.1);
     border-bottom: 1px solid rgba(11, 9, 6, 0.1);
+  }
+  .about-content {
+    max-width: 900px;
+    margin: 0 auto;
   }
   .about-section h2 {
     font-size: clamp(2rem, 4vw, 2.75rem);
@@ -431,7 +422,7 @@
     flex-shrink: 0;
     font-size: 0.75rem;
     color: var(--muted);
-    background: rgba(232, 244, 236, 0.9);
+    background: rgba(164, 212, 197, 0.95);
     animation: riseIn 0.8s ease-out 0.4s both;
     display: flex;
     flex-direction: column;
@@ -521,9 +512,10 @@
   /* ---------- Responsive ---------- */
   @media (max-width: 640px) {
     header {
-      position: sticky;
+      position: fixed;
       top: 0;
-      background: rgba(232, 244, 236, 0.9);
+      left: 0;
+      background: rgba(164, 212, 197, 0.95);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       flex-direction: row;
@@ -533,9 +525,9 @@
       z-index: 1000;
       box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
       border-bottom: 1px solid rgba(0, 0, 0, 0.03);
-      width: 90%;
-      margin: 0 auto;
-      border-radius: 0 0 16px 16px;
+      width: 100%;
+      margin: 0;
+      border-radius: 0;
     }
     .brand-name { font-size: 1.05rem; }
     
@@ -713,14 +705,17 @@
   <main>
     <section class="hero-section">
       <div class="hero-text">
-        <h1>Build Wealth with Flexible, Real Estate-Backed Investments</h1>
+        <h1 style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+          <span>Build Wealth with Flexible,</span>
+          <span style="white-space: nowrap;">Real Estate-Backed Investments</span>
+        </h1>
         <p>Easy to Invest | Fixed Returns up to 12% | Flexible Withdrawals</p>
       </div>
 
       <div class="cta-row">
         <!-- Point each href at the page it should link to -->
         <a href="#services" class="btn btn-primary">Invest Now</a>
-        <a href="page-2.html" class="btn btn-secondary">Learn more</a>
+        <a href="invest.html" class="btn btn-secondary">Learn more</a>
       </div>
 
       <div class="hero-image-slot">
@@ -729,9 +724,11 @@
     </section>
 
     <section id="about" class="about-section">
-      <h2>About us</h2>
-      <h3>A decade of vision, growth & trust</h3>
-      <p>Founded in 2016 as a small design firm, we have grown into a diversified construction business driven by quality and innovation. Our continued success is built entirely on the trust of our clients, partners, and investors, whom we proudly call our believers.</p>
+      <div class="about-content">
+        <h2>About us</h2>
+        <h3>A decade of vision, growth & trust</h3>
+        <p>Founded in 2016 as a small design firm, we have grown into a diversified construction business driven by quality and innovation. Our continued success is built entirely on the trust of our clients, partners, and investors, whom we proudly call our believers.</p>
+      </div>
     </section>
 
     <section id="services" class="services-section">
@@ -740,41 +737,41 @@
           <h2>Our Investment Options</h2>
           <p>Explore our premium real-asset-linked investments.</p>
           <div class="investment-options">
-            <div class="option-card" style="--accent: var(--villas)">
+            <a href="invest.html" class="option-card" style="--accent: var(--villas)">
               <div class="option-icon">🏡</div>
               <div class="option-details">
                 <h4>Villas</h4>
                 <span>Up to 12% p.a. fixed returns</span>
               </div>
-            </div>
-            <div class="option-card" style="--accent: var(--apartments)">
+            </a>
+            <a href="invest.html" class="option-card" style="--accent: var(--apartments)">
               <div class="option-icon">🏢</div>
               <div class="option-details">
                 <h4>Apartments</h4>
                 <span>Up to 11% p.a. fixed returns</span>
               </div>
-            </div>
-            <div class="option-card" style="--accent: var(--resorts)">
+            </a>
+            <a href="invest.html" class="option-card" style="--accent: var(--resorts)">
               <div class="option-icon">🏖️</div>
               <div class="option-details">
                 <h4>Resorts & Hospitality</h4>
                 <span>Up to 12% p.a. fixed returns</span>
               </div>
-            </div>
-            <div class="option-card" style="--accent: var(--commercial)">
+            </a>
+            <a href="invest.html" class="option-card" style="--accent: var(--commercial)">
               <div class="option-icon">🏬</div>
               <div class="option-details">
                 <h4>Commercial Complex</h4>
                 <span>Up to 10% p.a. fixed returns</span>
               </div>
-            </div>
-            <div class="option-card" style="--accent: var(--layouts)">
+            </a>
+            <a href="invest.html" class="option-card" style="--accent: var(--layouts)">
               <div class="option-icon">🗺️</div>
               <div class="option-details">
                 <h4>Layout Development</h4>
                 <span>Up to 12% p.a. fixed returns</span>
               </div>
-            </div>
+            </a>
           </div>
         </div>
         
@@ -872,9 +869,7 @@
       <a href="policies.html#lock-in-withdrawal">Lock-in &amp; Withdrawal Policy</a>
       <a href="policies.html#risk-disclosure">Risk Disclosure</a>
     </div>
-    <div class="footer-disclaimer">
-      Investments in real-asset-linked instruments are subject to market and business risk. Returns described are indicative of current plan rates and are not a guarantee against loss. Please read all scheme-related documents carefully before investing.
-    </div>
+
     <div class="footer-visitor-count">
       Visitors: <span id="visitorCount">1,204</span>
     </div>
