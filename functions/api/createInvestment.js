@@ -66,6 +66,7 @@ export async function onRequestPost({ request, env }) {
       applied_interest_rate: data.rate,
       maturity_date: data.maturity_date,
       maturity_amount: data.maturity_amount,
+      withdraw_period: data.withdraw_period || '1 year',
       status: 'Pending'
     };
 

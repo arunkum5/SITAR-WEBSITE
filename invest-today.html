@@ -285,6 +285,15 @@
       <input type="number" id="invest-amount" value="500000" min="25000" max="10000000" step="50000">
     </div>
 
+    <div class="form-group">
+      <label>Withdraw Period</label>
+      <select id="withdraw-period">
+        <option value="3 months">3 Months</option>
+        <option value="6 months">6 Months</option>
+        <option value="1 year">1 Year</option>
+      </select>
+    </div>
+
     <div class="calc-box">
       <div class="label">Estimated Maturity Amount</div>
       <div class="value" id="maturity-amount">₹ 0</div>
@@ -588,7 +597,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       amount: parseFloat(amountEl.value),
       rate: currentCalculatedRate,
       maturity_date: currentMaturityDate,
-      maturity_amount: currentMaturityAmount
+      maturity_amount: currentMaturityAmount,
+      withdraw_period: document.getElementById('withdraw-period').value
     };
 
     try {

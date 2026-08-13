@@ -10,6 +10,7 @@ CREATE TABLE public.investors (
   nominee_relation character varying,
   nominee_dob date,
   email character varying,
+  occupation character varying,
   folio_number character varying UNIQUE,
   nominee_contact character varying,
   created_at timestamp with time zone NOT NULL DEFAULT timezone('utc'::text, now()),
@@ -47,6 +48,7 @@ CREATE TABLE public.transactions (
   applied_interest_rate numeric NOT NULL,
   maturity_date date NOT NULL,
   maturity_amount numeric NOT NULL,
+  withdraw_period character varying,
   status character varying DEFAULT 'Active'::character varying,
   CONSTRAINT transactions_pkey PRIMARY KEY (transaction_id),
   CONSTRAINT transactions_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.investors(account_id)

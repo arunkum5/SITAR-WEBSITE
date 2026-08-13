@@ -1087,6 +1087,8 @@
                 <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-details-name">-</div>
                 <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-top: 12px; margin-bottom: 4px;">Email Address</div>
                 <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-details-email">-</div>
+                <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-top: 12px; margin-bottom: 4px;">Occupation</div>
+                <div style="font-size: 14px; color: #0f172a; font-weight: 600;" id="view-details-occupation">-</div>
               </div>
               <div>
                 <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px;">PAN Number</div>
@@ -1155,6 +1157,9 @@
             
             <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">Email ID</label>
             <input type="email" id="edit-email" placeholder="your@email.com" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
+
+            <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 4px;">Occupation</label>
+            <input type="text" id="edit-occupation" placeholder="e.g. Salaried, Business, Student" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 12px; font-size: 14px; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#3E8E85'">
 
             <div style="border-top: 1px dashed #e2e8f0; margin: 12px 0; padding-top: 12px;"></div>
             
@@ -1516,6 +1521,7 @@
             const inv = data.investor;
             document.getElementById('edit-full-name').value = inv.name !== 'Investor' ? inv.name : '';
             document.getElementById('edit-email').value = inv.email || '';
+            document.getElementById('edit-occupation').value = inv.occupation || '';
             document.getElementById('edit-pan').value = inv.pan_number && inv.pan_number.indexOf('T') !== 0 ? inv.pan_number : '';
             document.getElementById('edit-aadhar').value = inv.aadhar_number && inv.aadhar_number.indexOf('T0') !== 0 ? inv.aadhar_number.replace(/(\d{4})(?=\d)/g, '$1 ') : '';
             document.getElementById('edit-nominee-name').value = inv.nominee_name || '';
@@ -1537,6 +1543,7 @@
             const newName = inv.name !== 'Investor' && inv.name ? inv.name : 'Investor';
             document.getElementById('view-details-name').textContent = newName;
             document.getElementById('view-details-email').textContent = inv.email || '-';
+            document.getElementById('view-details-occupation').textContent = inv.occupation || '-';
             document.getElementById('view-pan').textContent = inv.pan_number && inv.pan_number.indexOf('T') !== 0 ? inv.pan_number : '-';
             
             if (inv.aadhar_number && inv.aadhar_number.indexOf('T0') !== 0) {
@@ -1613,6 +1620,7 @@
               phone: localStorage.getItem('user_phone') || '',
               name: document.getElementById('edit-full-name').value,
               email: document.getElementById('edit-email').value,
+              occupation: document.getElementById('edit-occupation').value,
               pan: document.getElementById('edit-pan').value.includes('ABCDE') ? '' : document.getElementById('edit-pan').value,
               aadhar: document.getElementById('edit-aadhar').value.includes('XXXX') ? '' : document.getElementById('edit-aadhar').value.replace(/\D/g, ''),
               nomineeName: document.getElementById('edit-nominee-name').value,

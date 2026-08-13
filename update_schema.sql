@@ -17,3 +17,9 @@ DROP TRIGGER IF EXISTS trigger_generate_folio ON public.investors;
 CREATE TRIGGER trigger_generate_folio
 BEFORE INSERT ON public.investors
 FOR EACH ROW EXECUTE FUNCTION generate_folio_number();
+
+-- Add occupation to investors
+ALTER TABLE public.investors ADD COLUMN IF NOT EXISTS occupation character varying;
+
+-- Add withdraw_period to transactions
+ALTER TABLE public.transactions ADD COLUMN IF NOT EXISTS withdraw_period character varying;
