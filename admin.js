@@ -347,6 +347,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         <td style="font-size: 11px; color: #64748b; white-space: nowrap;">${new Date(inv.transaction_date).toLocaleString('en-IN', {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'})}</td>
         <td style="text-transform: capitalize;">${inv.sector || '-'}</td>
         <td>${inv.term_years || '-'} Yrs</td>
+        <td style="text-transform: capitalize;">${inv.withdraw_period || '-'}</td>
         <td>
           <div style="font-weight: 600; color: #0f172a;">₹ ${Math.round(inv.invested_amount || 0).toLocaleString('en-IN')}</div>
           <div style="font-size: 11px; color: #16a34a; font-weight: 600; margin-top: 2px;">(Mat: ₹ ${Math.round(inv.maturity_amount || 0).toLocaleString('en-IN')})</div>
