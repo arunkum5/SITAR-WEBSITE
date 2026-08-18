@@ -109,9 +109,14 @@
     font-weight: 500;
     font-size: 0.95rem;
     opacity: 0.85;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.2s ease, text-decoration 0.2s ease;
   }
   nav a:hover { opacity: 1; }
+  nav > a:not(#nav-profile-btn):hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
+  }
 
   /* ---------- Main Layout ---------- */
   main {
@@ -129,7 +134,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 0 6vw;
+    padding: 120px 6vw 60px 6vw;
     gap: 4px;
   }
 
@@ -572,7 +577,7 @@
 
     .hero-section {
       justify-content: flex-start;
-      padding: 120px 6vw 0 6vw;
+      padding: 120px 6vw 40px 6vw;
       gap: 6px;
     }
     .about-section {
