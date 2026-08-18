@@ -56,7 +56,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    background: linear-gradient(90deg, rgba(0,0,0,0.12) 0%, rgba(244,241,234,0.85) 25%, rgba(244,241,234,0.85) 75%, rgba(0,0,0,0.12) 100%);
+    background: linear-gradient(90deg, rgba(26,41,128,0.15) -10%, rgba(38,208,206,0.95) 50%, rgba(26,41,128,0.15) 110%);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     z-index: 1000;
@@ -130,12 +130,25 @@
     flex: 1;
     min-height: calc(100vh - 120px);
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    text-align: center;
+    justify-content: space-between;
     padding: 120px 6vw 60px 6vw;
-    gap: 4px;
+    gap: 40px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+  .hero-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .hero-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   /* ---------- Services Section ---------- */
@@ -145,68 +158,86 @@
   .services-container {
     max-width: 1200px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 64px;
-    align-items: flex-start;
+    align-items: center;
   }
-  @media (min-width: 901px) {
-    .services-right {
-      margin-top: 96px; /* align roughly with the top of the cards */
-    }
+  .services-header {
+    text-align: center;
+    max-width: 800px;
   }
-  @media (max-width: 900px) {
-    .services-container {
-      grid-template-columns: 1fr;
-    }
-  }
-  .services-left h2 {
+  .services-header h2 {
     font-size: clamp(2rem, 4vw, 2.75rem);
     font-weight: 700;
     margin-bottom: 16px;
     color: var(--ink);
     font-family: 'Inter', sans-serif;
   }
-  .services-left p {
+  .services-header p {
     font-size: 1.1rem;
     color: var(--muted);
-    margin-bottom: 32px;
     font-family: 'Inter', sans-serif;
   }
   .investment-options {
     display: flex;
-    flex-direction: column;
-    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
   }
-  .option-card {
+  .option-card-sq {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 16px;
-    background: #FFFFFF;
-    padding: 16px 24px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-    border-left: 4px solid var(--accent, var(--ink));
-    transition: transform 0.2s ease;
+    justify-content: center;
+    text-align: center;
+    gap: 12px;
+    background: #F4F5F7;
+    padding: 20px 16px;
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    border-top: 5px solid var(--accent, var(--ink));
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
     color: inherit;
+    width: 240px;
+    max-width: 100%;
+    aspect-ratio: 1;
   }
-  .option-card:hover {
-    transform: translateX(8px);
+  .option-card-sq:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 32px rgba(0,0,0,0.08);
+  }
+  .option-card-sq .badge {
+    background: rgba(0,0,0,0.05);
+    color: var(--accent);
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 700;
   }
   .option-icon {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
-  .option-details h4 {
-    margin: 0 0 4px 0;
+  .option-card-sq h4 {
+    margin: 0;
     font-size: 1.1rem;
     color: var(--ink);
     font-family: 'Inter', sans-serif;
   }
-  .option-details span {
-    font-size: 0.9rem;
+  .option-card-sq p {
+    font-size: 0.8rem;
     color: var(--muted);
-    font-weight: 500;
+    line-height: 1.4;
+    margin: 0;
+  }
+  .calc-wrapper {
+    width: 100%;
+    max-width: 800px;
+    margin-top: 32px;
   }
 
   /* Calculator Styles */
@@ -359,10 +390,11 @@
     font-family: 'Inter', sans-serif;
     font-weight: 500;
     font-style: normal;
-    font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+    font-size: clamp(0.75rem, 1.5vw, 0.95rem);
     line-height: 1.5;
     color: var(--muted);
     margin-bottom: 18px;
+    white-space: nowrap;
   }
 
   .hero-image-slot {
@@ -427,29 +459,59 @@
     flex-shrink: 0;
     font-size: 0.75rem;
     color: var(--muted);
-    background: rgba(11, 152, 163, 0.95);
+    background: linear-gradient(90deg, rgba(26,41,128,0.15) -10%, rgba(38,208,206,0.95) 50%, rgba(26,41,128,0.15) 110%);
     animation: riseIn 0.8s ease-out 0.4s both;
     display: flex;
     flex-direction: column;
     gap: 16px;
     font-family: 'Inter', sans-serif;
   }
+  .footer-top-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    text-align: left;
+    gap: 24px;
+    width: 100%;
+  }
+  .footer-desc {
+    font-weight: 500;
+    font-size: 0.95rem;
+    line-height: 1.35;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .footer-desc a {
+    color: var(--ink);
+    font-weight: 700;
+    text-decoration: none;
+    margin-top: 4px;
+  }
   .footer-address {
     font-weight: 600;
     color: var(--ink);
     font-size: 0.9rem;
+    margin: 0;
+  }
+  .footer-address h4 {
+    margin: 0 0 8px 0;
+    font-size: 1.1rem;
+    color: var(--ink);
   }
   .footer-links {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 12px 24px;
-    margin: 8px 0;
+    gap: 24px;
+    margin-top: 24px;
   }
   .footer-links a {
-    color: var(--ink);
+    color: var(--muted);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 0.85rem;
   }
   .footer-links a:hover {
@@ -520,7 +582,7 @@
       position: fixed;
       top: 0;
       left: 0;
-      background: linear-gradient(90deg, rgba(0,0,0,0.12) 0%, rgba(244,241,234,0.85) 25%, rgba(244,241,234,0.85) 75%, rgba(0,0,0,0.12) 100%);
+      background: linear-gradient(90deg, rgba(26,41,128,0.15) -10%, rgba(38,208,206,0.95) 50%, rgba(26,41,128,0.15) 110%);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       flex-direction: row;
@@ -576,9 +638,14 @@
     }
 
     .hero-section {
+      flex-direction: column;
       justify-content: flex-start;
       padding: 120px 6vw 40px 6vw;
-      gap: 6px;
+      gap: 32px;
+      text-align: center;
+    }
+    .hero-left {
+      align-items: center;
     }
     .about-section {
       padding: 6vh 6vw 8vh 6vw;
@@ -587,11 +654,25 @@
       margin-top: 0;
       transform: none;
     }
+    .hero-text p {
+      white-space: normal;
+      font-size: 0.85rem;
+    }
     .hero-image-slot { width: min(90vw, 378px); max-height: 36vh; }
     .timer-icon-outside { height: 84px; }
     .btn { padding: 10px 22px; font-size: 0.85rem; }
     footer { padding: 24px 6vw 16px 6vw; gap: 12px; }
-    .footer-address { font-size: 0.8rem; }
+    .footer-top-row {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 24px;
+    }
+    .footer-desc {
+      text-align: center;
+      align-items: center;
+    }
+    .footer-address { font-size: 0.8rem; text-align: center; }
     .footer-links a { font-size: 0.8rem; }
     .footer-disclaimer { font-size: 0.65rem; }
   }
@@ -709,31 +790,40 @@
 
   <main>
     <section class="hero-section">
-      <div class="hero-text">
-        <h1 style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-          <span>Build Wealth with Flexible,</span>
-          <span>Real Estate-Backed Investments</span>
-        </h1>
-        <p>Easy to Invest | Fixed Returns up to 12% | Flexible Withdrawals</p>
-      </div>
+      <div class="hero-left">
+        <div class="hero-text" style="text-align: inherit;">
+          <h1 style="display: flex; flex-direction: column; align-items: inherit; text-align: inherit;">
+            <span>Build Wealth with <span style="color: #4B8EE5;">Flexible</span>,</span>
+            <span>Real Estate-Backed Investments</span>
+          </h1>
+          <p style="text-align: inherit;">Easy to Invest | Fixed Returns up to 12% | Flexible Withdrawals</p>
+        </div>
 
-      <div class="cta-row">
-        <!-- Point each href at the page it should link to -->
-        <a href="#services" class="btn btn-primary">Invest Now</a>
-        <a href="invest.html" class="btn btn-secondary">Learn more</a>
-      </div>
+        <div class="cta-row" style="justify-content: inherit; margin-top: 24px; width: 100%; display: flex; gap: 16px;">
+          <a href="#services" class="btn btn-primary">Invest Now</a>
+          <a href="invest.html" class="btn btn-secondary">Learn more</a>
+        </div>
 
-      <div class="hero-image-slot">
-        <img src="home-hand-new.png" alt="A hand holding a model house, representing home investment">
+        <div style="margin-top: 20px; display: flex; justify-content: inherit; width: 100%;">
+          <a href="how_it_works.mp4" target="_blank" class="btn btn-ghost" style="display:inline-flex; align-items:center; gap:8px; color: #ff4444; border-color: rgba(255,0,0,0.3); background: rgba(255,0,0,0.1); padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 15px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+            How it Works</a>
+        </div>
+
+        <div style="margin-top: 32px; max-width: 600px; text-align: justify;">
+          <p style="font-family: 'Inter', sans-serif; font-size: 0.94rem; line-height: 1.6; color: var(--ink); font-weight: 500; letter-spacing: -0.01em; margin: 0;">
+            <strong style="color: var(--ink); font-weight: 700;">SITAR Wealth</strong> is a diversified construction and investment firm providing real estate-backed financial opportunities. Based in India, we offer flexible options in premium properties with fixed annual returns up&nbsp;to&nbsp;12%.
+          </p>
+        </div>
       </div>
       
-      <div style="margin-top: 20px; display: flex; justify-content: center;">
-        <a href="video1.mp4" target="_blank" class="btn btn-ghost" style="display:flex; align-items:center; gap:8px; color: #ff4444; border-color: rgba(255,0,0,0.3); background: rgba(255,0,0,0.1); padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 15px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
-          Explore More
-        </a>
+      <div class="hero-right">
+        <div class="hero-image-slot">
+          <img src="home-hand-new.png" alt="A hand holding a model house, representing home investment">
+        </div>
       </div>
     </section>
+
 
     <section id="about" class="about-section">
       <div class="about-content">
@@ -745,51 +835,48 @@
 
     <section id="services" class="services-section">
       <div class="services-container">
-        <div class="services-left">
+        
+        <div class="services-header">
           <h2>Our Investment Options</h2>
           <p>Explore our premium real-asset-linked investments.</p>
-          <div class="investment-options">
-            <a href="invest.html" class="option-card" style="--accent: var(--villas)">
-              <div class="option-icon">🏡</div>
-              <div class="option-details">
-                <h4>Villas</h4>
-                <span>Up to 12% p.a. fixed returns</span>
-              </div>
-            </a>
-            <a href="invest.html" class="option-card" style="--accent: var(--apartments)">
-              <div class="option-icon">🏢</div>
-              <div class="option-details">
-                <h4>Apartments</h4>
-                <span>Up to 11% p.a. fixed returns</span>
-              </div>
-            </a>
-            <a href="invest.html" class="option-card" style="--accent: var(--resorts)">
-              <div class="option-icon">🏖️</div>
-              <div class="option-details">
-                <h4>Resorts & Hospitality</h4>
-                <span>Up to 12% p.a. fixed returns</span>
-              </div>
-            </a>
-            <a href="invest.html" class="option-card" style="--accent: var(--commercial)">
-              <div class="option-icon">🏬</div>
-              <div class="option-details">
-                <h4>Commercial Complex</h4>
-                <span>Up to 10% p.a. fixed returns</span>
-              </div>
-            </a>
-            <a href="invest.html" class="option-card" style="--accent: var(--layouts)">
-              <div class="option-icon">🗺️</div>
-              <div class="option-details">
-                <h4>Layout Development</h4>
-                <span>Up to 12% p.a. fixed returns</span>
-              </div>
-            </a>
-          </div>
+        </div>
+
+        <div class="investment-options">
+          <a href="invest.html" class="option-card-sq" style="--accent: var(--villas)">
+            <span class="badge">Up to 12% p.a.</span>
+            <div class="option-icon">🏡</div>
+            <h4>Villas Investment</h4>
+            <p>Real estate-backed investment opportunities in premium villa projects.</p>
+          </a>
+          <a href="invest.html" class="option-card-sq" style="--accent: var(--apartments)">
+            <span class="badge">Up to 11% p.a.</span>
+            <div class="option-icon">🏢</div>
+            <h4>Apartments Investment</h4>
+            <p>Investment options in apartment developments providing stable, fixed returns.</p>
+          </a>
+          <a href="invest.html" class="option-card-sq" style="--accent: var(--resorts)">
+            <span class="badge">Up to 12% p.a.</span>
+            <div class="option-icon">🏖️</div>
+            <h4>Resorts & Hospitality</h4>
+            <p>Fixed-return investment opportunities within the growing hospitality sector.</p>
+          </a>
+          <a href="invest.html" class="option-card-sq" style="--accent: var(--commercial)">
+            <span class="badge">Up to 10% p.a.</span>
+            <div class="option-icon">🏬</div>
+            <h4>Commercial Complex</h4>
+            <p>Real estate-linked investments in high-utility commercial complexes.</p>
+          </a>
+          <a href="invest.html" class="option-card-sq" style="--accent: var(--layouts)">
+            <span class="badge">Up to 12% p.a.</span>
+            <div class="option-icon">🗺️</div>
+            <h4>Layout Development</h4>
+            <p>Strategic investment in land layout development projects featuring high fixed returns.</p>
+          </a>
         </div>
         
-        <div class="services-right">
-          <div class="calc-glass" style="padding: 24px; gap: 24px;">
-            <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--ink); margin: 0; text-align: center; font-family: 'Inter', sans-serif;">Calculate Your Returns</h3>
+        <div class="calc-wrapper">
+          <div class="calc-glass" style="padding: 32px; gap: 24px; border-radius: 24px; box-shadow: 0 12px 48px rgba(0,0,0,0.06);">
+            <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--ink); margin: 0; text-align: center; font-family: 'Inter', sans-serif;">Calculate Your Returns</h3>
             <div style="display: flex; flex-direction: column; gap: 16px;">
               <div class="input-group">
                 <label style="display: block; font-weight: 600; margin-bottom: 4px; color: #111; font-size: 0.9rem;">Investment Sector</label>
@@ -873,8 +960,18 @@
   </main>
 
   <footer>
-    <div class="footer-address">SITAR Wealth, Indranagar, Hassan - 573201</div>
-    <div class="footer-links">
+    <div class="footer-top-row">
+      <div class="footer-address">
+        <h4>SITAR Wealth</h4>
+        <span style="font-weight: 500;">Indranagar, Hassan - 573201</span>
+      </div>
+      <div class="footer-desc">
+        <span>Build Wealth with Flexible, Real Estate-Backed Investments</span>
+        <span>Based in India, Offering fixed annual returns up to 12%</span>
+        <a href="https://sitarwealth.in">sitarwealth.in</a>
+      </div>
+    </div>
+    <div class="footer-links" style="margin-top: 24px;">
       <a href="policies.html#privacy-policy">Privacy Policy</a>
       <a href="policies.html#terms-conditions">Terms &amp; Conditions</a>
       <a href="policies.html#refund-policy">Refund Policy</a>
